@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<persistence xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence https://jakarta.ee/xml/ns/persistence/persistence_3_2.xsd"
+             version="3.2">
+    <persistence-unit name="autoSpotBackendPersistenceUnit">
+        <!-- If you are running in a production environment, add a managed
+           data source, this configuration uses the JakartaEE default data source is just for development and testing! -->
+        <jta-data-source>java:/autospotDS</jta-data-source>
+        <properties>
+            <!--The database schema is auto created on deployment and dropped before redeploy.
+                Note: the following configuration does not drop the tables on undeploy. If you prefer this, use this
+                Hibernate property instead:
+                <property name="hibernate.hbm2ddl.auto" value="create-drop" />
+            -->
+            <!--
+                drop-and-create
+                update
+            -->
+            <property name="javax.persistence.schema-generation.database.action" value="update"/>
+            <property name="javax.persistence.schema-generation.create-source" value="metadata"/>
+            <property name="javax.persistence.schema-generation.drop-source" value="metadata"/>
+
+            <!-- Properties for Hibernate -->
+            <property name="hibernate.show_sql" value="true" />
+            <property name="hibernate.format_sql" value="true" />
+        </properties>
+    </persistence-unit>
+</persistence>
