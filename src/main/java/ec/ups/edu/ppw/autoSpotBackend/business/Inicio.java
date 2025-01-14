@@ -24,8 +24,8 @@ public class Inicio {
 		person.setName("Paul Sebastian");
 		person.setLastName("Naspud");
 		person.setMail("0301547895");
-		person.setRole('A');
-		person.setStatus('A');
+		person.setRole("A");
+		person.setStatus("A");
 		person.setLocation("Av. San Pedro");
 
 		Automobile  automobile = new Automobile();

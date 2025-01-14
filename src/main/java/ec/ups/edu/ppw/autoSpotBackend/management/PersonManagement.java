@@ -35,5 +35,4 @@ public class PersonManagement {
         Person personUpdate = this.personDAO.modifyPerson(person);
         if(personUpdate == null) throw new Exception("NO SE PUEDE MODIFICAR A LA PERSONA");
     }
-
 }

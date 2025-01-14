@@ -20,7 +20,7 @@ public class Contract {
 
     @Column(name = "cont_status")
     @Pattern(regexp = "A|I|W|C", message = "El status debe ser 'A', 'I' W 'C'")
-    private char status;
+    private String status;
 
     @Column(name = "cont_prize")
     private double prize;
@@ -62,11 +62,11 @@ public class Contract {
         this.type = type;
     }
 
-    public char getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(char status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

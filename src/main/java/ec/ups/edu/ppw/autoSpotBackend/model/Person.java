@@ -29,12 +29,13 @@ public class Person {
     private String mail;
 
     @Column(name = "per_role")
+
     @Pattern(regexp = "A|C|CF", message = "El status debe ser 'A', 'C', 'CF'")
-    private char role;
+    private String role;
 
     @Pattern(regexp = "A|I", message = "El status debe ser 'A' O 'I'")
     @Column(name = "per_status")
-    private char status;
+    private String status;
 
     @Column(name = "per_birthday")
     private Date birthDay;
@@ -103,19 +104,19 @@ public class Person {
         this.mail = mail;
     }
 
-    public char getRole() {
+    public String getRole() {
         return role;
     }
 
-    public void setRole(char role) {
+    public void setRole(String role) {
         this.role = role;
     }
 
-    public char getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(char status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 

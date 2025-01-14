@@ -16,7 +16,7 @@ public class ParkingSpace {
 
     @Column(name = "park_spa_status")
     @Pattern(regexp = "D|ND|O|I", message = "El status debe ser 'D', 'ND', 'O', 'I'")
-    private char status;
+    private String status;
 
 
     public int getId() {
@@ -35,11 +35,11 @@ public class ParkingSpace {
         this.location = location;
     }
 
-    public char getStatus() {
+    public String getStatus() {
         return status;
     }
 
-    public void setStatus(char status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 	
