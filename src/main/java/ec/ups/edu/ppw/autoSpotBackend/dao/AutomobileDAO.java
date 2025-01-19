@@ -3,6 +3,7 @@ package ec.ups.edu.ppw.autoSpotBackend.dao;
 import ec.ups.edu.ppw.autoSpotBackend.model.Automobile;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 
@@ -34,9 +35,26 @@ public class AutomobileDAO {
     }
 
     public List<Automobile> getAutomobiles(){
-    	String jpql = "SELECT a FROM Automobiles a"; 
+    	String jpql = "SELECT a FROM Automobile a";
         Query q = em.createQuery(jpql, Automobile.class); 
         return q.getResultList(); 
     }
+
+    public Automobile getAutomobileByLicensePlate(String licensePlate) {
+        String jpql = "SELECT a FROM Automobile a WHERE a.licensePlate = :licensePlate";
+        Query query = em.createQuery(jpql, Automobile.class);
+        query.setParameter("licensePlate", licensePlate);
+        List<Automobile> results = query.getResultList();
+        return results.isEmpty() ? null : results.get(0);
+    }
+
+    public List<Automobile> getListByIDPerson(int idPerson) {
+        String jpql = "SELECT a FROM Automobile a WHERE a.person.id = :idPerson";
+        Query query = em.createQuery(jpql, Automobile.class);
+        query.setParameter("idPerson", idPerson);
+        List<Automobile> automobiles = query.getResultList();
+        return automobiles;
+    }
+
 
 }

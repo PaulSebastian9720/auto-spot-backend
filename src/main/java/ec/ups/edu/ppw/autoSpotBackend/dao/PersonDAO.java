@@ -30,4 +30,12 @@ public class PersonDAO {
 		Query q = em.createQuery(jpql, Person.class);
 		return q.getResultList();
 	}
+
+	public Person getPersonsByEmail(String mail) {
+		String jpql = "SELECT p FROM Person p WHERE p.mail = :mail";
+		Query q = em.createQuery(jpql, Person.class);
+		q.setParameter("mail", mail);
+		List<Person> persons = q.getResultList();
+		return (persons.isEmpty() ? null : persons.get(0));
+	}
 }

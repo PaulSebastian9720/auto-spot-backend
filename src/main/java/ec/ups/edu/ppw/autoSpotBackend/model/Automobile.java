@@ -1,5 +1,7 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
+import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
 @Entity
@@ -10,7 +12,7 @@ public class Automobile {
     @Column(name = "aut_id")
     private int idAutomobile;
 
-    @Column(name = "aut_licenseplate", unique = true)
+    @Column(name = "aut_licenseplate", unique = true, nullable = false)
     private String licensePlate;
 
     @Column(name = "aut_brand")
@@ -19,16 +21,20 @@ public class Automobile {
     @Column(name = "aut_model")
     private String model;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aut_per_id", nullable = false)
+    @JsonbTransient
+    private Person person;
 
     public Automobile() {
     }
 
-    public int getId() {
+    public int getIdAutomobile() {
         return idAutomobile;
     }
 
-    public void setId(int id) {
-        this.idAutomobile = id;
+    public void setIdAutomobile(int idAutomobile) {
+        this.idAutomobile = idAutomobile;
     }
 
     public String getLicensePlate() {
@@ -53,6 +59,27 @@ public class Automobile {
 
     public void setModel(String model) {
         this.model = model;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    @JsonbProperty("personId")
+    public Integer getPersonId() {
+        return person != null ? person.getId() : null;
+    }
+
+    @JsonbProperty("personId")
+    public void setPersonId(Integer personId) {
+        if (personId == null) return;
+        this.person = new Person();
+        this.person.setId(personId);
+
     }
 
 }

@@ -31,7 +31,7 @@ public class PersonService {
     @GET
     @Path("/{person_id}/person")
     @Produces("application/json")
-    public Response get(@PathParam("person_id") int person_id) {
+    public Response getByID(@PathParam("person_id") int person_id) {
         try {
             Person person = personManagement.getPersonById(person_id);
             return Response.ok(person).build();
@@ -57,7 +57,7 @@ public class PersonService {
     @Path("/getAll")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getAll() {
+    public Response getAllPersons() {
         try{
             List<Person> persons = personManagement.getAllPersons();
             return Response.ok(persons).build();

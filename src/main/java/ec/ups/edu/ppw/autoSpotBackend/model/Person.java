@@ -1,5 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 
@@ -25,7 +26,7 @@ public class Person {
     @Column(name = "per_last_name")
     private String lastName;
 
-    @Column(name = "per_mail")
+    @Column(name = "per_mail", unique = true)
     private String mail;
 
     @Column(name = "per_role")
@@ -40,7 +41,7 @@ public class Person {
     @Column(name = "per_birthday")
     private Date birthDay;
 
-    @Column(name = "per_mailS")
+    @Column(name = "per_mailS", unique = true)
     private String mailS;
 
     @Column(name = "per_location")
@@ -163,7 +164,17 @@ public class Person {
     public void addAutomobile(Automobile automobile) {
         if(automobile == null) return;
         this.listAutomobiles.add(automobile);
-
     }
 
+    public List<MessageMail> getListMessagesMails() {
+        return listMessagesMails;
+    }
+
+    public void setListMessagesMails(List<MessageMail> listMessagesMails) {
+        this.listMessagesMails = listMessagesMails;
+    }
+
+    public void addMessageMail(MessageMail messageMail) {
+        this.listMessagesMails.add(messageMail);
+    }
 }

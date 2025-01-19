@@ -14,7 +14,7 @@ public class Schedule {
 	@Column(name = "day_id")
 	private int idDay;
 
-    @Column(name ="day_status", unique = true, nullable = false)
+    @Column(name ="day_status", nullable = false)
     @Pattern(regexp = "R|E|NW", message = "El status debe ser 'R', 'E' o 'NW'")
     private String status;
 

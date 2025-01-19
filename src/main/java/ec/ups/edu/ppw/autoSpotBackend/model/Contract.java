@@ -14,59 +14,63 @@ public class Contract {
 	@Column(name = "cont_id")
 	private int idContract;
 
-    @Column(name = "cont_type")
-    @Pattern(regexp = "M|R", message = "El status debe ser 'M' o 'E'")
-    private char type;
+    @Column(name = "cont_type", nullable = false)
+    @Pattern(regexp = "MT|TM", message = "El status debe ser 'MT' o 'TM'")
+    private String type;
 
-    @Column(name = "cont_status")
-    @Pattern(regexp = "A|I|W|C", message = "El status debe ser 'A', 'I' W 'C'")
+    @Column(name = "cont_status", nullable = false)
+    @Pattern(regexp = "AC|IN|WT|CL", message = "El status debe ser 'AC', 'IN', 'WT', 'CL'")
     private String status;
 
     @Column(name = "cont_prize")
     private double prize;
 
-    @Column(name = "cont_startDate")
+    @Column(name = "cont_startDate", nullable = false)
     private Date startDate;
 
     @Column(name = "cont_endDate")
     private Date endDate;
     
     @ManyToOne
-    @JoinColumn(name ="cont_per_id")
+    @JoinColumn(name ="cont_per_id", nullable = false)
     private Person person;
     
     @OneToOne
-    @JoinColumn(name="cont_par_id")
+    @JoinColumn(name="cont_par_id",nullable = false)
     private ParkingSpace parkingSpace;
     
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name="cont_rat_id")
     private Rate rate;
-    
+
+    @OneToOne
+    @JoinColumn(name="cont_aut_id")
+    private Automobile automobile;
+
     public Contract() {
     }
 
-    public int getId() {
+    public int getIdContract() {
         return idContract;
     }
 
-    public void setId(int idContract) {
+    public void setIdContract(int idContract) {
         this.idContract = idContract;
     }
 
-    public char getType() {
+    public @Pattern(regexp = "MT|TM", message = "El status debe ser 'MT' o 'TM'") String getType() {
         return type;
     }
 
-    public void setType(char type) {
+    public void setType(@Pattern(regexp = "M|R", message = "El status debe ser 'M' o 'E'") String type) {
         this.type = type;
     }
 
-    public String getStatus() {
+    public @Pattern(regexp = "AC|IN|WT|CL", message = "El status debe ser 'AC', 'IN', 'WT', 'CL'") String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(@Pattern(regexp = "AC|IN|WT|CL", message = "El status debe ser 'AC', 'IN', 'WT', 'CL'") String status) {
         this.status = status;
     }
 
@@ -94,7 +98,15 @@ public class Contract {
         this.endDate = endDate;
     }
 
-    public ParkingSpace addParkingSpace() {
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public ParkingSpace getParkingSpace() {
         return parkingSpace;
     }
 
@@ -102,11 +114,19 @@ public class Contract {
         this.parkingSpace = parkingSpace;
     }
 
-//    public Rate getRate() {
-//        return rate;
-//    }
-//
-//    public void setRate(Rate rate) {
-//        this.rate = rate;
-//    }
+    public Rate getRate() {
+        return rate;
+    }
+
+    public void setRate(Rate rate) {
+        this.rate = rate;
+    }
+
+    public Automobile getAutomobile() {
+        return automobile;
+    }
+
+    public void setAutomobile(Automobile automobile) {
+        this.automobile = automobile;
+    }
 }

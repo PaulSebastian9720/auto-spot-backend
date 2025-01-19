@@ -1,7 +1,11 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
+import jakarta.json.bind.annotation.JsonbProperty;
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
+
+import java.util.Date;
 
 @Entity
 @Table(name = "SPOT_MESSAGE_MAIL")
@@ -9,35 +13,40 @@ public class MessageMail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "mes_mail_id")
-    private String idMessageMail;
+    private int idMessageMail;
 
-    @Column(name = "mes_mail_mailFrom")
+    @Column(name = "mes_mail_mailFrom", nullable = false)
     private String mailFrom;
 
     @Column(name = "mes_mail_nameFrom")
     private String nameFrom;
 
-    @Column(name = "mes_mail_mailDestination")
+    @Column(name = "mes_mail_mailDestination", nullable = false)
     private String mailDestination;
 
     @Column(name = "mes_mail_header")
     private String header;
 
     @Column(name = "mes_mail_shippingDate")
-    private String shippingDate;
+    private Date shippingDate;
 
-    @Column(name = "mes_mail_status")
+    @Column(name = "mes_mail_status", nullable = false)
     @Pattern(regexp = "RD|NR", message = "El status debe ser 'RD', 'NR'")
     private String status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "per_mess_id", nullable = false)
+    @JsonbTransient
+    private Person person;
 
     public MessageMail() {
     }
 
-    public String getIdMessageMail() {
+    public int getIdMessageMail() {
         return idMessageMail;
     }
 
-    public void setIdMessageMail(String idMessageMail) {
+    public void setIdMessageMail(int idMessageMail) {
         this.idMessageMail = idMessageMail;
     }
 
@@ -73,11 +82,11 @@ public class MessageMail {
         this.header = header;
     }
 
-    public String getShippingDate() {
+    public Date getShippingDate() {
         return shippingDate;
     }
 
-    public void setShippingDate(String shippingDate) {
+    public void setShippingDate(Date shippingDate) {
         this.shippingDate = shippingDate;
     }
 
@@ -88,4 +97,25 @@ public class MessageMail {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    @JsonbProperty("personId")
+    public Integer getPersonId() {
+        return person != null ? person.getId() : null;
+    }
+
+    @JsonbProperty("personId")
+    public void setPersonId(Integer personId) {
+        if (personId == null) return;
+        this.person = new Person();
+        this.person.setId(personId);
+    }
+
 }

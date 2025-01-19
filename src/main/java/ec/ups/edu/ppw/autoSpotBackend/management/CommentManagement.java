@@ -8,12 +8,12 @@ import jakarta.inject.Inject;
 import java.util.List;
 
 @ApplicationScoped
-public class CommenManagement {
+public class CommentManagement {
     @Inject
     private CommentDAO commentDAO;
 
     public void addComment(Comment comment) throws Exception {
-        if(comment == null) throw  new Exception("Datos de el comentario no validos");
+        if(comment == null) throw  new Exception("DATOS DE EL COMENTARIOS NO VALIDOS");
         commentDAO.insertComment(comment);
     }
 

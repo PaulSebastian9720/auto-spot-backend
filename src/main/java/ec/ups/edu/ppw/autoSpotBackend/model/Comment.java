@@ -11,14 +11,14 @@ public class Comment {
 	@Column(name = "com_id")
 	private int idComment;
 
-	@Column(name = "com_name")
+	@Column(name = "com_name", nullable = false)
 	private String name;
 
-	@Column(name = "com_mail")
+	@Column(name = "com_mail", nullable = false)
 
 	private String mail;
 
-	@Column(name = "com_comment")
+	@Column(name = "com_comment", nullable = false)
 	private String comment;
 	
 	public Comment() {

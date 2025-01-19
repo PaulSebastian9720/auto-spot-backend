@@ -35,8 +35,16 @@ public class ParkingSpaceDAO {
 	}
 	
 	public List<ParkingSpace> getParkingSpaces(){
-		String jpql = "SELECT pa FROM ParkingSpace pa";
-		Query q = em.createNativeQuery(jpql, ParkingSpace.class);
+		String jpql = "SELECT p FROM ParkingSpace p";
+		Query q = em.createQuery(jpql, ParkingSpace.class);
 		return q.getResultList();
+	}
+
+	public ParkingSpace getParkingSpaceByLocation(String location){
+		String jpql = "SELECT p FROM ParkingSpace p WHERE p.location = :location";
+        Query q = em.createQuery(jpql, ParkingSpace.class);
+        q.setParameter("location", location);
+		List<ParkingSpace> result = q.getResultList();
+        return result.isEmpty() ? null : result.get(0);
 	}
 }

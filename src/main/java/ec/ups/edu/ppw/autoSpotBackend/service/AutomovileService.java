@@ -1,27 +1,47 @@
 package ec.ups.edu.ppw.autoSpotBackend.service;
 
+import ec.ups.edu.ppw.autoSpotBackend.management.AutomobileManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Automobile;
+import ec.ups.edu.ppw.autoSpotBackend.model.MessageMail;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
-@Path("/automoviles")
+import java.rmi.server.ExportException;
+import java.util.List;
+
+@Path("/automobiles")
 public class AutomovileService {
+
+    @Inject
+    private AutomobileManagement automobileManagement;
+
 
     @POST
     @Path("/create")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(Automobile automobile) {
-        return null;
+        try{
+            automobileManagement.addAutomobile(automobile);
+            return Response.ok("AUTOMOBILE REGISTRADO CORRECTAMENTES").build();
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 
     @GET
-    @Path("/{idAutomobile}")
+    @Path("/{idAutomobile}/automobile")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response get(String idAutomobile) {
-        return null;
+    public Response get(@PathParam("idAutomobile") int idAutomobile) {
+        try{
+            Automobile automobile = this.automobileManagement.getAutomobileById(idAutomobile);
+            return Response.ok(automobile).build();
+        }catch(Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 
     @PUT
@@ -29,22 +49,32 @@ public class AutomovileService {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Automobile automobile) {
-        return null;
+        try {
+            this.automobileManagement.updateAutomobile(automobile);
+            return Response.ok("AUTOMOBILE ACTUALIZADO CORRECTAMENTE").build();
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 
-    @GET
-    @Path("/getAll")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response getAll() {
-        return null;
-    }
 
     @DELETE
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response delete(@QueryParam("idAutomobile") String idAutomobile) {
+    public Response delete(@QueryParam("idAutomobile") int idAutomobile) {
         return null;
+    }
+
+    @GET
+    @Path("/{person_id}/list-for-person")
+    @Produces("application/json")
+    public Response getListByIDPerson(@PathParam("person_id") int person_id) {
+        try {
+            List<Automobile> autmovileList= automobileManagement.getListByIDPerson(person_id);
+            return Response.ok(autmovileList).build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 }
 
