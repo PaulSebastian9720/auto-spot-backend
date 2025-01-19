@@ -5,6 +5,8 @@ import ec.ups.edu.ppw.autoSpotBackend.dao.ScheduleDAO;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 @ApplicationScoped
@@ -17,6 +19,7 @@ public class ScheduleManagement {
         if(shedule == null) throw  new Exception("DATOS NO VALIDOS");
         if(shedule.getStatus().toUpperCase().compareTo("R") == 0) throw  new Exception("NO SE PUEDE REGISTRAR MAS DIAS REGULARES");
         if(shedule.getStatus().toUpperCase().compareTo("E") != 0 && shedule.getStatus().toUpperCase().compareTo("NW") != 0)  throw  new Exception("NO CUMPLE CON LOS REQUISITOS");
+        this.validatorDate(shedule);
         shedule.setStatus(shedule.getStatus().toUpperCase());
         scheduleDAO.insertSchedule(shedule);
     }
@@ -32,6 +35,7 @@ public class ScheduleManagement {
 
     public void updateSchedule(Schedule shedule) throws Exception {
         validatorForSchedule(shedule.getIdDay());
+        validatorDate(shedule);
         shedule.setStatus(shedule.getStatus().toUpperCase());
         this.scheduleDAO.modifySchedule(shedule);
 
@@ -47,5 +51,23 @@ public class ScheduleManagement {
         if(shedule == null) throw new Exception("NO EXISTE UN DIA CON ESE ID");
         return shedule;
     }
+
+    private void validatorDate(Schedule schedule) throws Exception {
+        Date openingTime = schedule.getOpeningTime();
+        Date closingTime = schedule.getClosingTime();
+        if(openingTime == null || closingTime == null) throw  new Exception("Las FECHAS DE APERTURA Y CIERRE NO PUEDEN SER NULAS");
+
+        Calendar currentCalendar = Calendar.getInstance();
+        currentCalendar.setTime(new Date());
+        currentCalendar.set(Calendar.HOUR_OF_DAY, 0);
+        currentCalendar.set(Calendar.MINUTE, 0);
+        currentCalendar.set(Calendar.SECOND, 0);
+        currentCalendar.set(Calendar.MILLISECOND, 0);
+        Date currentDate = currentCalendar.getTime();
+
+        if(currentDate.before(openingTime)) throw  new Exception("NO SE PUEDE MODIFICAR FECHAS PASADAS");
+        if(closingTime.before(openingTime)) throw  new Exception("LA FECHA DE CIERRE NO PUEDE SER ANTERIOR A LA DE APERTURA");
+    }
+
 
 }

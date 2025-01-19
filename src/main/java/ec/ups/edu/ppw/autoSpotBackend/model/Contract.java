@@ -40,7 +40,7 @@ public class Contract {
     @JoinColumn(name="cont_par_id",nullable = false)
     private ParkingSpace parkingSpace;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "SPOT_CONTRACT_RATE",
             joinColumns = @JoinColumn(name = "cont_id"),

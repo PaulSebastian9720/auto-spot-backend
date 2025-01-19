@@ -33,9 +33,17 @@ public class ContractDAO {
 	    }
 		em.remove(contract);
 	}
+
+	public List<Contract> getContractsByIdPerson(int idPerson) throws  Exception {
+		String jplql = "SELECT c FROM Contract c WHERE c.person.id = :idPerson";
+		Query q = em.createQuery(jplql, Contract.class);
+		q.setParameter("idPerson", idPerson);
+		List<Contract> contractList = q.getResultList();
+		return contractList;
+	}
 	
 	public List<Contract> getContracts() {
-		String jpql = "SELECT co FROM CONTRACT co";
+		String jpql = "SELECT c FROM Contract c";
 		Query q = em.createQuery(jpql, Contract.class);
 		return q.getResultList();
 	}

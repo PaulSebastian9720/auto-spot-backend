@@ -90,11 +90,11 @@ public class MessageMail {
         this.shippingDate = shippingDate;
     }
 
-    public String getStatus() {
+    public @Pattern(regexp = "RD|NR", message = "El status debe ser 'RD', 'NR'") String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(@Pattern(regexp = "RD|NR", message = "El status debe ser 'RD', 'NR'") String status) {
         this.status = status;
     }
 

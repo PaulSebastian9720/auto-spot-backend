@@ -1,7 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.service;
 
 import ec.ups.edu.ppw.autoSpotBackend.management.ScheduleManagement;
-import ec.ups.edu.ppw.autoSpotBackend.model.Person;
 import ec.ups.edu.ppw.autoSpotBackend.model.Schedule;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -28,7 +27,7 @@ public class ScheduleService {
     }
 
     @GET
-    @Path("/{schedule_id}/shcdule")
+    @Path("/{schedule_id}/schedule")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getByID(@PathParam("schedule_id") int schedule_id) {
@@ -78,5 +77,4 @@ public class ScheduleService {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }
-
 }
