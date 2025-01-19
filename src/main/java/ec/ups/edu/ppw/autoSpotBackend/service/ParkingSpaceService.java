@@ -30,10 +30,10 @@ public class ParkingSpaceService {
     }
 
     @GET
-    @Path("/{id_ParkingSpace}")
+    @Path("/{id_ParkingSpace}/space")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response get(int id_ParkingSpace) {
+    public Response get(@PathParam("id_ParkingSpace")  int id_ParkingSpace) {
         try {
             ParkingSpace space = this.spaceManagement.readSpot(id_ParkingSpace);
             return Response.ok(space).build();
@@ -43,12 +43,18 @@ public class ParkingSpaceService {
     }
 
     @PUT
-    @Path("/update")
+    @Path("/change-state/{idSpace}")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response update(ParkingSpace parkingSpace) {
-        return null;
+    public Response changeState(@PathParam("idSpace") int idSpace) {
+        try {
+            this.spaceManagement.changeState(idSpace);
+            return Response.ok("ESTADO CAMBIADO CORRECTAMENTE").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
+
 
     @GET
     @Path("/getAll")
@@ -63,12 +69,6 @@ public class ParkingSpaceService {
         }
     }
 
-    @DELETE
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response delete(@QueryParam("id_ParkingSpace") String id_ParkingSpace) {
-        return null;
-    }
 }
 
 

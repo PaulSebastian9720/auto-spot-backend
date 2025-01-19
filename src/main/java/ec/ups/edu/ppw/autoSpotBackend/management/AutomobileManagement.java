@@ -38,8 +38,8 @@ public class AutomobileManagement {
         if(automobile.getLicensePlate().compareTo("") == 0) throw new Exception("LA PLACA ES NESCESARIA");
         if(this.getAutomobileById(automobile.getIdAutomobile()) == null) throw new Exception("AUTOMOBILE CON EL ID: " + automobile.getIdAutomobile() + " NO ECONTRADO.");
         if(automobile.getPersonId() <= 0) throw new Exception("AUTOMOBILE SIN ID DE LA PERSONA PARA ACTUALIZAR");
-        boolean isPlateExist  = this.automobileDAO.getAutomobileByLicensePlate(automobile.getLicensePlate()) != null;
-        if(isPlateExist) throw new Exception("UN AUTOMOBILE CON ES PLACA YA HA SIDO REGISTRADA");
+        Automobile  automobilePlateExist = this.automobileDAO.getAutomobileByLicensePlate(automobile.getLicensePlate());
+        if(automobilePlateExist != null && automobilePlateExist.getIdAutomobile() != automobile.getIdAutomobile() ) throw new Exception("UN AUTOMOBILE CON ES PLACA YA HA SIDO REGISTRADA");
         Automobile automobileUpdate = this.automobileDAO.updateAutomobile(automobile);
         if( automobileUpdate == null) throw new Exception("NO SE PUEDO ACTUALIZAR EL AUTOMOBILE");
     }
@@ -48,5 +48,12 @@ public class AutomobileManagement {
         if(id_person <= 0) throw  new Exception("Datos no existen");
         List<Automobile> listAutomobile = this.automobileDAO.getListByIDPerson(id_person);
         return listAutomobile;
+    }
+
+    public void removeAutomobile(int id_autmobile) throws Exception {
+        this.getAutomobileById(id_autmobile);
+        boolean exist = this.automobileDAO.existContractsWhitThisAutomobile(id_autmobile);
+        if(exist) throw new Exception("EXISTE CONTRATOS ASOCIADOS A ESTE AUTOMOBILE Y NO SE PUEDE ELIMINAR");
+        automobileDAO.deleteAutomobile(id_autmobile);
     }
 }

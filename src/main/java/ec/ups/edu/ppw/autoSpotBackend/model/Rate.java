@@ -1,6 +1,7 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 
 @Entity
 @Table(name = "SPOT_RATE")
@@ -10,32 +11,25 @@ public class Rate {
 	@Column(name = "rat_id")
 	private int idRate;
 
-    @Column(name = "rat_nameRate")
-    private String nameRate;
+    @Column(name = "rat_name")
+    private String name;
 
-    @Column(name = "rat_prize")
+    @Column(name = "rat_prize", nullable = false)
     private double prize;
 
-    @Column(name = "rat_timeUni")
+    @Column(name = "rat_timeUni", nullable = false)
+    @Pattern(regexp = "5_minutes|10_minutes|30_minutes|1_hour|1_month",
+            message = "El status debe ser '5_minutes' o '10_minutes' o '30_minutes' o '1_hour' o '1_month'")
     private String timeUnit;
 
-    @Column(name = "rat_unitRate")
-    private int unitRate;
+    public Rate() {}
 
-    public int getId() {
+    public int getIdRate() {
         return idRate;
     }
 
-    public void setId(int id) {
-        this.idRate = id;
-    }
-
-    public String getNameRate() {
-        return nameRate;
-    }
-
-    public void setNameRate(String nameRate) {
-        this.nameRate = nameRate;
+    public void setIdRate(int idRate) {
+        this.idRate = idRate;
     }
 
     public double getPrize() {
@@ -46,20 +40,21 @@ public class Rate {
         this.prize = prize;
     }
 
-    public String getTimeUnit() {
+    public @Pattern(regexp = "5_minutes|10_minutes|30_minutes|1_hour|1_month",
+            message = "El status debe ser '5_minutes' o '10_minutes' o '30_minutes' o '1_hour' o '1_month'") String getTimeUnit() {
         return timeUnit;
     }
 
-    public void setTimeUnit(String timeUnit) {
+    public void setTimeUnit(@Pattern(regexp = "5_minutes|10_minutes|30_minutes|1_hour|1_month",
+            message = "El status debe ser '5_minutes' o '10_minutes' o '30_minutes' o '1_hour' o '1_month'") String timeUnit) {
         this.timeUnit = timeUnit;
     }
 
-    public int getUnitRate() {
-        return unitRate;
+    public String getName() {
+        return name;
     }
 
-    public void setUnitRate(int unitRate) {
-        this.unitRate = unitRate;
+    public void setName(String name) {
+        this.name = name;
     }
-
 }

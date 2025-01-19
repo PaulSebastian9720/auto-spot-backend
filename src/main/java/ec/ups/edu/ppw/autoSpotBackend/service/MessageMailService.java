@@ -28,12 +28,11 @@ public class MessageMailService {
     }
 
     @PUT
-    @Path("/updateState")
+    @Path("/change-state/{idMessageMail}")
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response updateMessageMailState(JsonObject json) {
+    public Response updateMessageMailState(@PathParam("idMessageMail") int idMessageMail) {
         try {
-            int idMessageMail = json.getInt("idMessageMail");
             this.messageMailManagement.updateMessageMailStatus(idMessageMail);
             return Response.ok("ESTADO DEL MENSAJE CAMBIO").build();
         } catch (Exception e) {

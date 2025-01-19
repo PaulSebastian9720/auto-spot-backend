@@ -1,27 +1,43 @@
 package ec.ups.edu.ppw.autoSpotBackend.service;
 
+import ec.ups.edu.ppw.autoSpotBackend.management.RateManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Rate;
+import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
+import java.util.List;
+
 @Path("/rates")
 public class RateService {
 
+    @Inject
+    private RateManagement rateManagement;
     @POST
     @Path("/create")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response create(Rate rate) {
-        return null;
+        try {
+            this.rateManagement.addRate(rate);
+            return Response.ok("TARIFRA REGISTRADA EXISTOSAMENTE").build();
+        }catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 
     @GET
-    @Path("/{rate_id}")
+    @Path("/{rate_id}/rate")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response get(String rate_id) {
-        return null;
+    public Response get(@PathParam("rate_id")  int rate_id){
+        try {
+            Rate rate  = this.rateManagement.getRateById(rate_id);
+            return Response.ok(rate).build();
+        }catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 
     @PUT
@@ -29,7 +45,12 @@ public class RateService {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Rate rate) {
-        return null;
+        try {
+            this.rateManagement.updateRate(rate);
+            return Response.ok("TARIFRA ACTUALIZADA CORRECTAMENTE").build();
+        }catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 
     @GET
@@ -37,15 +58,26 @@ public class RateService {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response getAll() {
-        return null;
+        try {
+            List<Rate> results = this.rateManagement.getAllRates();
+            return Response.ok(results).build();
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 
     @DELETE
+    @Path("/delete/{id_rate}")
     @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response delete(@QueryParam("id_rate") String id_rate) {
-        return null;
+    public Response delete(@PathParam("id_rate") int idRate) {
+        try {
+            this.rateManagement.removeRate(idRate);
+            return Response.ok("TARIFA ELIMINADA CORRECTAMENTE").build();
+        } catch (Exception e) {
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
+
 }
 
 

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "SPOT_CONTRACT")
@@ -30,7 +31,7 @@ public class Contract {
 
     @Column(name = "cont_endDate")
     private Date endDate;
-    
+
     @ManyToOne
     @JoinColumn(name ="cont_per_id", nullable = false)
     private Person person;
@@ -38,10 +39,14 @@ public class Contract {
     @OneToOne
     @JoinColumn(name="cont_par_id",nullable = false)
     private ParkingSpace parkingSpace;
-    
-    @ManyToOne
-    @JoinColumn(name="cont_rat_id")
-    private Rate rate;
+
+    @ManyToMany
+    @JoinTable(
+            name = "SPOT_CONTRACT_RATE",
+            joinColumns = @JoinColumn(name = "cont_id"),
+            inverseJoinColumns = @JoinColumn(name = "rat_id")
+    )
+    private List<Rate> rates;
 
     @OneToOne
     @JoinColumn(name="cont_aut_id")
@@ -114,12 +119,12 @@ public class Contract {
         this.parkingSpace = parkingSpace;
     }
 
-    public Rate getRate() {
-        return rate;
+    public List<Rate> getRates() {
+        return rates;
     }
 
-    public void setRate(Rate rate) {
-        this.rate = rate;
+    public void setRates(List<Rate> rates) {
+        this.rates = rates;
     }
 
     public Automobile getAutomobile() {

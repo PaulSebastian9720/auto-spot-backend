@@ -16,9 +16,6 @@ public class SpaceManagement {
         this.validatorSpot(parkingSpace);
         ParkingSpace parkingSpaceExist = this.parkingSpaceDAO.getParkingSpaceByLocation(parkingSpace.getLocation());
         if(parkingSpaceExist != null) throw new Exception("YA EXISTE UNA SPOT CON ESA LOCALIZACION");
-        System.out.println("\n");
-        System.out.println(parkingSpace.getStatus());
-        System.out.println(parkingSpace.getLocation());
         parkingSpace.setLocation(this.getNewLocation(parkingSpace.getLocation()));
         parkingSpace.setStatus("FR");
         parkingSpace.setContract(null);
@@ -47,6 +44,20 @@ public class SpaceManagement {
 
     public List<ParkingSpace> getAllSpaces() {
         return this.parkingSpaceDAO.getParkingSpaces();
+    }
+
+    public void changeState(int idParkingSpace) throws Exception{
+        ParkingSpace parkingSpace = this.readSpot(idParkingSpace);
+        if(parkingSpace == null) throw new Exception("NO SE ENCONTRO EL SPOT");
+        if(parkingSpace.getStatus().toUpperCase().compareTo("BM") == 0
+                || parkingSpace.getStatus().toUpperCase().compareTo("BT") == 0)
+            throw new Exception("NO SE ENCONTRO PUEDE CAMBIAR EL ESTADO DE SPOT OCUPADOS");
+        if(parkingSpace.getStatus().toUpperCase().compareTo("FR") == 0) {
+            parkingSpace.setStatus("IN");
+        } else  if( parkingSpace.getStatus().toUpperCase().compareTo("IN") == 0){
+            parkingSpace.setStatus("FR");
+        }
+        this.parkingSpaceDAO.modifyParkingSpace(parkingSpace);
     }
 
     private boolean validatorSpot(ParkingSpace parkingSpace) throws  Exception {

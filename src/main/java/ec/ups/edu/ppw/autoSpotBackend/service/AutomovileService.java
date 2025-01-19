@@ -59,10 +59,15 @@ public class AutomovileService {
 
 
     @DELETE
+    @Path("/delete/{id_automobile}")
     @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response delete(@QueryParam("idAutomobile") int idAutomobile) {
-        return null;
+    public Response delete(@PathParam("id_automobile") int id_automobile) {
+        try {
+            this.automobileManagement.removeAutomobile(id_automobile);
+            return Response.ok("AUTOMOBILE ELIMINADO CORRECTAMENTE").build();
+        }catch (Exception e){
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
+        }
     }
 
     @GET

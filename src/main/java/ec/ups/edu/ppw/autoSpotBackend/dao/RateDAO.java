@@ -1,5 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.dao;
 
+import ec.ups.edu.ppw.autoSpotBackend.model.Contract;
 import ec.ups.edu.ppw.autoSpotBackend.model.Rate;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
@@ -31,11 +32,7 @@ public class RateDAO {
 
     public void deleteRate(int id) {
     	Rate rate = em.find(Rate.class, id);
-    	if (rate == null) {
-            throw new IllegalArgumentException("Contract with ID " + id + " not found");
-        }
     	em.remove(rate);
-        
     }
 
     public List<Rate> getRates() {
@@ -43,6 +40,14 @@ public class RateDAO {
         Query q = em.createQuery(jpql, Rate.class); 
         List<Rate> list = q.getResultList(); 
         return list;
+    }
+
+    public boolean existContractWithThisRate(Rate rate) {
+        String jpql = "SELECT c FROM Contract c WHERE c.status = 'AC' AND :rate MEMBER OF c.rates";
+        Query q = em.createQuery(jpql, Contract.class);
+        q.setParameter("rate", rate);
+        List<Contract> list = q.getResultList();
+        return !list.isEmpty();
     }
 
 }

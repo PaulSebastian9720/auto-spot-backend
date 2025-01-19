@@ -1,6 +1,5 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 
@@ -47,7 +46,7 @@ public class Person {
     @Column(name = "per_location")
     private String location;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
     @JoinColumn(name = "per_aut_id")
     private List<Automobile> listAutomobiles;
 
@@ -105,19 +104,19 @@ public class Person {
         this.mail = mail;
     }
 
-    public String getRole() {
+    public @Pattern(regexp = "A|C|CF", message = "El status debe ser 'A', 'C', 'CF'") String getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(@Pattern(regexp = "A|C|CF", message = "El status debe ser 'A', 'C', 'CF'") String role) {
         this.role = role;
     }
 
-    public String getStatus() {
+    public @Pattern(regexp = "A|I", message = "El status debe ser 'A' O 'I'") String getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(@Pattern(regexp = "A|I", message = "El status debe ser 'A' O 'I'") String status) {
         this.status = status;
     }
 

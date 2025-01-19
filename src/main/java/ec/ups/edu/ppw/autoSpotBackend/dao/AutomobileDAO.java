@@ -1,6 +1,7 @@
 package ec.ups.edu.ppw.autoSpotBackend.dao;
 
 import ec.ups.edu.ppw.autoSpotBackend.model.Automobile;
+import ec.ups.edu.ppw.autoSpotBackend.model.Contract;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -24,9 +25,6 @@ public class AutomobileDAO {
 
     public void deleteAutomobile(int id) {
         Automobile automobile = em.find(Automobile.class, id);
-        if (automobile == null) {
-            throw new IllegalArgumentException("Contract with ID " + id + " not found");
-        }
         em.remove(automobile);
     }
 
@@ -55,6 +53,11 @@ public class AutomobileDAO {
         List<Automobile> automobiles = query.getResultList();
         return automobiles;
     }
-
-
+    public boolean existContractsWhitThisAutomobile(int idAutomobile) {
+        String jpql = "SELECT c FROM Contract c WHERE c.automobile.idAutomobile = : idAutomobile";
+        Query query = em.createQuery(jpql, Contract.class);
+        query.setParameter("idAutomobile", idAutomobile);
+        List<Contract> contracts = query.getResultList();
+        return !contracts.isEmpty();
+    }
 }
