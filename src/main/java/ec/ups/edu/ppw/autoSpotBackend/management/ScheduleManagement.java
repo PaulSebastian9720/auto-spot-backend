@@ -65,7 +65,7 @@ public class ScheduleManagement {
         currentCalendar.set(Calendar.MILLISECOND, 0);
         Date currentDate = currentCalendar.getTime();
 
-        if(currentDate.before(openingTime)) throw  new Exception("NO SE PUEDE MODIFICAR FECHAS PASADAS");
+//        if(currentDate.before(openingTime)) throw  new Exception("NO SE PUEDE MODIFICAR FECHAS PASADAS");
         if(closingTime.before(openingTime)) throw  new Exception("LA FECHA DE CIERRE NO PUEDE SER ANTERIOR A LA DE APERTURA");
     }
 
