@@ -6,24 +6,13 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
+import java.util.Objects;
 
 @ApplicationScoped
 public class RateManagement {
     @Inject
     private RateDAO rateDAO;
 
-    public void addRate(Rate rate) throws Exception {
-        if(rate == null) throw new Exception("DATOS INVALIDOS DE LA TARIFA");
-        if(rate.getPrize() <= 0) throw new Exception("PRECIO INVALIDOS DE LA TARIFA");
-        rateDAO.insertRate(rate);
-    }
-
-    public void removeRate( int rateID) throws Exception {
-        Rate rate = this.getRateById(rateID);
-        boolean exist = rateDAO.existContractWithThisRate(rate);
-        if(exist) throw new Exception("EXISTE UN CONTRATO CON ESTA TARIFA");
-        rateDAO.deleteRate(rateID);
-    }
 
     public Rate getRateById(int rateID) throws Exception {
         if(rateID <= 0) throw new Exception("ID DE LA TARIFA INVALIDO");
@@ -35,7 +24,8 @@ public class RateManagement {
     public void updateRate(Rate rate) throws Exception {
         if(rate == null) throw new Exception("DATOS INVALIDOS DE LA TARIFA");
         if(rate.getPrize() <= 0) throw new Exception("PRECIO INVALIDOS DE LA TARIFA");
-        this.getRateById(rate.getIdRate());
+        Rate existingRate = this.getRateById(rate.getIdRate());
+        if (!Objects.equals(existingRate.getTimeUnit(), rate.getTimeUnit())) throw new Exception("NO SE PUEDE MODIFICAR EL TIEMPO UNITARIO DE LA TARIFA");
         rateDAO.updateRate(rate);
     }
 

@@ -10,7 +10,7 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("/messageMails")
+@Path("/messages")
 public class MessageMailService {
     @Inject
     private MessageMailManagement messageMailManagement;

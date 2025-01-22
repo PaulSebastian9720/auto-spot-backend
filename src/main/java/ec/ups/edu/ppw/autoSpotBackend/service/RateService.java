@@ -14,18 +14,6 @@ public class RateService {
 
     @Inject
     private RateManagement rateManagement;
-    @POST
-    @Path("/create")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response create(Rate rate) {
-        try {
-            this.rateManagement.addRate(rate);
-            return Response.ok("TARIFRA REGISTRADA EXISTOSAMENTE").build();
-        }catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
 
     @GET
     @Path("/{rate_id}/rate")
@@ -62,18 +50,6 @@ public class RateService {
             List<Rate> results = this.rateManagement.getAllRates();
             return Response.ok(results).build();
         }catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-    }
-
-    @DELETE
-    @Path("/delete/{id_rate}")
-    @Produces("application/json")
-    public Response delete(@PathParam("id_rate") int idRate) {
-        try {
-            this.rateManagement.removeRate(idRate);
-            return Response.ok("TARIFA ELIMINADA CORRECTAMENTE").build();
-        } catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
     }

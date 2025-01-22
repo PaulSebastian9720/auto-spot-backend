@@ -18,8 +18,8 @@ public class Rate {
     private double prize;
 
     @Column(name = "rat_timeUni", nullable = false)
-    @Pattern(regexp = "5_minutes|10_minutes|30_minutes|1_hour|1_month",
-            message = "El status debe ser '5_minutes' o '10_minutes' o '30_minutes' o '1_hour' o '1_month'")
+    @Pattern(regexp = "15_minutes|30_minutes|1_hour|1_night|1_day|1_week|1_month",
+            message = "El status debe ser '15_minutes' o '30_minutes' o '1_hour' o '1_night' o '1_day' o '1_week' o '1_month'")
     private String timeUnit;
 
     public Rate() {}
@@ -40,13 +40,13 @@ public class Rate {
         this.prize = prize;
     }
 
-    public @Pattern(regexp = "5_minutes|10_minutes|30_minutes|1_hour|1_month",
-            message = "El status debe ser '5_minutes' o '10_minutes' o '30_minutes' o '1_hour' o '1_month'") String getTimeUnit() {
+    public @Pattern(regexp = "15_minutes|30_minutes|1_hour|1_night|1_day|1_week|1_month",
+            message = "El status debe ser '15_minutes' o '30_minutes' o '1_hour' o '1_night' o '1_day' o '1_week' o '1_month'") String getTimeUnit() {
         return timeUnit;
     }
 
-    public void setTimeUnit(@Pattern(regexp = "5_minutes|10_minutes|30_minutes|1_hour|1_month",
-            message = "El status debe ser '5_minutes' o '10_minutes' o '30_minutes' o '1_hour' o '1_month'") String timeUnit) {
+    public void setTimeUnit(@Pattern(regexp = "15_minutes|30_minutes|1_hour|1_night|1_day|1_week|1_month",
+            message = "El status debe ser '15_minutes' o '30_minutes' o '1_hour' o '1_night' o '1_day' o '1_week' o '1_month'") String timeUnit) {
         this.timeUnit = timeUnit;
     }
 

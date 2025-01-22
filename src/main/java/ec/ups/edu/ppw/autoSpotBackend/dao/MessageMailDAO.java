@@ -1,5 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.dao;
 import ec.ups.edu.ppw.autoSpotBackend.model.MessageMail;
+import ec.ups.edu.ppw.autoSpotBackend.model.Person;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;

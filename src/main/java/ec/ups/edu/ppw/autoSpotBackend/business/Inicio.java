@@ -36,31 +36,51 @@ public class Inicio {
 	private void insertRates() {
 		// Primera tarifa
 		Rate rate1 = new Rate();
-		rate1.setName("Standard Rate");
-		rate1.setPrize(20.50);
-		rate1.setTimeUnit("5_minutes");
+		rate1.setName("Quarter-Hour Rate");
+		rate1.setPrize(0.35);
+		rate1.setTimeUnit("15_minutes");
 		this.rateDao.insertRate(rate1);
 
 		// Segunda tarifa
 		Rate rate2 = new Rate();
-		rate2.setName("Premium Rate");
-		rate2.setPrize(35.75);
+		rate2.setName("Half-hour Rate");
+		rate2.setPrize(0.5);
 		rate2.setTimeUnit("30_minutes");
 		this.rateDao.insertRate(rate2);
-
-		// Tercera tarifa
+		
+		//Tercera tarifa
 		Rate rate3 = new Rate();
-		rate3.setName("Night Rate");
-		rate3.setPrize(40.00);
+		rate3.setName("Hour Rate");
+		rate3.setPrize(1.00);
 		rate3.setTimeUnit("1_hour");
 		this.rateDao.insertRate(rate3);
 
-		// Cuarta tarifa
+		//Cuarta tarifa
 		Rate rate4 = new Rate();
-		rate4.setName("Weekend Rate");
-		rate4.setPrize(50.25);
-		rate4.setTimeUnit("1_month");
+		rate4.setName("Day Rate");
+		rate4.setPrize(4.00);
+		rate4.setTimeUnit("1_day");
 		this.rateDao.insertRate(rate4);
+
+		// Quinta tarifa
+		Rate rate5 = new Rate();
+		rate5.setName("Night Rate");
+		rate5.setPrize(5.00);
+		rate5.setTimeUnit("1_night");
+		this.rateDao.insertRate(rate5);
+
+		// Sexta tarifa
+		Rate rate6 = new Rate();
+		rate6.setName("Week Rate");
+		rate6.setPrize(7.00);
+		rate6.setTimeUnit("1_week");
+		
+		//Septima tarifa
+		Rate rate7 = new Rate();
+		rate7.setName("Month Rate");
+		rate7.setPrize(30.00);
+		rate7.setTimeUnit("1_month");
+		this.rateDao.insertRate(rate7);
 
 		System.out.println("Rates inserted successfully");
 	}
