@@ -19,7 +19,7 @@ public class ContractService {
     @Path("/{idContract}/contract")
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response getPerson(@PathParam("idContract") int idContract) {
+    public Response getContract(@PathParam("idContract") int idContract) {
         try {
             Contract contract = this.contractManagement.getContract(idContract);
             return Response.ok(contract).build();
