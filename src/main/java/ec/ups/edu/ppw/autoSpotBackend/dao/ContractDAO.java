@@ -35,7 +35,7 @@ public class ContractDAO {
 	}
 
 	public List<Contract> getContractsByIdPerson(int idPerson) throws  Exception {
-		String jplql = "SELECT c FROM Contract c WHERE c.person.id = :idPerson";
+		String jplql = "SELECT c FROM Contract c WHERE c.person.idPerson = :idPerson";
 		Query q = em.createQuery(jplql, Contract.class);
 		q.setParameter("idPerson", idPerson);
 		List<Contract> contractList = q.getResultList();

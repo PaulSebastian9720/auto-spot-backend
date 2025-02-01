@@ -17,7 +17,7 @@ public class Person {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "per_id")
-	private int id;
+	private int idPerson;
 
     @Column(name = "per_documentID", unique = true)
     private String  documentID;
@@ -72,12 +72,12 @@ public class Person {
         this.listMessagesMails = new ArrayList<>();
     }
 
-    public int getId() {
-        return id;
+    public int getIdPerson() {
+        return idPerson;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setIdPerson(int id) {
+        this.idPerson = id;
     }
 
     public String getDocumentID() {

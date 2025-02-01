@@ -28,7 +28,7 @@ public class MessageMailDAO {
     }
 
     public List<MessageMail> getMessageMailsPerPerson(int id_person) {
-        String jpql = "SELECT m FROM MessageMail m WHERE m.person.id = :id_person";
+        String jpql = "SELECT m FROM MessageMail m WHERE m.person.idPerson = :id_person";
         Query query = em.createQuery(jpql, MessageMail.class);
         query.setParameter("id_person", id_person);
         return query.getResultList();

@@ -16,7 +16,7 @@ public class PersonManagement {
 
     public void addPerson(Person person) throws CustomException {
         if(person == null) throw  new CustomException(Errors.BAD_REQUEST,"Person cannot be null");
-        if(person.getId() > 0) throw  new CustomException(Errors.BAD_REQUEST, "Person already have an id");
+        if(person.getIdPerson() > 0) throw  new CustomException(Errors.BAD_REQUEST, "Person already have an id");
         personDAO.insertPerson(person);
     }
 
@@ -33,8 +33,8 @@ public class PersonManagement {
 
     public void updatePerson(Person person) throws CustomException {
         if(person == null) throw  new CustomException(Errors.BAD_REQUEST, "Person cannot be null");
-        if(person.getId() <= 0) new CustomException(Errors.BAD_REQUEST,"Person with id is out of range");
-        if(this.getPersonById(person.getId()) == null) throw new CustomException(Errors.NOT_FOUND, "Person with id is not found");
+        if(person.getIdPerson() <= 0) new CustomException(Errors.BAD_REQUEST,"Person with id is out of range");
+        if(this.getPersonById(person.getIdPerson()) == null) throw new CustomException(Errors.NOT_FOUND, "Person with id is not found");
         Person personUpdate = this.personDAO.modifyPerson(person);
         if(personUpdate == null) throw new CustomException(Errors.INTERNAL_SERVER_ERROR,"Internal error");
     }

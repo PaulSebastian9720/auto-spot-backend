@@ -46,7 +46,7 @@ public class AutomobileDAO {
     }
 
     public List<Automobile> getListByIDPerson(int idPerson) {
-        String jpql = "SELECT a FROM Automobile a WHERE a.person.id = :idPerson";
+        String jpql = "SELECT a FROM Automobile a WHERE a.person.idPerson = :idPerson";
         Query query = em.createQuery(jpql, Automobile.class);
         query.setParameter("idPerson", idPerson);
         List<Automobile> automobiles = query.getResultList();
