@@ -1,4 +1,4 @@
-package ec.ups.edu.ppw.autoSpotBackend.management;
+package ec.ups.edu.ppw.autoSpotBackend.api.management;
 
 import ec.ups.edu.ppw.autoSpotBackend.dao.ContractDAO;
 import ec.ups.edu.ppw.autoSpotBackend.model.Contract;

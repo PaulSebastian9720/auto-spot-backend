@@ -1,5 +1,7 @@
 package ec.ups.edu.ppw.autoSpotBackend.business;
 
+import ec.ups.edu.ppw.autoSpotBackend.api.config.JwtSignedKey;
+import ec.ups.edu.ppw.autoSpotBackend.api.security.JwtTokenProvider;
 import ec.ups.edu.ppw.autoSpotBackend.dao.ParkingSpaceDAO;
 import ec.ups.edu.ppw.autoSpotBackend.dao.PersonDAO;
 import ec.ups.edu.ppw.autoSpotBackend.dao.RateDAO;
@@ -24,12 +26,17 @@ public class Inicio {
 	@Inject
 	private RateDAO rateDao;
 
-	
+	@Inject
+	private JwtTokenProvider jwtTokenProvider;
+
+
 	@PostConstruct
 	public void init() {
+
 		this.InsertsPerson();
 		this.insertSpot();
 		this.insertRates();
+
 
 	}
 
@@ -47,7 +54,7 @@ public class Inicio {
 		rate2.setPrize(0.5);
 		rate2.setTimeUnit("30_minutes");
 		this.rateDao.insertRate(rate2);
-		
+
 		//Tercera tarifa
 		Rate rate3 = new Rate();
 		rate3.setName("Hour Rate");
@@ -74,7 +81,7 @@ public class Inicio {
 		rate6.setName("Week Rate");
 		rate6.setPrize(7.00);
 		rate6.setTimeUnit("1_week");
-		
+
 		//Septima tarifa
 		Rate rate7 = new Rate();
 		rate7.setName("Month Rate");
@@ -124,9 +131,10 @@ public class Inicio {
 		person1.setName("Maria Fernanda");
 		person1.setLastName("Lopez");
 		person1.setMail("maria.lopez@example.com");
-		person1.setRole("C");
+		person1.setRole("A");
 		person1.setStatus("A");
 		person1.setLocation("Calle Principal 123");
+		person1.setPassword("1236549870");
 
 // Segunda persona
 		Person person2 = new Person();
@@ -137,6 +145,7 @@ public class Inicio {
 		person2.setRole("A");
 		person2.setStatus("I");
 		person2.setLocation("Avenida del Sol");
+		person2.setPassword("9876543210");
 
 // Automóviles asociados a la primera persona
 		Automobile auto1 = new Automobile();
@@ -202,7 +211,12 @@ public class Inicio {
 
 // Inserción de personas
 		this.personDao.insertPerson(person1);
+		final String tokenPerson1 = this.jwtTokenProvider.createToken(person1.getMail(), person2.getName(), person2.getRole());
+		System.out.println("\n \n \n \n \n \n \n \n");
+		System.out.println(tokenPerson1);
+		System.out.println("Is valid this toke:" + this.jwtTokenProvider.validateToken(tokenPerson1));
 		this.personDao.insertPerson(person2);
+		System.out.println("\n \n \n \n \n \n \n \n");
 
 		System.out.println("Inserciones finalizadas");
 

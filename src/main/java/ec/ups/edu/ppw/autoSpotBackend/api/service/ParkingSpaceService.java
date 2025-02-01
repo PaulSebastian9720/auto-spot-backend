@@ -1,7 +1,6 @@
-package ec.ups.edu.ppw.autoSpotBackend.service;
+package ec.ups.edu.ppw.autoSpotBackend.api.service;
 
-import ec.ups.edu.ppw.autoSpotBackend.dao.ParkingSpaceDAO;
-import ec.ups.edu.ppw.autoSpotBackend.management.SpaceManagement;
+import ec.ups.edu.ppw.autoSpotBackend.api.management.SpaceManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.ParkingSpace;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -11,6 +10,8 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/parkingSpaces")
+@Produces("application/json")
+@Consumes(MediaType.APPLICATION_JSON)
 public class ParkingSpaceService {
 
     @Inject
@@ -18,8 +19,6 @@ public class ParkingSpaceService {
 
     @POST
     @Path("/create")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response create(ParkingSpace parkingSpace) {
         try {
             this.spaceManagement.addSpot(parkingSpace);
@@ -31,8 +30,6 @@ public class ParkingSpaceService {
 
     @GET
     @Path("/{id_ParkingSpace}/space")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response get(@PathParam("id_ParkingSpace")  int id_ParkingSpace) {
         try {
             ParkingSpace space = this.spaceManagement.readSpot(id_ParkingSpace);
@@ -44,8 +41,6 @@ public class ParkingSpaceService {
 
     @PUT
     @Path("/change-state/{idSpace}")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response changeState(@PathParam("idSpace") int idSpace) {
         try {
             this.spaceManagement.changeState(idSpace);
@@ -58,8 +53,6 @@ public class ParkingSpaceService {
 
     @GET
     @Path("/getAll")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response getAll() {
         try{
             List<ParkingSpace> listSpaces = this.spaceManagement.getAllSpaces();

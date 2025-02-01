@@ -1,0 +1,61 @@
+package ec.ups.edu.ppw.autoSpotBackend.api.service;
+
+import ec.ups.edu.ppw.autoSpotBackend.api.management.AutomobileManagement;
+import ec.ups.edu.ppw.autoSpotBackend.model.Automobile;
+import ec.ups.edu.ppw.autoSpotBackend.util.AdminOnly;
+import jakarta.inject.Inject;
+import jakarta.ws.rs.*;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+
+import java.util.List;
+
+@Path("/automobiles")
+@Produces("application/json")
+@Consumes(MediaType.APPLICATION_JSON)
+public class AutomobileService {
+
+    @Inject
+    private AutomobileManagement automobileManagement;
+
+
+    @POST
+    @Path("/create")
+    public Response create(Automobile automobile) {
+        automobileManagement.addAutomobile(automobile);
+        return Response.ok("Successful automobile registration").build();
+    }
+
+    @GET
+    @Path("/{idAutomobile}/automobile")
+    public Response get(@PathParam("idAutomobile") int idAutomobile) {
+        Automobile automobile = this.automobileManagement.getAutomobileById(idAutomobile);
+        return Response.ok(automobile).build();
+
+    }
+
+    @PUT
+    @Path("/update")
+    public Response update(Automobile automobile) {
+        this.automobileManagement.updateAutomobile(automobile);
+        return Response.ok("Successful automobile update").build();
+    }
+
+    @DELETE
+    @AdminOnly
+    @Path("/delete/{id_automobile}")
+    public Response delete(@PathParam("id_automobile") int id_automobile) {
+        this.automobileManagement.removeAutomobile(id_automobile);
+        return Response.ok("Successful automobile delete").build();
+
+    }
+
+    @GET
+    @Path("/{person_id}/list-for-person")
+    public Response getListByIDPerson(@PathParam("person_id") int person_id) {
+        List<Automobile> autmovileList= automobileManagement.getListByIDPerson(person_id);
+        return Response.ok(autmovileList).build();
+
+    }
+}
+

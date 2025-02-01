@@ -1,6 +1,6 @@
-package ec.ups.edu.ppw.autoSpotBackend.service;
+package ec.ups.edu.ppw.autoSpotBackend.api.service;
 
-import ec.ups.edu.ppw.autoSpotBackend.management.ScheduleManagement;
+import ec.ups.edu.ppw.autoSpotBackend.api.management.ScheduleManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Schedule;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -10,13 +10,13 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/schedules")
+@Produces("application/json")
+@Consumes(MediaType.APPLICATION_JSON)
 public class ScheduleService {
     @Inject
     private ScheduleManagement scheduleManagement;
     @POST
     @Path("/create")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response createException(Schedule schedule) {
         try {
             scheduleManagement.addSchedule(schedule);
@@ -28,8 +28,6 @@ public class ScheduleService {
 
     @GET
     @Path("/{schedule_id}/schedule")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response getByID(@PathParam("schedule_id") int schedule_id) {
         try {
             Schedule schedule = scheduleManagement.readSchedule(schedule_id);
@@ -41,8 +39,6 @@ public class ScheduleService {
 
     @PUT
     @Path("/update")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Schedule schedule) {
         try {
             scheduleManagement.updateSchedule( schedule);
@@ -54,8 +50,6 @@ public class ScheduleService {
 
     @GET
     @Path("/getAll")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response getAll() {
         try{
             List<Schedule> shedules = scheduleManagement.getAllSchedules();
@@ -67,8 +61,6 @@ public class ScheduleService {
 
     @DELETE
     @Path("/remove")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response deleteException (@QueryParam("schedule_id") int schedule_id) {
         try{
             this.scheduleManagement.removeSchedule(schedule_id);

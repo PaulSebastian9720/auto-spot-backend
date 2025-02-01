@@ -1,7 +1,10 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +32,6 @@ public class Person {
     private String mail;
 
     @Column(name = "per_role")
-
     @Pattern(regexp = "A|C|CF", message = "El status debe ser 'A', 'C', 'CF'")
     private String role;
 
@@ -46,16 +48,22 @@ public class Person {
     @Column(name = "per_location")
     private String location;
 
-    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL)
-    @JoinColumn(name = "per_aut_id")
+    @Column(name = "per_password", nullable = false)
+    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
+    @JsonIgnore
+    private String password;
+
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonManagedReference
     private List<Automobile> listAutomobiles;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "per_cont_id")
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonManagedReference
     private List<Contract> listContracts;
 
-    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "per_mess_id")
+    @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
+    @JsonManagedReference
+    @JsonIgnore
     private List<MessageMail> listMessagesMails;
 
     public Person() {
@@ -120,6 +128,14 @@ public class Person {
         this.status = status;
     }
 
+    public @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres") String getPassword() {
+        return password;
+    }
+
+    public void setPassword(@Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres") String password) {
+        this.password = password;
+    }
+
     public Date getBirthDay() {
         return birthDay;
     }
@@ -176,4 +192,5 @@ public class Person {
     public void addMessageMail(MessageMail messageMail) {
         this.listMessagesMails.add(messageMail);
     }
+
 }

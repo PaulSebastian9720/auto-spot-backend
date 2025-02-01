@@ -1,5 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 
@@ -34,6 +35,7 @@ public class Contract {
 
     @ManyToOne
     @JoinColumn(name ="cont_per_id", nullable = false)
+    @JsonBackReference
     private Person person;
     
     @OneToOne

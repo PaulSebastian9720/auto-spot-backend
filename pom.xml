@@ -16,7 +16,6 @@
         <maven.compiler.source>18</maven.compiler.source>
         <junit.version>5.11.0-M2</junit.version>
     </properties>
-
     <dependencies>
         <dependency>
             <groupId>jakarta.platform</groupId>
@@ -35,6 +34,21 @@
             <artifactId>junit-jupiter-engine</artifactId>
             <version>${junit.version}</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-api</artifactId>
+            <version>0.12.6</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-impl</artifactId>
+            <version>0.12.6</version>
+        </dependency>
+        <dependency>
+            <groupId>io.jsonwebtoken</groupId>
+            <artifactId>jjwt-jackson</artifactId>
+            <version>0.12.6</version>
         </dependency>
     </dependencies>
 

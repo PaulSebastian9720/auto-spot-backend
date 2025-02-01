@@ -4,7 +4,6 @@ import ec.ups.edu.ppw.autoSpotBackend.model.Automobile;
 import ec.ups.edu.ppw.autoSpotBackend.model.Contract;
 import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.NoResultException;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 

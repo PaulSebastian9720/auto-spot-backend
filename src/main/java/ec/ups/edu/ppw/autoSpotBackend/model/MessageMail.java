@@ -1,7 +1,7 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.json.bind.annotation.JsonbProperty;
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 
@@ -36,7 +36,7 @@ public class MessageMail {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "per_mess_id", nullable = false)
-    @JsonbTransient
+    @JsonBackReference
     private Person person;
 
     public MessageMail() {

@@ -1,6 +1,6 @@
-package ec.ups.edu.ppw.autoSpotBackend.service;
+package ec.ups.edu.ppw.autoSpotBackend.api.service;
 
-import ec.ups.edu.ppw.autoSpotBackend.management.ContractManagement;
+import ec.ups.edu.ppw.autoSpotBackend.api.management.ContractManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Contract;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -10,6 +10,8 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/contracts")
+@Produces("application/json")
+@Consumes(MediaType.APPLICATION_JSON)
 public class ContractService {
 
     @Inject
@@ -17,8 +19,6 @@ public class ContractService {
 
     @GET
     @Path("/{idContract}/contract")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response getContract(@PathParam("idContract") int idContract) {
         try {
             Contract contract = this.contractManagement.getContract(idContract);
@@ -30,8 +30,6 @@ public class ContractService {
 
     @GET
     @Path("/{id_person}/list-for-person")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response getContractsByIdPerson(@PathParam("id_person") int idPerson) {
         try {
             List<Contract> contracts = this.contractManagement.getContractsByIdPerson(idPerson);
@@ -43,8 +41,6 @@ public class ContractService {
 
     @POST
     @Path("/create")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response create(Contract contract) {
         try {
             this.contractManagement.createContract(contract);
@@ -56,8 +52,6 @@ public class ContractService {
 
     @PUT
     @Path("/end-contract")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response endContract(Contract contract) {
         try {
             contractManagement.endContract(contract);
@@ -69,8 +63,6 @@ public class ContractService {
 
     @GET
     @Path("/getAll")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response getAll() {
         try {
             List<Contract> contracts = this.contractManagement.getAllContracts();

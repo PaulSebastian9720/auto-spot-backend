@@ -1,6 +1,6 @@
-package ec.ups.edu.ppw.autoSpotBackend.service;
+package ec.ups.edu.ppw.autoSpotBackend.api.service;
 
-import ec.ups.edu.ppw.autoSpotBackend.management.RateManagement;
+import ec.ups.edu.ppw.autoSpotBackend.api.management.RateManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Rate;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
@@ -10,6 +10,8 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/rates")
+@Produces("application/json")
+@Consumes(MediaType.APPLICATION_JSON)
 public class RateService {
 
     @Inject
@@ -31,7 +33,6 @@ public class RateService {
     @PUT
     @Path("/update")
     @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response update(Rate rate) {
         try {
             this.rateManagement.updateRate(rate);
@@ -43,8 +44,6 @@ public class RateService {
 
     @GET
     @Path("/getAll")
-    @Produces("application/json")
-    @Consumes(MediaType.APPLICATION_JSON)
     public Response getAll() {
         try {
             List<Rate> results = this.rateManagement.getAllRates();

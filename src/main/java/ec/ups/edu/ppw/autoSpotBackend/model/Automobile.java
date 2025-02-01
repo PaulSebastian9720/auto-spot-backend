@@ -1,7 +1,7 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.json.bind.annotation.JsonbProperty;
-import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
 @Entity
@@ -23,7 +23,7 @@ public class Automobile {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aut_per_id", nullable = false)
-    @JsonbTransient
+    @JsonBackReference
     private Person person;
 
     public Automobile() {
