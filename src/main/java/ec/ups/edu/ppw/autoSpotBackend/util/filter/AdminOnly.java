@@ -1,4 +1,4 @@
-package ec.ups.edu.ppw.autoSpotBackend.util;
+package ec.ups.edu.ppw.autoSpotBackend.util.filter;
 
 import jakarta.ws.rs.NameBinding;
 import java.lang.annotation.ElementType;

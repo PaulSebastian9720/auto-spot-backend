@@ -1,4 +1,4 @@
-package ec.ups.edu.ppw.autoSpotBackend.util;
+package ec.ups.edu.ppw.autoSpotBackend.util.consts;
 
 public class Errors {
     public static final String ACCESS_DENIED = "ACCESS_DENIED";

@@ -1,7 +1,7 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.security;
 
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
-import ec.ups.edu.ppw.autoSpotBackend.util.Errors;
+import ec.ups.edu.ppw.autoSpotBackend.util.consts.Errors;
 import jakarta.annotation.Priority;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.Priorities;

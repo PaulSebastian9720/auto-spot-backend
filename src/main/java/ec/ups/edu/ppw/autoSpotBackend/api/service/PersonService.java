@@ -3,7 +3,7 @@ package ec.ups.edu.ppw.autoSpotBackend.api.service;
 
 import ec.ups.edu.ppw.autoSpotBackend.api.management.PersonManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Person;
-import ec.ups.edu.ppw.autoSpotBackend.util.AdminOnly;
+import ec.ups.edu.ppw.autoSpotBackend.util.filter.AdminOnly;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

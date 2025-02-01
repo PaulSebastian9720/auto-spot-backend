@@ -2,7 +2,7 @@ package ec.ups.edu.ppw.autoSpotBackend.api.service;
 
 import ec.ups.edu.ppw.autoSpotBackend.api.management.AutomobileManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Automobile;
-import ec.ups.edu.ppw.autoSpotBackend.util.AdminOnly;
+import ec.ups.edu.ppw.autoSpotBackend.util.filter.AdminOnly;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;

@@ -3,7 +3,7 @@ package ec.ups.edu.ppw.autoSpotBackend.api.management;
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
 import ec.ups.edu.ppw.autoSpotBackend.dao.AutomobileDAO;
 import ec.ups.edu.ppw.autoSpotBackend.model.Automobile;
-import ec.ups.edu.ppw.autoSpotBackend.util.Errors;
+import ec.ups.edu.ppw.autoSpotBackend.util.consts.Errors;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import java.util.List;
