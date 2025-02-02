@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.ext.Provider;
 
 import java.util.List;
+import java.util.Optional;
 
 @Provider
 @Priority(Priorities.AUTHENTICATION)
@@ -18,17 +19,16 @@ public class JwtAuthFilter implements ContainerRequestFilter {
     @Inject
     private JwtTokenProvider jwtTokenProvider;
 
-    private final List<String> EXCLUDED_PATHS = List.of(
-            "/auth/login",
-            "/auth/register"
+    private static  final List<String> EXCLUDED_PATHS = List.of(
+            "/auth/sign-in",
+            "/auth/sign-up"
     );
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws CustomException {
 
         String path = requestContext.getUriInfo().getPath();
-        System.out.println(path);
-        if(path.equals("/auth/register")) return;
+        if (EXCLUDED_PATHS.contains(path)) return;
         String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) throw  new CustomException(Errors.UNAUTHORIZED, "Fail in Bearer");
         String token = authorizationHeader.substring(7);

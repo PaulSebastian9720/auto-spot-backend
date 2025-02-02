@@ -18,14 +18,6 @@ public class PersonService {
     @Inject
     private PersonManagement personManagement;
 
-    @POST
-    @AdminOnly
-    @Path("/create")
-    public Response create(Person person) {
-        personManagement.addPerson(person);
-        return Response.ok("Successful all person's date registration").build();
-    }
-
     @GET
     @Path("/{person_id}/person")
     public Response getByID(@PathParam("person_id") int person_id) {
