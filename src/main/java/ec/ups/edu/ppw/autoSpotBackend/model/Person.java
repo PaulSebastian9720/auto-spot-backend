@@ -2,6 +2,7 @@ package ec.ups.edu.ppw.autoSpotBackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
+import ec.ups.edu.ppw.autoSpotBackend.api.dto.auth.UserDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
@@ -22,13 +23,13 @@ public class Person {
     @Column(name = "per_documentID", unique = true)
     private String  documentID;
 
-    @Column(name = "per_name")
+    @Column(name = "per_name", nullable = false)
     private String name;
 
     @Column(name = "per_last_name")
     private String lastName;
 
-    @Column(name = "per_mail", unique = true)
+    @Column(name = "per_mail", unique = true, nullable = false)
     private String mail;
 
     @Column(name = "per_role")
@@ -188,9 +189,22 @@ public class Person {
     public void setListMessagesMails(List<MessageMail> listMessagesMails) {
         this.listMessagesMails = listMessagesMails;
     }
-
     public void addMessageMail(MessageMail messageMail) {
         this.listMessagesMails.add(messageMail);
+    }
+
+    public static Person fromUserDTO(UserDTO userDTO) {
+        Person person = new Person();
+        person.setIdPerson(userDTO.getIdPerson());
+        person.setMail(userDTO.getMail());
+        person.setDocumentID(userDTO.getDocumentID());
+        person.setName(userDTO.getName());
+        person.setLastName(userDTO.getLastName());
+        person.setRole(userDTO.getRole());
+        person.setBirthDay(userDTO.getBirthDay());
+        person.setMailS(userDTO.getMailS());
+        person.setLocation(userDTO.getLocation());
+        return person;
     }
 
 }

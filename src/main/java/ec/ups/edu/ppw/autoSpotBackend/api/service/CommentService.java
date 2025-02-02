@@ -20,24 +20,15 @@ public class CommentService {
     @POST
     @Path("/create")
     public Response create(Comment comment) throws Exception {
-        try {
-            commentManagement.addComment(comment);
-            return Response.ok("COMENTARIO PUBLICADO CORRECTAMENTE").build();
-        }catch(Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
-
+        commentManagement.addComment(comment);
+        return Response.ok("Successful register your comment").build();
     }
 
     @GET
     @Path("/getAll")
     public Response getAll(){
-        try {
-            List<Comment> comments = commentManagement.getAllComments();
-            return Response.ok(comments).build();
-        }catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
+        List<Comment> comments = commentManagement.getAllComments();
+        return Response.ok(comments).build();
     }
 
 }

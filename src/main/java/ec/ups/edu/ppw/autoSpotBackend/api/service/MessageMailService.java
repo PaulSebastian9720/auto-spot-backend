@@ -19,33 +19,21 @@ public class MessageMailService {
     @POST
     @Path("/create")
     public Response createMessageMail(MessageMail messageMail) {
-        try {
-            this.messageMailManagement.addMessageMail(messageMail);
-            return Response.ok().build();
-        }catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
+        this.messageMailManagement.addMessageMail(messageMail);
+        return Response.ok().build();
     }
 
     @PUT
     @Path("/change-state/{idMessageMail}")
     public Response updateMessageMailState(@PathParam("idMessageMail") int idMessageMail) {
-        try {
-            this.messageMailManagement.updateMessageMailStatus(idMessageMail);
-            return Response.ok().build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
+        this.messageMailManagement.updateMessageMailStatus(idMessageMail);
+        return Response.ok().build();
     }
 
     @GET
     @Path("/{person_id}/mails")
     public Response getLostByIDPerson(@PathParam("person_id") int person_id) {
-        try {
-            List<MessageMail>  messageMails= messageMailManagement.getMessageMailsPerPerson(person_id);
-            return Response.ok(messageMails).build();
-        } catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
+        List<MessageMail>  messageMails= messageMailManagement.getMessageMailsPerPerson(person_id);
+        return Response.ok(messageMails).build();
     }
 }

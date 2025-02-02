@@ -39,11 +39,21 @@ public class PersonManagement {
         if(personUpdate == null) throw new CustomException(Errors.INTERNAL_SERVER_ERROR,"Internal error");
     }
 
+    public Person getPersonByMail(String mail) throws  CustomException{
+        if(mail.isEmpty()) throw new CustomException(Errors.BAD_REQUEST, "Invalid format mail");
+        Person person = this.personDAO.getPersonsByEmail(mail);
+        return person;
+    }
+
     public String changeState(int idPerson) throws  CustomException{
         Person person = this.getPersonById(idPerson);
         String newStatus = person.getStatus().equals("A")  ? "I" : "A";
         person.setStatus(newStatus);
         this.personDAO.modifyPerson(person);
         return  newStatus.equals("A")  ? "Active" : "Inactive";
+    }
+
+    public boolean personExistByMail(String mail){
+        return this.personDAO.getPersonsByEmail(mail) != null;
     }
 }

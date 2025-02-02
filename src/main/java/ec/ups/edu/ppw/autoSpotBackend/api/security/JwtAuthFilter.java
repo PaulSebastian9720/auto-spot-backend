@@ -20,8 +20,7 @@ public class JwtAuthFilter implements ContainerRequestFilter {
 
     private final List<String> EXCLUDED_PATHS = List.of(
             "/auth/login",
-            "/auth/register",
-            "/automobiles/1/automobile"
+            "/auth/register"
     );
 
     @Override
@@ -29,17 +28,11 @@ public class JwtAuthFilter implements ContainerRequestFilter {
 
         String path = requestContext.getUriInfo().getPath();
         System.out.println(path);
-
-        if (EXCLUDED_PATHS.contains(path)) return;
-
+        if(path.equals("/auth/register")) return;
         String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-
         if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) throw  new CustomException(Errors.UNAUTHORIZED, "Fail in Bearer");
-
         String token = authorizationHeader.substring(7);
-
         if (!jwtTokenProvider.validateToken(token)) throw  new CustomException(Errors.UNAUTHORIZED, "This token is not valid");
-
         String mail = jwtTokenProvider.getMailFromToken(token);
         requestContext.setProperty("mail", mail);
     }

@@ -22,35 +22,24 @@ public class RateService {
     @Produces("application/json")
     @Consumes(MediaType.APPLICATION_JSON)
     public Response get(@PathParam("rate_id")  int rate_id){
-        try {
-            Rate rate  = this.rateManagement.getRateById(rate_id);
-            return Response.ok(rate).build();
-        }catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
+        Rate rate  = this.rateManagement.getRateById(rate_id);
+        return Response.ok(rate).build();
+
     }
 
     @PUT
     @Path("/update")
     @Produces("application/json")
     public Response update(Rate rate) {
-        try {
-            this.rateManagement.updateRate(rate);
-            return Response.ok("TARIFRA ACTUALIZADA CORRECTAMENTE").build();
-        }catch (Exception e) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
+        this.rateManagement.updateRate(rate);
+        return Response.ok("Successful rate update").build();
     }
 
     @GET
     @Path("/getAll")
     public Response getAll() {
-        try {
-            List<Rate> results = this.rateManagement.getAllRates();
-            return Response.ok(results).build();
-        }catch (Exception e){
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
-        }
+        List<Rate> results = this.rateManagement.getAllRates();
+        return Response.ok(results).build();
     }
 
 }

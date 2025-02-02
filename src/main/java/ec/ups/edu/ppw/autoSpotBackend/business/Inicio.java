@@ -142,7 +142,7 @@ public class Inicio {
 		person2.setName("Carlos Andres");
 		person2.setLastName("Perez");
 		person2.setMail("carlos.perez@example.com");
-		person2.setRole("A");
+		person2.setRole("C");
 		person2.setStatus("I");
 		person2.setLocation("Avenida del Sol");
 		person2.setPassword("9876543210");
@@ -211,10 +211,17 @@ public class Inicio {
 
 // Inserción de personas
 		this.personDao.insertPerson(person1);
-		final String tokenPerson1 = this.jwtTokenProvider.createToken(person1.getMail(), person2.getName(), person2.getRole());
-		System.out.println("\n \n \n \n \n \n \n \n");
+		this.personDao.insertPerson(person2);
+		final String tokenPerson1 = this.jwtTokenProvider.createToken(person1.getMail(), person1.getName(), person1.getRole());
+		System.out.println("\n \n \n \n \n \n \n \n first person");
 		System.out.println(tokenPerson1);
 		System.out.println("Is valid this toke:" + this.jwtTokenProvider.validateToken(tokenPerson1));
+		this.personDao.insertPerson(person2);
+
+		final String tokenPerson2 = this.jwtTokenProvider.createToken(person2.getMail(), person2.getName(), person2.getRole());
+		System.out.println("\n \n \n \n \n \n \n \n second person");
+		System.out.println(tokenPerson2);
+		System.out.println("Is valid this toke:" + this.jwtTokenProvider.validateToken(tokenPerson2));
 		this.personDao.insertPerson(person2);
 		System.out.println("\n \n \n \n \n \n \n \n");
 

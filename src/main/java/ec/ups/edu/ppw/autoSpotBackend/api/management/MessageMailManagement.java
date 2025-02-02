@@ -23,7 +23,7 @@ public class MessageMailManagement {
     public void addMessageMail(MessageMail messageMail) throws CustomException {
         if(messageMail == null) throw new CustomException(Errors.BAD_REQUEST, "Message mail is null");
         Person person = personDAO.getPersonsByEmail(messageMail.getMailDestination());
-        if(person == null) throw new CustomException(Errors.BAD_REQUEST, "Person not found");
+        if(person == null) throw new CustomException(Errors.NOT_FOUND, "Person not found");
         messageMail.setPersonId(person.getIdPerson());
         this.messageMailDAO.insertMessageMail(messageMail);
     }
@@ -31,7 +31,7 @@ public class MessageMailManagement {
     public void updateMessageMailStatus(int idMessageMail) throws CustomException {
         if(idMessageMail <= 0) throw new CustomException(Errors.BAD_REQUEST, "Id's message mail is out of range");
         MessageMail messageMail = this.messageMailDAO.readMessageMail(idMessageMail);
-        if(messageMail == null) throw new CustomException(Errors.BAD_REQUEST, "Message mail cannot be null");
+        if(messageMail == null) throw new CustomException(Errors.NOT_FOUND, "Message mail cannot be null");
         messageMail.setStatus("RD");
         this.messageMailDAO.updateMessageMail(messageMail);
     }
