@@ -7,17 +7,17 @@ import jakarta.validation.constraints.NotBlank;
 public class RegisterRequest {
 
     @NotBlank(message = "The data to the authentication is required")
-    private Auth authData;
+    private Auth credentials;
     private UserDTO user;
     public RegisterRequest(){
     }
 
-    public Auth getAuthData() {
-        return authData;
+    public Auth getCredentials() {
+        return credentials;
     }
 
-    public void setAuthData(Auth authData) {
-        this.authData = authData;
+    public void setCredentials(Auth credentials) {
+        this.credentials = credentials;
     }
 
     public UserDTO getUser() {

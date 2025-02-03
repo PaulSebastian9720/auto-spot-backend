@@ -12,6 +12,7 @@ import jakarta.ws.rs.core.Response;
 import java.util.List;
 
 @Path("/automobiles")
+
 @Produces("application/json")
 @Consumes(MediaType.APPLICATION_JSON)
 public class AutomobileService {

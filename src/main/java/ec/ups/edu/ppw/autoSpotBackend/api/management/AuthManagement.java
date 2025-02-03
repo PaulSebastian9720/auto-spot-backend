@@ -25,7 +25,7 @@ public class AuthManagement {
 
      @Transactional
      public AuthResponse registerNewAccount(RegisterRequest request) throws CustomException {
-         Auth auth = request.getAuthData();
+         Auth auth = request.getCredentials();
          this.validatorsPattern(auth.getMailUser(), auth.getPassword());
          if(personManagement.personExistByMail(auth.getMailUser()))
              throw  new CustomException(Errors.BAD_REQUEST, "The email is already registered. Please enter a different one");

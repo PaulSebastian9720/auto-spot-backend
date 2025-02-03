@@ -16,6 +16,7 @@ public class UserDTO {
     private String name;
     private String documentID;
     private String lastName;
+    private String phone;
 
     private Date birthDay;
     private String mailS;
