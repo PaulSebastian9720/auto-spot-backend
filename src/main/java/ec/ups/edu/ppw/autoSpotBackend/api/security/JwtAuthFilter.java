@@ -27,13 +27,13 @@ public class JwtAuthFilter implements ContainerRequestFilter {
     @Override
     public void filter(ContainerRequestContext requestContext) throws CustomException {
 
-        String path = requestContext.getUriInfo().getPath();
-        if (EXCLUDED_PATHS.contains(path)) return;
-        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) throw  new CustomException(Errors.UNAUTHORIZED, "Fail in Bearer");
-        String token = authorizationHeader.substring(7);
-        if (!jwtTokenProvider.validateToken(token)) throw  new CustomException(Errors.UNAUTHORIZED, "This token is not valid");
-        String mail = jwtTokenProvider.getMailFromToken(token);
-        requestContext.setProperty("mail", mail);
+//        String path = requestContext.getUriInfo().getPath();
+//        if (EXCLUDED_PATHS.contains(path)) return;
+//        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+//        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) throw  new CustomException(Errors.UNAUTHORIZED, "Fail in Bearer");
+//        String token = authorizationHeader.substring(7);
+//        if (!jwtTokenProvider.validateToken(token)) throw  new CustomException(Errors.UNAUTHORIZED, "This token is not valid");
+//        String mail = jwtTokenProvider.getMailFromToken(token);
+//        requestContext.setProperty("mail", mail);
     }
 }
