@@ -36,16 +36,28 @@ public class AuthManagement {
 
          if(auth == null) throw new CustomException(Errors.BAD_REQUEST, "The credentials are required");
          this.validatorsPattern(auth.getMailUser(), auth.getPassword());
-         Mail mail = mailDAO.getMailByEmail(auth.getMailUser());
-         if( mail != null && mail.isLinkedAccount())
-             throw new CustomException(Errors.BAD_REQUEST,"The email is already registered with a account");
-         else mail = new Mail();
          if(request.getUser() == null) throw new
                  CustomException(Errors.BAD_REQUEST, "No user information found");
          if(request.getUser().getName() == null || request.getUser().getName().isEmpty())
              throw new CustomException(Errors.BAD_REQUEST, "At least the username is required");
 
-         Person newPerson = Person.fromUserDTO(request.getUser());
+         Mail mail = mailDAO.getMailByEmail(auth.getMailUser());
+         Person newPerson;
+
+         if( mail != null ){
+             if(mail.isLinkedAccount() )
+                 throw new CustomException(Errors.BAD_REQUEST,"The email is already registered with a account");
+
+             newPerson = this.personManagement.getPersonByMail(auth.getMailUser());
+             newPerson.setName(request.getUser().getName());
+             newPerson.setLastName(request.getUser().getLastName());
+             newPerson.setBirthDay(request.getUser().getBirthDay());
+         }
+         else {
+             mail = new Mail();
+             newPerson = Person.fromUserDTO(request.getUser());
+         }
+
          final String passwordHash = Encryption.hashPassword(auth.getPassword());
          mail.setMail(auth.getMailUser());
          mail.setLinkedAccount(true);
@@ -53,7 +65,8 @@ public class AuthManagement {
          newPerson.setStatus("A");
          newPerson.setRole("C");
          newPerson.setPassword(passwordHash);
-         this.personManagement.addPerson(newPerson);
+         if (newPerson.getIdPerson() == 0) this.personManagement.addPerson(newPerson);
+         else this.personManagement.updatePerson(UserDTO.fromPersonModel(newPerson));
 
          Person personRegister = this.personManagement.getPersonByMail(newPerson.getMailUser().getMail());
          if(personRegister == null)
@@ -75,6 +88,7 @@ public class AuthManagement {
          Person person = personManagement.getPersonByMail(auth.getMailUser());
          if(person == null) throw new CustomException(Errors.BAD_REQUEST, "Mail or Password are incorrect");
          if(!Encryption.verifyPassword(auth.getPassword(), person.getPassword())) throw new CustomException(Errors.BAD_REQUEST, "Mail or Password are incorrect");
+         if(person.getStatus().equals("I")) throw new CustomException(Errors.BAD_REQUEST, "This user has a invalid account");
          JwtResponse token = new JwtResponse();
          token.setToken(jwtTokenProvider.createToken(person.getMailUser().getMail(), person.getName(), person.getRole()));
          UserDTO user = UserDTO.fromPersonModel(person);

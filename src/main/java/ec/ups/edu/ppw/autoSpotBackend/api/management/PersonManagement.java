@@ -1,5 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.management;
 
+import ec.ups.edu.ppw.autoSpotBackend.api.dto.auth.UserDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
 import ec.ups.edu.ppw.autoSpotBackend.dao.PersonDAO;
 import ec.ups.edu.ppw.autoSpotBackend.model.Person;
@@ -8,6 +9,7 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class PersonManagement {
@@ -20,22 +22,25 @@ public class PersonManagement {
         personDAO.insertPerson(person);
     }
 
-    public List<Person> getAllPersons(){
-        return personDAO.getPersons();
+    public List<UserDTO> getAllPersons(){
+        return personDAO.getPersons().stream().map(
+                (person) -> UserDTO.fromPersonModel(person))
+                .collect(Collectors.toUnmodifiableList());
     }
 
-    public Person getPersonById(int id_person) throws CustomException {
+    public UserDTO getPersonById(int id_person) throws CustomException {
         if (id_person <= 0) throw new CustomException(Errors.BAD_REQUEST, "Data inconsistency in this Person");
         Person person = personDAO.readPerson(id_person);
         if (person == null) throw new CustomException(Errors.NOT_FOUND, "Person with id not exist");
-        return person;
+        UserDTO userDTO = UserDTO.fromPersonModel(person);
+        return userDTO;
     }
 
-    public void updatePerson(Person person) throws CustomException {
-        if(person == null) throw  new CustomException(Errors.BAD_REQUEST, "Person cannot be null");
-        if(person.getIdPerson() <= 0) new CustomException(Errors.BAD_REQUEST,"Person with id is out of range");
-        if(this.getPersonById(person.getIdPerson()) == null) throw new CustomException(Errors.NOT_FOUND, "Person with id is not found");
-        Person personUpdate = this.personDAO.modifyPerson(person);
+    public void updatePerson(UserDTO user) throws CustomException {
+        if(user == null) throw  new CustomException(Errors.BAD_REQUEST, "User cannot be null");
+        Person personFind = this.getPerson(user.getIdPerson());
+        this.updateCampssPerson(personFind ,user);
+        Person personUpdate = this.personDAO.modifyPerson(personFind);
         if(personUpdate == null) throw new CustomException(Errors.INTERNAL_SERVER_ERROR,"Internal error");
     }
 
@@ -46,7 +51,7 @@ public class PersonManagement {
     }
 
     public String changeState(int idPerson) throws  CustomException{
-        Person person = this.getPersonById(idPerson);
+        Person person = this.getPerson(idPerson);
         String newStatus = person.getStatus().equals("A")  ? "I" : "A";
         person.setStatus(newStatus);
         this.personDAO.modifyPerson(person);
@@ -56,4 +61,25 @@ public class PersonManagement {
     public boolean personExistByMail(String mail){
         return this.personDAO.getPersonsByEmail(mail) != null;
     }
+
+
+    public Person updateCampssPerson(Person person, UserDTO userDTO){
+        person.setName(userDTO.getName());
+        person.setLastName(userDTO.getLastName());
+        person.setDocumentID(userDTO.getDocumentID());
+        person.setPhone(userDTO.getPhone());
+        person.setLocation(userDTO.getLocation());
+        person.setBirthDay(userDTO.getBirthDay());
+        person.setMailS(userDTO.getMailS());
+        return person;
+    }
+
+    private Person getPerson(int id_person ){
+        if (id_person <= 0) throw new CustomException(Errors.BAD_REQUEST, "Data inconsistency in this Person");
+        Person person = personDAO.readPerson(id_person);
+        if (person == null) throw new CustomException(Errors.NOT_FOUND, "Person with id not exist");
+        return person;
+
+    }
+
 }

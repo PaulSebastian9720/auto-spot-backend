@@ -1,6 +1,7 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.service;
 
 
+import ec.ups.edu.ppw.autoSpotBackend.api.dto.auth.UserDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.management.PersonManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Person;
 import ec.ups.edu.ppw.autoSpotBackend.util.filter.AdminOnly;
@@ -11,24 +12,24 @@ import jakarta.ws.rs.core.Response;
 
 import java.util.List;
 
-@Path("/persons")
+@Path("/users")
 @Produces("application/json")
 @Consumes(MediaType.APPLICATION_JSON)
-public class PersonService {
+public class UserService {
     @Inject
     private PersonManagement personManagement;
 
     @GET
-    @Path("/{person_id}/person")
-    public Response getByID(@PathParam("person_id") int person_id) {
-        Person person = personManagement.getPersonById(person_id);
-        return Response.ok(person).build();
+    @Path("/{idUser}/user")
+    public Response getByID(@PathParam("idUser") int userId) {
+        UserDTO userDTO = personManagement.getPersonById(userId);
+        return Response.ok(userDTO).build();
     }
 
     @PUT
     @Path("/update")
-    public Response update( Person person) {
-        personManagement.updatePerson( person);
+    public Response update( UserDTO user) {
+        personManagement.updatePerson( user);
         return Response.ok("Successful person update").build();
 
     }
@@ -37,15 +38,15 @@ public class PersonService {
     @AdminOnly
     @Path("/getAll")
     public Response getAllPersons() {
-        List<Person> persons = personManagement.getAllPersons();
+        List<UserDTO> persons = personManagement.getAllPersons();
         return Response.ok(persons).build();
     }
 
     @PUT
     @AdminOnly
-    @Path("/change-state/{idPerson}")
-    public Response changeState(@PathParam("idPerson") int idPerson) {
-        String newState = personManagement.changeState(idPerson);
+    @Path("/change-state/{idUser}")
+    public Response changeState(@PathParam("idUser") int userId) {
+        String newState = personManagement.changeState(userId);
         return Response.ok("Successful The person change state to " + newState).build();
     }
 
