@@ -4,7 +4,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import ec.ups.edu.ppw.autoSpotBackend.model.Person;
 
 import java.util.Date;
-import java.util.Optional;
 
 
 public class UserDTO {
@@ -96,10 +95,18 @@ public class UserDTO {
         this.location = location;
     }
 
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+
     public static UserDTO fromPersonModel(Person person){
         UserDTO dto = new UserDTO();
         dto.setIdPerson(person.getIdPerson());
-        dto.setMail(person.getMail());
+        dto.setMail(person.getMailUser().getMail());
         dto.setDocumentID(person.getDocumentID());
         dto.setName(person.getName());
         dto.setLastName(person.getLastName());
@@ -107,6 +114,7 @@ public class UserDTO {
         dto.setBirthDay(person.getBirthDay());
         dto.setMailS(person.getMailS());
         dto.setLocation(person.getLocation());
+        dto.setPhone(person.getPhone());
         return dto;
     }
 }

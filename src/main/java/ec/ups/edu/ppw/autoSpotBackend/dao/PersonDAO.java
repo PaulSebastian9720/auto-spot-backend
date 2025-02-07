@@ -32,7 +32,7 @@ public class PersonDAO {
 	}
 
 	public Person getPersonsByEmail(String mail) {
-		String jpql = "SELECT p FROM Person p WHERE p.mail = :mail";
+		String jpql = "SELECT p FROM Person p WHERE p.mailUser.mail = :mail";
 		Query q = em.createQuery(jpql, Person.class);
 		q.setParameter("mail", mail);
 		List<Person> persons = q.getResultList();

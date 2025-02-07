@@ -1,6 +1,5 @@
 package ec.ups.edu.ppw.autoSpotBackend.business;
 
-import ec.ups.edu.ppw.autoSpotBackend.api.config.JwtSignedKey;
 import ec.ups.edu.ppw.autoSpotBackend.api.security.JwtTokenProvider;
 import ec.ups.edu.ppw.autoSpotBackend.dao.ParkingSpaceDAO;
 import ec.ups.edu.ppw.autoSpotBackend.dao.PersonDAO;
@@ -127,21 +126,25 @@ public class Inicio {
 
 // Primera persona
 		Person person1 = new Person();
+		Mail mail1 = new Mail();
+		mail1.setMail("maria.lopez@example.com");
 		person1.setDocumentID("0912345678");
 		person1.setName("Maria Fernanda");
 		person1.setLastName("Lopez");
-		person1.setMail("maria.lopez@example.com");
+		person1.setMailUser(mail1);
 		person1.setRole("A");
 		person1.setStatus("A");
 		person1.setLocation("Calle Principal 123");
 		person1.setPassword("1236549870");
 
 // Segunda persona
+		Mail mail2 = new Mail();
+		mail2.setMail("carlos.perez@example.com");
 		Person person2 = new Person();
 		person2.setDocumentID("0918765432");
 		person2.setName("Carlos Andres");
 		person2.setLastName("Perez");
-		person2.setMail("carlos.perez@example.com");
+		person2.setMailUser(mail2);
 		person2.setRole("C");
 		person2.setStatus("I");
 		person2.setLocation("Avenida del Sol");
@@ -179,7 +182,7 @@ public class Inicio {
 
 // Mensajes enviados por la primera persona
 		MessageMail message1 = new MessageMail();
-		message1.setMailFrom(person1.getMail());
+		message1.setMailFrom(person1.getMailUser().getMail());
 		message1.setNameFrom(person1.getName());
 		message1.setHeader("CONFIRMACIÓN DE PAGO");
 		message1.setMailDestination("soporte@empresa.com");
@@ -189,7 +192,7 @@ public class Inicio {
 		person1.addMessageMail(message1);
 
 		MessageMail message2 = new MessageMail();
-		message2.setMailFrom(person1.getMail());
+		message2.setMailFrom(person1.getMailUser().getMail());
 		message2.setNameFrom(person1.getName());
 		message2.setHeader("SOLICITUD DE SOPORTE");
 		message2.setMailDestination("contacto@empresa.com");
@@ -200,7 +203,7 @@ public class Inicio {
 
 // Mensajes enviados por la segunda persona
 		MessageMail message3 = new MessageMail();
-		message3.setMailFrom(person2.getMail());
+		message3.setMailFrom(person2.getMailUser().getMail());
 		message3.setNameFrom(person2.getName());
 		message3.setHeader("CONSULTA SOBRE CONTRATO");
 		message3.setMailDestination("info@empresa.com");
@@ -212,13 +215,13 @@ public class Inicio {
 // Inserción de personas
 		this.personDao.insertPerson(person1);
 		this.personDao.insertPerson(person2);
-		final String tokenPerson1 = this.jwtTokenProvider.createToken(person1.getMail(), person1.getName(), person1.getRole());
+		final String tokenPerson1 = this.jwtTokenProvider.createToken(person1.getMailUser().getMail(), person1.getName(), person1.getRole());
 		System.out.println("\n \n \n \n \n \n \n \n first person");
 		System.out.println(tokenPerson1);
 		System.out.println("Is valid this toke:" + this.jwtTokenProvider.validateToken(tokenPerson1));
 		this.personDao.insertPerson(person2);
 
-		final String tokenPerson2 = this.jwtTokenProvider.createToken(person2.getMail(), person2.getName(), person2.getRole());
+		final String tokenPerson2 = this.jwtTokenProvider.createToken(person2.getMailUser().getMail(), person2.getName(), person2.getRole());
 		System.out.println("\n \n \n \n \n \n \n \n second person");
 		System.out.println(tokenPerson2);
 		System.out.println("Is valid this toke:" + this.jwtTokenProvider.validateToken(tokenPerson2));

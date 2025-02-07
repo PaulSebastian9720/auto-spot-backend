@@ -2,7 +2,6 @@ package ec.ups.edu.ppw.autoSpotBackend.api.config;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.ApplicationScoped;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
@@ -30,10 +29,10 @@ public class JwtSignedKey {
     }
 
     public String getSignedKey() {
-        return signedKey;
+        return this.signedKey;
     }
 
     public long getValidityInMilliseconds() {
-        return validityInMilliseconds;
+        return this.validityInMilliseconds;
     }
 }

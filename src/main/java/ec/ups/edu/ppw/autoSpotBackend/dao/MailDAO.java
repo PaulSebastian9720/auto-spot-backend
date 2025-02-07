@@ -1,12 +1,17 @@
 package ec.ups.edu.ppw.autoSpotBackend.dao;
 
 import ec.ups.edu.ppw.autoSpotBackend.model.Mail;
+import jakarta.ejb.Singleton;
+import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 
 import java.util.List;
 
+@Stateless
 public class MailDAO {
+    @PersistenceContext
     private EntityManager em;
 
     public void insertMail(Mail mail) {

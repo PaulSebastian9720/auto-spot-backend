@@ -18,19 +18,16 @@ public class AuthService {
 
     @POST
     @Path("/sign-up")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response register(RegisterRequest registerRequest) {
         AuthResponse  authResponse = this.authService.registerNewAccount(registerRequest);
         return Response.ok(authResponse).build();
     }
 
-    @GET
+    @POST
     @Path("/sign-in")
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
     public Response signIn(LoginRequest loginRequest) {
-        return Response.ok("Hello world").build();
+        AuthResponse authResponse = this.authService.signIn(loginRequest);
+        return Response.ok(authResponse).build();
     }
 
 }

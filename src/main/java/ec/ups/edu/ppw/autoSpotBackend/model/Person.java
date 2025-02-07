@@ -29,14 +29,11 @@ public class Person {
     @Column(name = "per_last_name")
     private String lastName;
 
-    @Column(name = "per_mail", unique = true, nullable = false)
-    private String mail;
-
     @Column(name = "per_role")
-    @Pattern(regexp = "A|C|CF", message = "El status debe ser 'A', 'C', 'CF'")
+    @Pattern(regexp = "A|C|CF", message = "The status must be 'A' -> Administer, 'C' -> Client, ")
     private String role;
 
-    @Pattern(regexp = "A|I", message = "El status debe ser 'A' O 'I'")
+    @Pattern(regexp = "A|I", message = "The status must be 'A' -> Active O 'I' -> Inactive")
     @Column(name = "per_status")
     private String status;
 
@@ -49,10 +46,18 @@ public class Person {
     @Column(name = "per_location")
     private String location;
 
+    @Column(name = "per_phone")
+    @Size(min = 10, message = "The phone number must have at least 10 numbers\n" )
+    private String phone;
+
     @Column(name = "per_password", nullable = false)
-    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
+    @Size(min = 8, message = "Password must be at least 8 characters\n")
     @JsonIgnore
     private String password;
+
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinColumn(name = "mail_id", nullable = false, updatable = true)
+    private Mail mailUser;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
@@ -105,12 +110,12 @@ public class Person {
         this.lastName = lastName;
     }
 
-    public String getMail() {
-        return mail;
+    public Mail getMailUser() {
+        return mailUser;
     }
 
-    public void setMail(String mail) {
-        this.mail = mail;
+    public void setMailUser(Mail mail) {
+        this.mailUser = mail;
     }
 
     public @Pattern(regexp = "A|C|CF", message = "El status debe ser 'A', 'C', 'CF'") String getRole() {
@@ -135,6 +140,14 @@ public class Person {
 
     public void setPassword(@Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres") String password) {
         this.password = password;
+    }
+
+    public @Size(min = 10, message = "The phone number must have at least 10 numbers\n") String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(@Size(min = 10, message = "The phone number must have at least 10 numbers\n") String phone) {
+        this.phone = phone;
     }
 
     public Date getBirthDay() {
@@ -196,7 +209,6 @@ public class Person {
     public static Person fromUserDTO(UserDTO userDTO) {
         Person person = new Person();
         person.setIdPerson(userDTO.getIdPerson());
-        person.setMail(userDTO.getMail());
         person.setDocumentID(userDTO.getDocumentID());
         person.setName(userDTO.getName());
         person.setLastName(userDTO.getLastName());
@@ -204,6 +216,7 @@ public class Person {
         person.setBirthDay(userDTO.getBirthDay());
         person.setMailS(userDTO.getMailS());
         person.setLocation(userDTO.getLocation());
+        person.setPhone(userDTO.getPhone());
         return person;
     }
 

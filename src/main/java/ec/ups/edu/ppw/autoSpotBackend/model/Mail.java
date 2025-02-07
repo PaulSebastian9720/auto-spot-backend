@@ -10,8 +10,12 @@ public class Mail {
     @Column(name = "mai_id")
     private int idMail;
 
-    @Column(name = "mai_mail")
+    @Column(name = "mai_mail", nullable = false, unique = true, updatable = false)
     private String mail;
+
+    @Column(name = "mai_likedAccounts", nullable = false)
+    private boolean isLinkedAccount;
+
 
 
     public String getMail() {
@@ -24,6 +28,14 @@ public class Mail {
 
     public int getIdMail() {
         return idMail;
+    }
+
+    public boolean isLinkedAccount() {
+        return isLinkedAccount;
+    }
+
+    public void setLinkedAccount(boolean linkedAccount) {
+        isLinkedAccount = linkedAccount;
     }
 
     public void setIdMail(int idMail) {
