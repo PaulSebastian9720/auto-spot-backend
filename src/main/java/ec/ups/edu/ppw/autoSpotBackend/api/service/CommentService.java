@@ -19,7 +19,7 @@ public class CommentService {
 
     @POST
     @Path("/create")
-    public Response create(Comment comment) throws Exception {
+    public Response create(Comment comment){
         commentManagement.addComment(comment);
         return Response.ok("Successful register your comment").build();
     }

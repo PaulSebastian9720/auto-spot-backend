@@ -25,7 +25,7 @@ public class Person {
 
     @Column(name = "per_name", nullable = false)
     private String name;
-
+    
     @Column(name = "per_last_name")
     private String lastName;
 
