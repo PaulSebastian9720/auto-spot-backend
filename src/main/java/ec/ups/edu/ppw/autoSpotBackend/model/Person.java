@@ -47,10 +47,9 @@ public class Person {
     private String location;
 
     @Column(name = "per_phone")
-    @Size(min = 10, message = "The phone number must have at least 10 numbers\n" )
     private String phone;
 
-    @Column(name = "per_password", nullable = false)
+    @Column(name = "per_password")
     @Size(min = 8, message = "Password must be at least 8 characters\n")
     @JsonIgnore
     private String password;
@@ -65,7 +64,7 @@ public class Person {
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
-    private List<Contract> listContracts;
+    private List<DealBase>  listDeal;
 
     @OneToMany(mappedBy = "person", cascade = CascadeType.ALL, fetch = FetchType.EAGER, orphanRemoval = true)
     @JsonManagedReference
@@ -74,7 +73,7 @@ public class Person {
 
     public Person() {
         this.listAutomobiles = new ArrayList<>();
-        this.listContracts = new ArrayList<>();
+        this.listDeal = new ArrayList<>();
         this.listMessagesMails = new ArrayList<>();
     }
 
@@ -138,11 +137,11 @@ public class Person {
         return password;
     }
 
-    public void setPassword(@Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres") String password) {
+    public void setPassword(String password) {
         this.password = password;
     }
 
-    public @Size(min = 10, message = "The phone number must have at least 10 numbers\n") String getPhone() {
+    public String getPhone() {
         return phone;
     }
 
@@ -182,14 +181,14 @@ public class Person {
         this.listAutomobiles = listAutomobiles;
     }
 
-    public List<Contract> getListContracts() {
-        return listContracts;
+    public List<DealBase> getListDeal() {
+        return listDeal;
     }
 
-    public void setListContracts(List<Contract> listContracts) {
-        this.listContracts = listContracts;
+    public void setListDeal(List<DealBase> listDeal) {
+        this.listDeal = listDeal;
     }
-    
+
     public void addAutomobile(Automobile automobile) {
         if(automobile == null) return;
         this.listAutomobiles.add(automobile);
@@ -217,6 +216,7 @@ public class Person {
         person.setMailS(userDTO.getMailS());
         person.setLocation(userDTO.getLocation());
         person.setPhone(userDTO.getPhone());
+        person.setStatus(userDTO.getStatus());
         return person;
     }
 

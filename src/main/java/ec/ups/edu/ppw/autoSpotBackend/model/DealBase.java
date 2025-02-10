@@ -1,6 +1,7 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Pattern;
 
 import java.util.Date;
 
@@ -10,13 +11,15 @@ import java.util.Date;
 public abstract class DealBase {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int idContract;
+    @Column(name = "deal_id")
+    private int idDeal;
 
     @Column(name = "deal_status", nullable = false)
+    @Pattern(regexp = "AC|IN|WT|CL", message = "The status had be 'AC', 'IN', 'WT', 'CL'")
     private String status;
 
-    @Column(name = "deal_prize")
-    private double prize;
+    @Column(name = "deal_finalPrice")
+    private double finalPrice;
 
     @OneToOne
     @JoinColumn(name = "deal_aut_id")
@@ -26,8 +29,8 @@ public abstract class DealBase {
     @JoinColumn(name = "deal_par_id", nullable = false)
     private ParkingSpace parkingSpace;
 
-    @OneToOne
-    @JoinColumn(name = "deal_per_id")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "aut_per", nullable = false)
     private Person person;
 
     @Column(name = "deal_startDate", nullable = false)
@@ -35,4 +38,71 @@ public abstract class DealBase {
 
     @Column(name = "deal_endDate")
     private Date endDate;
+
+    public DealBase() {
+    }
+
+    public int getIdDeal() {
+        return idDeal;
+    }
+
+    public void setIdDeal(int idDeal) {
+        this.idDeal = idDeal;
+    }
+
+    public @Pattern(regexp = "AC|IN|WT|CL", message = "The status had be 'AC', 'IN', 'WT', 'CL'") String getStatus() {
+        return status;
+    }
+
+    public void setStatus(@Pattern(regexp = "AC|IN|WT|CL", message = "The status had be 'AC', 'IN', 'WT', 'CL'") String status) {
+        this.status = status;
+    }
+
+    public double getFinalPrice() {
+        return finalPrice;
+    }
+
+    public void setFinalPrice(double finalPrice) {
+        this.finalPrice = finalPrice;
+    }
+
+    public Automobile getAutomobile() {
+        return automobile;
+    }
+
+    public void setAutomobile(Automobile automobile) {
+        this.automobile = automobile;
+    }
+
+    public ParkingSpace getParkingSpace() {
+        return parkingSpace;
+    }
+
+    public void setParkingSpace(ParkingSpace parkingSpace) {
+        this.parkingSpace = parkingSpace;
+    }
+
+    public Person getPerson() {
+        return person;
+    }
+
+    public void setPerson(Person person) {
+        this.person = person;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
 }

@@ -50,7 +50,6 @@ public class AuthManagement {
 
              newPerson = this.personManagement.getPersonByMail(auth.getMailUser());
              newPerson.setName(request.getUser().getName());
-             newPerson.setLastName(request.getUser().getLastName());
              newPerson.setBirthDay(request.getUser().getBirthDay());
          }
          else {

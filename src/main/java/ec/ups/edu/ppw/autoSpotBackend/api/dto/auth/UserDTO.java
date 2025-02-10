@@ -19,6 +19,8 @@ public class UserDTO {
     private Date birthDay;
     private String mailS;
     private String location;
+    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
+    private String status;
 
     public UserDTO() {}
 
@@ -102,6 +104,14 @@ public class UserDTO {
         this.phone = phone;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public static UserDTO fromPersonModel(Person person){
         UserDTO dto = new UserDTO();
         dto.setIdPerson(person.getIdPerson());
@@ -114,6 +124,7 @@ public class UserDTO {
         dto.setMailS(person.getMailS());
         dto.setLocation(person.getLocation());
         dto.setPhone(person.getPhone());
+        dto.setStatus(person.getStatus());
         return dto;
     }
 }

@@ -16,11 +16,11 @@ public class ParkingSpace {
     private String location;
 
     @Column(name = "park_spa_status", nullable = false)
-    @Pattern(regexp = "FR|BM|BT|IN", message = "El status debe ser 'FR', 'BM', 'BT', 'IN'")
+    @Pattern(regexp = "FR|BC|BT|IN", message = "The state had be 'FR', 'BM' , 'BT', 'IN'")
     private String status;
 
     @OneToOne
-    @JoinColumn(name = "park_spa_cont", referencedColumnName = "cont_id")
+    @JoinColumn(name = "park_spa_cont", referencedColumnName = "deal_id")
     private Contract contract;
 
     public String getLocation() {
@@ -32,11 +32,11 @@ public class ParkingSpace {
     }
 
 
-    public @Pattern(regexp = "FR|BM|BT|IN", message = "El status debe ser 'FR', 'BM', 'BT', 'IN'") String getStatus() {
+    public @Pattern(regexp = "FR|BC|BT|IN", message = "The state had be 'FR', 'BM' , 'BT', 'IN'") String getStatus() {
         return status;
     }
 
-    public void setStatus(@Pattern(regexp = "FR|BM|BT|IN", message = "El status debe ser 'FR', 'BM', 'BT', 'IN'") String status) {
+    public void setStatus(@Pattern(regexp = "FR|BC|BT|IN", message = "The state had be 'FR', 'BM' , 'BT', 'IN'") String status) {
         this.status = status;
     }
 

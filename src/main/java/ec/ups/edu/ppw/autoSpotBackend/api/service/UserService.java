@@ -11,6 +11,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Map;
 
 @Path("/users")
 @Produces("application/json")
@@ -30,7 +31,7 @@ public class UserService {
     @Path("/update")
     public Response update( UserDTO user) {
         personManagement.updatePerson( user);
-        return Response.ok("Successful person update").build();
+        return Response.ok(Map.of("message", "Successful user update")).build();
 
     }
 
@@ -47,7 +48,7 @@ public class UserService {
     @Path("/change-state/{idUser}")
     public Response changeState(@PathParam("idUser") int userId) {
         String newState = personManagement.changeState(userId);
-        return Response.ok("Successful The person change state to " + newState).build();
+        return Response.ok(Map.of("message", "Successful The person change state to " + newState)).build();
     }
 
 }

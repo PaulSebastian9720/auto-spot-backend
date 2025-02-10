@@ -24,7 +24,7 @@ public class PersonManagement {
 
     public List<UserDTO> getAllPersons(){
         return personDAO.getPersons().stream().map(
-                (person) -> UserDTO.fromPersonModel(person))
+                        (person) -> UserDTO.fromPersonModel(person))
                 .collect(Collectors.toUnmodifiableList());
     }
 
@@ -40,6 +40,12 @@ public class PersonManagement {
         if(user == null) throw  new CustomException(Errors.BAD_REQUEST, "User cannot be null");
         Person personFind = this.getPerson(user.getIdPerson());
         this.updateCampssPerson(personFind ,user);
+        if(user.getName() == null || user.getName().length() < 3)
+            throw new CustomException(Errors.BAD_REQUEST, "The name is requested and it need minimum 4 characters");
+        if(!user.getPhone().isEmpty() && (user.getPhone().length() < 7 ) || (user.getPhone().length() > 15))
+            throw new CustomException(Errors.BAD_REQUEST, "The nummber phone had be 10 digits minimum");
+        if(!user.getDocumentID().isEmpty() && (user.getDocumentID().length() < 10) || user.getDocumentID().length() > 13)
+            throw new CustomException(Errors.BAD_REQUEST, "The docuement ID had be 10 digits minimum");
         Person personUpdate = this.personDAO.modifyPerson(personFind);
         if(personUpdate == null) throw new CustomException(Errors.INTERNAL_SERVER_ERROR,"Internal error");
     }
@@ -63,7 +69,7 @@ public class PersonManagement {
     }
 
 
-    public Person updateCampssPerson(Person person, UserDTO userDTO){
+    private Person updateCampssPerson(Person person, UserDTO userDTO){
         person.setName(userDTO.getName());
         person.setLastName(userDTO.getLastName());
         person.setDocumentID(userDTO.getDocumentID());

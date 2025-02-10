@@ -22,7 +22,7 @@ public class Automobile {
     private String model;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "aut_per_id", nullable = false)
+    @JoinColumn(name = "aut_per", nullable = false)
     @JsonBackReference
     private Person person;
 

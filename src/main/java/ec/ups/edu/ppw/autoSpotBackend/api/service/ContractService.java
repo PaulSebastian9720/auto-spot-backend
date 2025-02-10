@@ -21,8 +21,8 @@ public class ContractService {
     @Path("/{idContract}/contract")
     public Response getContract(@PathParam("idContract") int idContract) {
         try {
-            Contract contract = this.contractManagement.getContract(idContract);
-            return Response.ok(contract).build();
+//            Contract contract = this.contractManagement.getContract(idContract);
+            return Response.ok("Hello world").build();
         } catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
@@ -32,8 +32,8 @@ public class ContractService {
     @Path("/{id_person}/list-for-person")
     public Response getContractsByIdPerson(@PathParam("id_person") int idPerson) {
         try {
-            List<Contract> contracts = this.contractManagement.getContractsByIdPerson(idPerson);
-            return Response.ok(contracts).build();
+//            List<Contract> contracts = this.contractManagement.getContractsByIdPerson(idPerson);
+            return Response.ok("Hello world").build();
         } catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
@@ -43,8 +43,8 @@ public class ContractService {
     @Path("/create")
     public Response create(Contract contract) {
         try {
-            this.contractManagement.createContract(contract);
-            return Response.ok("CONTRATO CREADO CORRECTAMENTE").build();
+//            this.contractManagement.createContract(contract);
+            return Response.ok("Hello world").build();
         }catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
@@ -54,8 +54,8 @@ public class ContractService {
     @Path("/end-contract")
     public Response endContract(Contract contract) {
         try {
-            contractManagement.endContract(contract);
-            return Response.ok("CONTRATO TERMINADO CORRECTAMENTE").build();
+//            contractManagement.endContract(contract);
+            return Response.ok("Hello world").build();
         }catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
@@ -65,8 +65,8 @@ public class ContractService {
     @Path("/getAll")
     public Response getAll() {
         try {
-            List<Contract> contracts = this.contractManagement.getAllContracts();
-            return Response.ok(contracts).build();
+//            List<Contract> contracts = this.contractManagement.getAllContracts();
+            return Response.ok("Hello world").build();
         } catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
