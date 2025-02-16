@@ -48,7 +48,7 @@ public class AutomobileManagement {
 
     private void  validators( Automobile automobile) throws CustomException {
         if(automobile== null) throw  new CustomException(Errors.BAD_REQUEST, "Automobile cannot null");
-        if(automobile.getPersonId() <= 0)throw  new CustomException(Errors.BAD_REQUEST, "Automobile required a Person");
+        if(automobile.getIdPerson() <= 0)throw  new CustomException(Errors.BAD_REQUEST, "Automobile required a Person");
         this.personManagement.getPersonById(automobile.getPerson().getIdPerson());
         if(automobile.getLicensePlate().compareTo("") == 0) throw  new CustomException(Errors.BAD_REQUEST, "The license plate is necessary");
         Automobile  automobilePlateExist = this.automobileDAO.getAutomobileByLicensePlate(automobile.getLicensePlate());

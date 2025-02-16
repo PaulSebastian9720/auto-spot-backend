@@ -47,4 +47,11 @@ public class ParkingSpaceDAO {
 		List<ParkingSpace> result = q.getResultList();
         return result.isEmpty() ? null : result.get(0);
 	}
+
+	public List<ParkingSpace> getListPerStatus(String status){
+		String jpql = "SELECT p FROM ParkingSpace p WHERE p.status =:status";
+		Query q = em.createQuery(jpql, ParkingSpace.class);
+		q.setParameter("status", status);
+		return q.getResultList();
+	}
 }

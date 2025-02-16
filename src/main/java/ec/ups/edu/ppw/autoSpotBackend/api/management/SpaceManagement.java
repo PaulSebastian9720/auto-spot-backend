@@ -1,5 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.management;
 
+import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.NewSpace;
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
 import ec.ups.edu.ppw.autoSpotBackend.dao.ParkingSpaceDAO;
 import ec.ups.edu.ppw.autoSpotBackend.model.ParkingSpace;
@@ -14,14 +15,41 @@ public class SpaceManagement {
     @Inject
     private ParkingSpaceDAO parkingSpaceDAO;
 
-    public void addSpot(ParkingSpace parkingSpace) throws CustomException {
-        this.validatorSpot(parkingSpace);
-        ParkingSpace parkingSpaceExist = this.parkingSpaceDAO.getParkingSpaceByLocation(parkingSpace.getLocation());
-        if(parkingSpaceExist != null) throw new CustomException(Errors.UNAUTHORIZED, "Parking Space Already Exists");
-        parkingSpace.setLocation(this.getNewLocation(parkingSpace.getLocation()));
-        parkingSpace.setStatus("FR");
-        parkingSpace.setContract(null);
-        parkingSpaceDAO.insertParkingSpace(parkingSpace);
+    public void addSpot(NewSpace newSpace) throws CustomException {
+        System.out.println(newSpace.getLocation().split("_").length);
+        if(newSpace.getLocation().split("_").length != 2)
+            throw new CustomException(Errors.BAD_REQUEST,"Location format is invalid, the Format is 'SPOT_(letter row or NR)'");
+
+        final String formatLocation = newSpace.getLocation().split("_")[1];
+
+        if (formatLocation.equalsIgnoreCase("NR")) {
+            final String newRow = this.newLocation();
+            int maxElements = newSpace.getLength();
+            maxElements  = (maxElements < 1)? 1 : (maxElements > 4) ? 4 : maxElements;
+
+            for (int i = 0; i < maxElements ; i++) {
+                ParkingSpace parkingSpace = new ParkingSpace();
+                parkingSpace.setLocation(newRow + "-CL" + (i + 1));
+                parkingSpace.setStatus("FR");
+                parkingSpaceDAO.insertParkingSpace(parkingSpace);
+            }
+        } else if (formatLocation.startsWith("RW") && formatLocation.length() == 3 && Character.isLetter(formatLocation.charAt(2))) {
+            if(!existsRWPattern(formatLocation)) throw new CustomException(Errors.BAD_REQUEST, "There are not exist that ROW");
+            int maxElements = newSpace.getLength();
+            int newPostionLocation = (int) this.getNewLocation(formatLocation);
+
+            maxElements  = (maxElements < 1)? 1 : (maxElements > 4) ? 4 : maxElements;
+            for (int i = newPostionLocation; i < maxElements + newPostionLocation; i++) {
+                ParkingSpace parkingSpace = new ParkingSpace();
+                parkingSpace.setLocation(formatLocation + "-CL" + (i + 1));
+                parkingSpace.setStatus("FR");
+                parkingSpaceDAO.insertParkingSpace(parkingSpace);
+            }
+
+        } else {
+            throw  new CustomException(Errors.BAD_REQUEST,"Invalid format of the location");
+        }
+
     }
 
     public ParkingSpace readSpot(int idParkingSpace) throws CustomException {
@@ -36,17 +64,18 @@ public class SpaceManagement {
         return parkingSpaceDAO.getParkingSpaceByLocation(idPlace);
     }
 
-    public void updateSpot(ParkingSpace parkingSpaceUpdate) throws CustomException {
-        this.validatorSpot(parkingSpaceUpdate);
-        ParkingSpace parkingSpace = this.readSpot(parkingSpaceUpdate.getIdParkingSpace());
-        if(parkingSpace == null) throw new CustomException(Errors.BAD_REQUEST, "Parking Space Not Found");
-        if(parkingSpace.getLocation().toUpperCase().compareTo(parkingSpaceUpdate.getLocation().toUpperCase()) != 0) throw new CustomException(Errors.UNAUTHORIZED, "Cannot Update Location's Parking Space");
-        this.parkingSpaceDAO.modifyParkingSpace(parkingSpace);
-    }
-
     public List<ParkingSpace> getAllSpaces() {
         return this.parkingSpaceDAO.getParkingSpaces();
     }
+
+    public List<ParkingSpace> getListPerStatus(String status) throws CustomException {
+        if (!status.equalsIgnoreCase("FR") && !status.equalsIgnoreCase("IN")) {
+            throw new CustomException(Errors.BAD_REQUEST, "Invalid status, only 'FR' or 'IN' are allowed");
+
+        }
+        return this.parkingSpaceDAO.getListPerStatus(status);
+    }
+
 
     public void changeState(int idParkingSpace) throws CustomException{
         ParkingSpace parkingSpace = this.readSpot(idParkingSpace);
@@ -69,15 +98,29 @@ public class SpaceManagement {
         return true;
     }
 
-    private String getNewLocation(String location) throws CustomException {
-        List<ParkingSpace> listParkingSpace = this.getAllSpaces();
-
-        long count = listParkingSpace.stream()
-                .map(parkingSpace -> parkingSpace.getLocation().toUpperCase())
-                .filter(loc -> loc.startsWith(location.toUpperCase()))
+    private String newLocation(){
+        final int length = (int) this.getAllSpaces().stream()
+                .map(parkingSpace -> parkingSpace.getLocation().split("-")[0])
+                .distinct()
                 .count();
 
-        return location + "-" + (count + 1);
+        return "RW" + (char) ('A' + length);
+    }
+
+    private long getNewLocation(String location) throws CustomException {
+        return  this.getAllSpaces().stream()
+                .map(parkingSpace -> parkingSpace.getLocation().toUpperCase())
+                .filter(loc -> loc.startsWith(location.toUpperCase()))
+                .count() + 1;
+
+    }
+
+    private boolean existsRWPattern(String location) {
+        for (ParkingSpace parkingSpace : this.getAllSpaces()) {
+            if (parkingSpace.getLocation().split("-")[0].equalsIgnoreCase(location)) return true;
+
+        }
+        return false;
     }
 
 

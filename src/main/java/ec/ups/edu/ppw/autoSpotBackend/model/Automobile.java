@@ -69,13 +69,13 @@ public class Automobile {
         this.person = person;
     }
 
-    @JsonbProperty("personId")
-    public Integer getPersonId() {
+    @JsonbProperty("idPerson")
+    public Integer getIdPerson() {
         return person != null ? person.getIdPerson() : null;
     }
 
-    @JsonbProperty("personId")
-    public void setPersonId(Integer personId) {
+    @JsonbProperty("idPerson")
+    public void setIdPerson(Integer personId) {
         if (personId == null) return;
         this.person = new Person();
         this.person.setIdPerson(personId);

@@ -1,10 +1,12 @@
 package ec.ups.edu.ppw.autoSpotBackend.business;
 
+import ec.ups.edu.ppw.autoSpotBackend.api.management.SpaceManagement;
 import ec.ups.edu.ppw.autoSpotBackend.api.security.JwtTokenProvider;
 import ec.ups.edu.ppw.autoSpotBackend.dao.ParkingSpaceDAO;
 import ec.ups.edu.ppw.autoSpotBackend.dao.PersonDAO;
 import ec.ups.edu.ppw.autoSpotBackend.dao.RateDAO;
 import ec.ups.edu.ppw.autoSpotBackend.model.*;
+import ec.ups.edu.ppw.autoSpotBackend.util.Encryption;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
@@ -33,7 +35,7 @@ public class Inicio {
 	public void init() {
 
 		this.InsertsPerson();
-		this.insertSpot();
+		this.initMatrizSpace();
 		this.insertRates();
 
 
@@ -91,35 +93,6 @@ public class Inicio {
 		System.out.println("Rates inserted successfully");
 	}
 
-	private void insertSpot(){
-		ParkingSpace space = new ParkingSpace();
-		space.setLocation("RA-1");
-		space.setStatus("FR");
-		space.setContract(null);
-
-
-		ParkingSpace space2 = new ParkingSpace();
-		space2.setLocation("RA-2");
-		space2.setStatus("FR");
-		space2.setContract(null);
-
-		ParkingSpace space3 = new ParkingSpace();
-		space3.setLocation("RA-3");
-		space3.setStatus("FR");
-		space3.setContract(null);
-
-
-		ParkingSpace space4 = new ParkingSpace();
-		space4.setLocation("RB-1");
-		space4.setStatus("FR");
-		space4.setContract(null);
-
-		this.parkingSpaceDAO.insertParkingSpace(space);
-		this.parkingSpaceDAO.insertParkingSpace(space2);
-		this.parkingSpaceDAO.insertParkingSpace(space3);
-		this.parkingSpaceDAO.insertParkingSpace(space4);
-
-	}
 
 	private void InsertsPerson(){
 		System.out.println("Inicio de inserciones");
@@ -127,21 +100,21 @@ public class Inicio {
 // Primera persona
 		Person person1 = new Person();
 		Mail mail1 = new Mail();
-		mail1.setMail("maria.lopez@example.com");
+		mail1.setMail("juan@gmail.com");
 		person1.setDocumentID("0912345678");
-		person1.setName("Maria Fernanda");
-		person1.setLastName("Lopez");
+		person1.setName("juan");
+		person1.setLastName("salto");
 		person1.setMailUser(mail1);
 		person1.setRole("A");
 		person1.setStatus("A");
 		person1.setLocation("Calle Principal 123");
-		person1.setPassword("1236549870");
+
 
 // Segunda persona
 		Mail mail2 = new Mail();
 		mail2.setMail("carlos.perez@example.com");
 		Person person2 = new Person();
-		person2.setDocumentID("0918765432");
+		person2.setDocumentID("0918765411");
 		person2.setName("Carlos Andres");
 		person2.setLastName("Perez");
 		person2.setMailUser(mail2);
@@ -149,6 +122,102 @@ public class Inicio {
 		person2.setStatus("I");
 		person2.setLocation("Avenida del Sol");
 		person2.setPassword("9876543210");
+		Mail mail3 = new Mail();
+		mail3.setMail("maria.gomez@example.com");
+		Person person3 = new Person();
+		person3.setDocumentID("0923456789");
+		person3.setName("Maria Fernanda");
+		person3.setLastName("Gomez");
+		person3.setMailUser(mail3);
+		person3.setRole("A");
+		person3.setStatus("A");
+		person3.setLocation("Calle Luna");
+		person3.setPassword("1234567890");
+
+		Mail mail4 = new Mail();
+		mail4.setMail("juan.rodriguez@example.com");
+		Person person4 = new Person();
+		person4.setDocumentID("0956789012");
+		person4.setName("Juan Carlos");
+		person4.setLastName("Rodriguez");
+		person4.setMailUser(mail4);
+		person4.setRole("A");
+		person4.setStatus("I");
+		person4.setLocation("Boulevard Central");
+		person4.setPassword("0987654321");
+
+		Mail mail5 = new Mail();
+		mail5.setMail("ana.martinez@example.com");
+		Person person5 = new Person();
+		person5.setDocumentID("0912305678");
+		person5.setName("Ana Patricia");
+		person5.setLastName("Martinez");
+		person5.setMailUser(mail5);
+		person5.setRole("C");
+		person5.setStatus("A");
+		person5.setLocation("Avenida Libertad");
+		person5.setPassword("5678901234");
+
+		Mail mail6 = new Mail();
+		mail6.setMail("diego.fernandez@example.com");
+		Person person6 = new Person();
+		person6.setDocumentID("0945678901");
+		person6.setName("Diego Alejandro");
+		person6.setLastName("Fernandez");
+		person6.setMailUser(mail6);
+		person6.setRole("C");
+		person6.setStatus("I");
+		person6.setLocation("Calle del Comercio");
+		person6.setPassword("6789012345");
+
+		Mail mail7 = new Mail();
+		mail7.setMail("sofia.alarcon@example.com");
+		Person person7 = new Person();
+		person7.setDocumentID("0934567890");
+		person7.setName("Sofia Beatriz");
+		person7.setLastName("Alarcon");
+		person7.setMailUser(mail7);
+		person7.setRole("C");
+		person7.setStatus("I");
+		person7.setLocation("Avenida del Parque");
+		person7.setPassword("8901234567");
+
+		Mail mail8 = new Mail();
+		mail8.setMail("pablo.mendoza@example.com");
+		Person person8 = new Person();
+		person8.setDocumentID("0929876543");
+		person8.setName("Pablo Esteban");
+		person8.setLastName("Mendoza");
+		person8.setMailUser(mail8);
+		person8.setRole("C");
+		person8.setStatus("A");
+		person8.setLocation("Calle 9 de Octubre");
+		person8.setPassword("3456789012");
+
+		Mail mail9 = new Mail();
+		mail9.setMail("laura.ramirez@example.com");
+		Person person9 = new Person();
+		person9.setDocumentID("0918765432");
+		person9.setName("Laura Gabriela");
+		person9.setLastName("Ramirez");
+		person9.setMailUser(mail9);
+		person9.setRole("C");
+		person9.setStatus("I");
+		person9.setLocation("Pasaje Colon");
+		person9.setPassword("4567890123");
+
+		Mail mail10 = new Mail();
+		mail10.setMail("andres.villavicencio@example.com");
+		Person person10 = new Person();
+		person10.setDocumentID("0954321098");
+		person10.setName("Andres Javier");
+		person10.setLastName("Villavicencio");
+		person10.setMailUser(mail10);
+		person10.setRole("C");
+		person10.setStatus("A");
+		person10.setLocation("Barrio Norte");
+		person10.setPassword("2345678901");
+
 
 // Automóviles asociados a la primera persona
 		Automobile auto1 = new Automobile();
@@ -215,20 +284,52 @@ public class Inicio {
 // Inserción de personas
 		this.personDao.insertPerson(person1);
 		this.personDao.insertPerson(person2);
+		this.personDao.insertPerson(person3);
+		this.personDao.insertPerson(person4);
+		this.personDao.insertPerson(person5);
+		this.personDao.insertPerson(person6);
+		this.personDao.insertPerson(person7);
+		this.personDao.insertPerson(person8);
+		this.personDao.insertPerson(person9);
+		this.personDao.insertPerson(person10);
 		final String tokenPerson1 = this.jwtTokenProvider.createToken(person1.getMailUser().getMail(), person1.getName(), person1.getRole());
 		System.out.println("\n \n \n \n \n \n \n \n first person");
 		System.out.println(tokenPerson1);
 		System.out.println("Is valid this toke:" + this.jwtTokenProvider.validateToken(tokenPerson1));
-		this.personDao.insertPerson(person2);
 
 		final String tokenPerson2 = this.jwtTokenProvider.createToken(person2.getMailUser().getMail(), person2.getName(), person2.getRole());
 		System.out.println("\n \n \n \n \n \n \n \n second person");
 		System.out.println(tokenPerson2);
 		System.out.println("Is valid this toke:" + this.jwtTokenProvider.validateToken(tokenPerson2));
-		this.personDao.insertPerson(person2);
 		System.out.println("\n \n \n \n \n \n \n \n");
 
 		System.out.println("Inserciones finalizadas");
 
+	}
+
+
+
+	private void initMatrizSpace(){
+
+		for (int i = 0; i < 6 ; i++) {
+			char letter = (char) ('A' + i);
+			for (int j = 0; j < 7 ; j++) {
+				String key = "RW" + letter + "-CL"+(j + 1);
+				ParkingSpace parkingSpace = new ParkingSpace();
+				parkingSpace.setLocation(key);
+				if(j   == 5) {
+					parkingSpace.setStatus("IN");
+				}else if ( j == 1) {
+					parkingSpace.setStatus("BC");
+				}else if ( j == 2) {
+					parkingSpace.setStatus("BT");
+				}else {
+					parkingSpace.setStatus("FR");
+
+				}
+				this.parkingSpaceDAO.insertParkingSpace(parkingSpace);
+
+			}
+		}
 	}
 }

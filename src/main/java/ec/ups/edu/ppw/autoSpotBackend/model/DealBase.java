@@ -1,5 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 
@@ -31,6 +32,7 @@ public abstract class DealBase {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "aut_per", nullable = false)
+    @JsonBackReference
     private Person person;
 
     @Column(name = "deal_startDate", nullable = false)

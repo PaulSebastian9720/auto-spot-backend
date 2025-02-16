@@ -10,6 +10,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Map;
 
 @Path("/automobiles")
 
@@ -26,7 +27,7 @@ public class AutomobileService {
 //    @OwnerOrAdmin
     public Response create(Automobile automobile) {
         automobileManagement.addAutomobile(automobile);
-        return Response.ok("Successful automobile registration").build();
+        return Response.ok(Map.of("message", "Successful automobile registration")).build();
     }
 
     @GET
@@ -42,7 +43,7 @@ public class AutomobileService {
 //    @OwnerOrAdmin
     public Response update(Automobile automobile) {
         this.automobileManagement.updateAutomobile(automobile);
-        return Response.ok("Successful automobile update").build();
+        return Response.ok(Map.of("message", "Successful automobile update")).build();
     }
 
     @DELETE
@@ -50,7 +51,7 @@ public class AutomobileService {
     @Path("/delete/{id_automobile}")
     public Response delete(@PathParam("id_automobile") int id_automobile) {
         this.automobileManagement.removeAutomobile(id_automobile);
-        return Response.ok("Successful automobile delete").build();
+        return Response.ok(Map.of("message", "Successful automobile delete")).build();
 
     }
 
