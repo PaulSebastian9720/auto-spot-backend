@@ -28,6 +28,31 @@ public class PersonManagement {
                 .collect(Collectors.toUnmodifiableList());
     }
 
+    public UserDTO getPersonByDocumentID(String documentID) {
+        if (documentID == null || documentID.isEmpty()) throw new CustomException(Errors.BAD_REQUEST, "The document ID is required");
+        Person person = personDAO.getPersonByDocumentID(documentID);
+        if (person == null) throw new CustomException(Errors.NOT_FOUND, "Person with this document ID not exist");
+        return UserDTO.fromPersonModel(person);
+    }
+
+    public Person getPerson(String  documentID, int idPerson) throws CustomException {
+        Person person = new Person();
+        try {
+            if(idPerson >  0 ){
+                int personExist = this.getPersonById(idPerson).getIdPerson();
+                person.setIdPerson(personExist);
+            }else if (documentID != null && !documentID.isEmpty()) {
+                int personExist = this.getPersonByDocumentID(documentID).getIdPerson();
+                person.setIdPerson(personExist);
+            }else {
+                throw new CustomException(Errors.BAD_REQUEST, "ID persons or documentID is required");
+            }
+        }catch (Exception e){
+            throw new CustomException(Errors.INTERNAL_SERVER_ERROR, "Not found User with this Parameters");
+        }
+        return person;
+    }
+
     public UserDTO getPersonById(int id_person) throws CustomException {
         if (id_person <= 0) throw new CustomException(Errors.BAD_REQUEST, "Data inconsistency in this Person");
         Person person = personDAO.readPerson(id_person);

@@ -1,6 +1,8 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 
@@ -28,6 +30,7 @@ public abstract class DealBase {
 
     @OneToOne
     @JoinColumn(name = "deal_par_id", nullable = false)
+    @JsonManagedReference
     private ParkingSpace parkingSpace;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -86,6 +89,11 @@ public abstract class DealBase {
 
     public Person getPerson() {
         return person;
+    }
+
+    @JsonProperty("idPerson")
+    public int getIdPerson() {
+        return person != null ? person.getIdPerson() : null;
     }
 
     public void setPerson(Person person) {

@@ -24,7 +24,6 @@ public class CustomExceptionMapper implements ExceptionMapper<CustomException> {
     public Response toResponse(CustomException exception) {
         Response.Status status = ERROR_TO_STATUS.getOrDefault(exception.getErrorCode(), Response.Status.INTERNAL_SERVER_ERROR);
         String message = exception.getMessage();
-
         return Response.status(status)
                 .entity(message)
                 .build();

@@ -1,10 +1,13 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.management;
 
+import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqContractDTO;
+import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
 import ec.ups.edu.ppw.autoSpotBackend.dao.ContractDAO;
-import ec.ups.edu.ppw.autoSpotBackend.model.Contract;
-import ec.ups.edu.ppw.autoSpotBackend.model.ParkingSpace;
+import ec.ups.edu.ppw.autoSpotBackend.model.*;
+import ec.ups.edu.ppw.autoSpotBackend.util.consts.Errors;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -16,90 +19,78 @@ public class ContractManagement {
     private ContractDAO contractDAO;
     @Inject
     private SpaceManagement spaceManagement;
+    @Inject
+    private PersonManagement personManagement;
+    @Inject
+    private AutomobileManagement automobileManagement;
+    @Inject
+    private RateManagement rateManagement;
 
-//    public Contract getContract(int idContract) throws Exception {
-//        if(idContract <= 0) throw new Exception("NO EXSITE UN CODIGO CON ESTE CONTRATO");
-//        Contract contract = this.contractDAO.readContract(idContract);
-//        if(contract == null) throw new Exception("NO EXISTE UN CONTRATO CON ESTE ID");
-//        contract.getRates().size();
-//        return contract;
-//    }
-//
-//    public void createContract(Contract contract) throws Exception {
-//        this.validatorsContract(contract);
-//        ParkingSpace parkingSpaceContract = contract.getParkingSpace();
-//
-//        if(contract.getType().toUpperCase().compareTo("MT") == 0 ){
-//            parkingSpaceContract.setStatus("BT");
-//
-//            contract.setParkingSpace(parkingSpaceContract);
-//            Date currentDate = new Date();
-//            contract.setStartDate(currentDate);
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.setTime(currentDate);
-//            calendar.add(Calendar.MONTH, 1);
-//            contract.setEndDate(calendar.getTime());
-//            contract.setStatus("AC");
-//            parkingSpaceContract.setContract(contract);
-//            contract.setParkingSpace(parkingSpaceContract);
-//
-//            this.contractDAO.insertContract(contract);
-//            this.spaceManagement.updateSpot(parkingSpaceContract);
-//
-//        } else if ( contract.getType().compareTo("TM") == 0){
-//            Date currentDate = new Date();
-//            contract.setStartDate(currentDate);
-//            contract.setStatus("AC");
-//            parkingSpaceContract.setContract(contract);
-//            contract.setParkingSpace(parkingSpaceContract);
-//            this.contractDAO.insertContract(contract);
-//            this.spaceManagement.updateSpot(parkingSpaceContract);
-//        }
-//
-//    }
-//
-//    public void endContract(Contract contract) throws Exception {
-//        this.validatorsContract(contract);
-//        if(contract.getStatus().toUpperCase().compareTo("AC") != 0) throw new Exception("ESTADO INVALIDO DEL CONTRATO");
-//        ParkingSpace parkingSpace = contract.getParkingSpace();
-//
-//        parkingSpace.setStatus("FR");
-//        parkingSpace.setContract(null);
-//        Date currentDate = new Date();
-//        contract.setEndDate(currentDate);
-//        contract.setStatus("IN");
-//
-//        if(contract.getType().toUpperCase().compareTo("MT") == 0){
-//            this.contractDAO.modifyContract(contract);
-//            this.spaceManagement.updateSpot(parkingSpace);
-//        } else if(contract.getType().toUpperCase().compareTo("TM") == 0){
-//            //FALTA HACER LA TARIFA BIEN PARA IMPLEMENTAR
-//
-//        }
-//    }
-//
-//    public List<Contract> getAllContracts() throws  Exception {
-//        List<Contract> contracts = this.contractDAO.getContracts();
-//        contracts.stream().forEach(contract -> contract.getRates().size());
-//        return contracts;
-//    }
-//
-//    public List<Contract> getContractsByIdPerson(int idPerson) throws Exception {
-//        if(idPerson <= 0) throw new Exception("ID DE PERSONA INVALIDO");
-//        List<Contract> contracts = this.contractDAO.getContractsByIdPerson(idPerson);
-//        return contracts;
-//
-//    }
-//
-//    private void validatorsContract(Contract contract) throws Exception{
-//        if(contract == null)  throw new Exception("NO SE ENCONTRO DATOS DE EL CONTRATO");
-//        if(contract.getType().toUpperCase().compareTo("MT") != 0  && contract.getType().toUpperCase().compareTo("TM") != 0) throw new Exception("NO SE ENCONTRO EL TIPO DE CONTRATO");
-//        if(contract.getPerson() == null) throw new Exception("SE REQUIRE UNA PERSONA PARA REALIZAR EL CONTRATO");
-//        if(contract.getAutomobile() == null) throw new Exception("SE NECESITA UN AUTOMOBILE PARA REALIZAR EL CONTRATO");
-//        if(contract.getParkingSpace() == null) throw new Exception("SE NECESITA UN SPOT PARA REALIZAR EL CONTRATO");
-//        ParkingSpace parkingSpaceContract = contract.getParkingSpace();
-//        ParkingSpace parkingSpaceSearched = this.spaceManagement.readSpot(parkingSpaceContract.getIdParkingSpace());
-//        if(parkingSpaceContract.getLocation().toUpperCase().compareTo(parkingSpaceSearched.getLocation()) != 0) throw new Exception("INCONSISTENCIA DE DATOS EN EL SPOT");
-//        if(parkingSpaceSearched.getStatus().toUpperCase().compareTo("FR") != 0) throw new Exception("ESTE SPOT YA ESTA OCUPADO");
-//    }
+    public Contract getContract(int idContract) throws CustomException {
+        if(idContract <= 0) throw new CustomException(Errors.BAD_REQUEST,"The idContact is out of range");
+        Contract contract = this.contractDAO.readContract(idContract);
+        if(contract == null) throw new CustomException(Errors.NOT_FOUND ,"Not found contract with this id");
+        return contract;
+    }
+
+    @Transactional
+    public void createContract(ReqContractDTO reqContractDTO) throws CustomException {
+        Person person = this.personManagement.getPerson(
+                reqContractDTO.getPerson().getDocumentID()
+                ,reqContractDTO.getPerson().getIdPerson()
+        );
+        Automobile automobile = this.automobileManagement.getAndCreateAutomobile(
+                reqContractDTO.getAutomobile().getLicensePlate(),
+                reqContractDTO.getAutomobile().getIdAutomobile(),
+                person.getIdPerson()
+        );
+        ParkingSpace parkingSpace = this.spaceManagement.getParkingSpace(
+                reqContractDTO.getParkingSpace().getLocation(),
+                reqContractDTO.getParkingSpace().getIdParkingSpace()
+        );
+
+        if(!parkingSpace.getStatus().equalsIgnoreCase("FR"))
+            throw new CustomException(Errors.BAD_REQUEST,"The parking space with this location is not available");
+        Rate rate = this.rateManagement.getRateById(reqContractDTO.getIdRate());
+        if(!rate.getTimeUnit().equalsIgnoreCase("1_month"))
+            throw new CustomException(Errors.BAD_REQUEST, "The rate is not available in Contracts");
+
+        Contract contract = new Contract();
+        contract.setRate(rate);
+        contract.setPerson(person);
+        contract.setParkingSpace(parkingSpace);
+        contract.setStartDate(new Date());
+        contract.setAutomobile(automobile);
+        Calendar calendar = Calendar.getInstance();
+        calendar.add(Calendar.MONTH, 1);
+        Date endDate = calendar.getTime();
+        contract.setEndDate(endDate);
+        contract.setStatus("AC");
+        contract.setFinalPrice(rate.getPrize());
+        this.contractDAO.insertContract(contract);
+        Contract contractSearch = this.getContractByLocation(parkingSpace.getLocation());
+        parkingSpace.setDealBase(contractSearch);
+        parkingSpace.setStatus("BC");
+        this.spaceManagement.updateParkingSpace(parkingSpace);
+    }
+
+
+    public Contract getContractByLocation(String location) throws  CustomException{
+        if(location == null || location.isEmpty()) throw  new CustomException(Errors.BAD_REQUEST, "The location cannot null");
+        Contract contract = this.contractDAO.getContractByLocation(location);
+        if(contract == null) throw new CustomException(Errors.NOT_FOUND, "The contract with this location does not exist");
+        return contract;
+    }
+
+    public List<Contract> getAllContracts() throws  Exception {
+        List<Contract> contracts = this.contractDAO.getContracts();
+        return contracts;
+    }
+
+    public List<Contract> getContractsByIdPerson(int idPerson) throws Exception {
+        if(idPerson <= 0) throw new Exception("ID DE PERSONA INVALIDO");
+        List<Contract> contracts = this.contractDAO.getContractsByIdPerson(idPerson);
+        return contracts;
+
+    }
 }

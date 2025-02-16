@@ -38,4 +38,12 @@ public class PersonDAO {
 		List<Person> persons = q.getResultList();
 		return (persons.isEmpty() ? null : persons.get(0));
 	}
+
+	public Person getPersonByDocumentID(String documentID){
+		String jpql = "SELECT p FROM Person p WHERE p.documentID = :documentID";
+        Query q = em.createQuery(jpql, Person.class);
+        q.setParameter("documentID", documentID);
+        List<Person> persons = q.getResultList();
+        return (persons.isEmpty() ? null : persons.get(0));
+	}
 }

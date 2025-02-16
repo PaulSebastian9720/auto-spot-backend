@@ -5,14 +5,9 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "SPOT_CONTRACT")
-public class Contract extends DealBase{
+public class Contract extends DealBase {
 
-//    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @Column(name = "cont_id")
-//    private int idContract;
-
-    @Column(name = "cont_autoRewal")
+    @Column(name = "cont_autoRenewal")
     private boolean autoRenewal;
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -1,6 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.management;
 
-import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.NewSpace;
+import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqSpaceDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
 import ec.ups.edu.ppw.autoSpotBackend.dao.ParkingSpaceDAO;
 import ec.ups.edu.ppw.autoSpotBackend.model.ParkingSpace;
@@ -15,8 +15,7 @@ public class SpaceManagement {
     @Inject
     private ParkingSpaceDAO parkingSpaceDAO;
 
-    public void addSpot(NewSpace newSpace) throws CustomException {
-        System.out.println(newSpace.getLocation().split("_").length);
+    public void addSpot(ReqSpaceDTO newSpace) throws CustomException {
         if(newSpace.getLocation().split("_").length != 2)
             throw new CustomException(Errors.BAD_REQUEST,"Location format is invalid, the Format is 'SPOT_(letter row or NR)'");
 
@@ -59,9 +58,29 @@ public class SpaceManagement {
         return parkingSpace;
     }
 
-    public ParkingSpace redSpotByPlace(String idPlace) throws CustomException {
-        if(idPlace.compareTo(null) == 0) throw new CustomException(Errors.BAD_REQUEST, "idPlace not valid")      ;
-        return parkingSpaceDAO.getParkingSpaceByLocation(idPlace);
+
+    public ParkingSpace getParkingSpace(String location, int idParkingSpace){
+        ParkingSpace parkingSpace = new ParkingSpace();
+        try {
+            if(idParkingSpace > 0 ){
+                parkingSpace = this.readSpot(idParkingSpace);
+
+            }else if (location!= null && !location.isEmpty()) {
+                parkingSpace =  this.getParkingSpaceByLocation(location);
+            }else {
+                throw new CustomException(Errors.BAD_REQUEST, "ID parking space or location is required");
+            }
+        }catch (Exception e){
+            throw new CustomException(Errors.NOT_FOUND, "Not found ParkingSpace with this parameters");
+        }
+        return parkingSpace;
+    }
+
+    public ParkingSpace getParkingSpaceByLocation(String location) throws  CustomException{
+        if(location == null || location.isEmpty()) throw new CustomException(Errors.BAD_REQUEST, "Parameter Location cannot be null");
+        ParkingSpace parkingSpace = this.parkingSpaceDAO.getParkingSpaceByLocation(location);
+        if(parkingSpace == null) throw new CustomException(Errors.NOT_FOUND, "Parking Space Not Found");
+        return parkingSpace;
     }
 
     public List<ParkingSpace> getAllSpaces() {
@@ -71,7 +90,6 @@ public class SpaceManagement {
     public List<ParkingSpace> getListPerStatus(String status) throws CustomException {
         if (!status.equalsIgnoreCase("FR") && !status.equalsIgnoreCase("IN")) {
             throw new CustomException(Errors.BAD_REQUEST, "Invalid status, only 'FR' or 'IN' are allowed");
-
         }
         return this.parkingSpaceDAO.getListPerStatus(status);
     }
@@ -89,6 +107,10 @@ public class SpaceManagement {
             parkingSpace.setStatus("FR");
         }
         this.parkingSpaceDAO.modifyParkingSpace(parkingSpace);
+    }
+
+    public void updateParkingSpace(ParkingSpace parkingSpace){
+        this.parkingSpaceDAO.updateParkingSpace(parkingSpace);
     }
 
     private boolean validatorSpot(ParkingSpace parkingSpace) throws  CustomException {

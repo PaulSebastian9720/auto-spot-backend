@@ -1,12 +1,11 @@
 package ec.ups.edu.ppw.autoSpotBackend.business;
 
-import ec.ups.edu.ppw.autoSpotBackend.api.management.SpaceManagement;
 import ec.ups.edu.ppw.autoSpotBackend.api.security.JwtTokenProvider;
+import ec.ups.edu.ppw.autoSpotBackend.dao.ContractDAO;
 import ec.ups.edu.ppw.autoSpotBackend.dao.ParkingSpaceDAO;
 import ec.ups.edu.ppw.autoSpotBackend.dao.PersonDAO;
 import ec.ups.edu.ppw.autoSpotBackend.dao.RateDAO;
 import ec.ups.edu.ppw.autoSpotBackend.model.*;
-import ec.ups.edu.ppw.autoSpotBackend.util.Encryption;
 import jakarta.annotation.PostConstruct;
 import jakarta.ejb.Singleton;
 import jakarta.ejb.Startup;
@@ -30,6 +29,9 @@ public class Inicio {
 	@Inject
 	private JwtTokenProvider jwtTokenProvider;
 
+	@Inject
+	private ContractDAO contractDAO;
+
 
 	@PostConstruct
 	public void init() {
@@ -37,8 +39,7 @@ public class Inicio {
 		this.InsertsPerson();
 		this.initMatrizSpace();
 		this.insertRates();
-
-
+		this.initContracts();
 	}
 
 	private void insertRates() {
@@ -311,7 +312,7 @@ public class Inicio {
 
 	private void initMatrizSpace(){
 
-		for (int i = 0; i < 6 ; i++) {
+		for (int i = 0; i < 7 ; i++) {
 			char letter = (char) ('A' + i);
 			for (int j = 0; j < 7 ; j++) {
 				String key = "RW" + letter + "-CL"+(j + 1);
@@ -331,5 +332,26 @@ public class Inicio {
 
 			}
 		}
+	}
+
+	private void initContracts(){
+		Contract contract = new Contract();
+		contract.setStatus("AC");
+		contract.setStartDate(new Date());
+		contract.setAutoRenewal(true);
+		contract.setFinalPrice(25.56);
+		ParkingSpace parkingSpace = new ParkingSpace();
+		parkingSpace.setIdParkingSpace(1);
+		contract.setParkingSpace(parkingSpace);
+		Person person = new Person();
+		person.setIdPerson(1);
+		contract.setPerson(person);
+		Automobile automobile = new Automobile();
+		Rate rate = new Rate();
+		rate.setIdRate(1);
+		contract.setRate(rate);
+		automobile.setIdAutomobile(1);
+		contract.setAutomobile(automobile);
+		contractDAO.insertContract(contract);
 	}
 }

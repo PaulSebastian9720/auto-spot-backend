@@ -1,6 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.dto.others;
 
-public class NewSpace {
+public class ReqSpaceDTO {
     private String location;
     private int length;
 

@@ -1,5 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.service;
 
+import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqContractDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.management.ContractManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Contract;
 import jakarta.inject.Inject;
@@ -8,6 +9,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Map;
 
 @Path("/contracts")
 @Produces("application/json")
@@ -32,8 +34,8 @@ public class ContractService {
     @Path("/{id_person}/list-for-person")
     public Response getContractsByIdPerson(@PathParam("id_person") int idPerson) {
         try {
-//            List<Contract> contracts = this.contractManagement.getContractsByIdPerson(idPerson);
-            return Response.ok("Hello world").build();
+            List<Contract> contracts = this.contractManagement.getContractsByIdPerson(idPerson);
+            return Response.ok(contracts).build();
         } catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
@@ -41,10 +43,10 @@ public class ContractService {
 
     @POST
     @Path("/create")
-    public Response create(Contract contract) {
+    public Response create(ReqContractDTO contractDTO) {
         try {
-//            this.contractManagement.createContract(contract);
-            return Response.ok("Hello world").build();
+            this.contractManagement.createContract(contractDTO);
+            return Response.ok(Map.of("message", "sis se creo ñaña confia")).build();
         }catch (Exception e) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }
@@ -65,8 +67,8 @@ public class ContractService {
     @Path("/getAll")
     public Response getAll() {
         try {
-//            List<Contract> contracts = this.contractManagement.getAllContracts();
-            return Response.ok("Hello world").build();
+            List<Contract> contracts = this.contractManagement.getAllContracts();
+            return Response.ok(contracts).build();
         } catch(Exception e){
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(e.getMessage()).build();
         }

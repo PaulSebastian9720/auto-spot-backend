@@ -33,6 +33,10 @@ public class ParkingSpaceDAO {
 	    }
 		em.remove(parkingSpace);
 	}
+
+	public void updateParkingSpace(ParkingSpace parkingSpace){
+		em.merge(parkingSpace);
+	}
 	
 	public List<ParkingSpace> getParkingSpaces(){
 		String jpql = "SELECT p FROM ParkingSpace p";

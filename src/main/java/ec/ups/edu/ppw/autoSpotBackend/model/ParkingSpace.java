@@ -1,5 +1,7 @@
 package ec.ups.edu.ppw.autoSpotBackend.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.json.bind.annotation.JsonbProperty;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Pattern;
 
@@ -21,7 +23,8 @@ public class ParkingSpace {
 
     @OneToOne
     @JoinColumn(name = "park_spa_cont", referencedColumnName = "deal_id")
-    private Contract contract;
+    @JsonBackReference
+    private DealBase dealBase;
 
     public String getLocation() {
         return location;
@@ -31,12 +34,11 @@ public class ParkingSpace {
         this.location = location;
     }
 
-
-    public @Pattern(regexp = "FR|BC|BT|IN", message = "The state had be 'FR', 'BM' , 'BT', 'IN'") String getStatus() {
+    public @Pattern(regexp = "FR|BC|BT|IN", message = "The state had be 'FR', 'BC' , 'BT', 'IN'") String getStatus() {
         return status;
     }
 
-    public void setStatus(@Pattern(regexp = "FR|BC|BT|IN", message = "The state had be 'FR', 'BM' , 'BT', 'IN'") String status) {
+    public void setStatus(@Pattern(regexp = "FR|BC|BT|IN", message = "The state had be 'FR', 'BC' , 'BT', 'IN'") String status) {
         this.status = status;
     }
 
@@ -48,11 +50,16 @@ public class ParkingSpace {
         this.idParkingSpace = idParkingSpace;
     }
 
-    public Contract getContract() {
-        return contract;
+    public DealBase getDealBase() {
+        return dealBase;
     }
 
-    public void setContract(Contract contract) {
-        this.contract = contract;
+    public void setDealBase(DealBase dealBase) {
+        this.dealBase = dealBase;
+    }
+
+    @JsonbProperty("idDealBase")
+    public Integer getIdDealBase() {
+        return dealBase != null ? dealBase.getIdDeal() : null;
     }
 }

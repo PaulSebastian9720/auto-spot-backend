@@ -1,6 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.service;
 
-import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.NewSpace;
+import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqSpaceDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.management.SpaceManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.ParkingSpace;
 import jakarta.inject.Inject;
@@ -21,7 +21,7 @@ public class ParkingSpaceService {
 
     @POST
     @Path("/create")
-    public Response create(NewSpace newSpace) {
+    public Response create(ReqSpaceDTO newSpace) {
         this.spaceManagement.addSpot(newSpace);
         return Response.ok(Map.of("message", "Successful Spot/s Register")).build();
     }
