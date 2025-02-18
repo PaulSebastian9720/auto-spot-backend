@@ -53,7 +53,7 @@ public class ContractService {
     }
 
     @PUT
-    @Path("{idContract}/end-contract")
+    @Path("{idContract}/cancel-contract")
     public Response cancelContract(@PathParam("idContract") int idContract) {
         contractManagement.cancelContract(idContract);
         return Response.ok(Map.of("message", "Successful cancellation of the contract")).build();

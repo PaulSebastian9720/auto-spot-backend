@@ -2,6 +2,7 @@ package ec.ups.edu.ppw.autoSpotBackend.api.management;
 
 import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqContractDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
+import ec.ups.edu.ppw.autoSpotBackend.api.service.ContractService;
 import ec.ups.edu.ppw.autoSpotBackend.dao.ContractDAO;
 import ec.ups.edu.ppw.autoSpotBackend.model.*;
 import ec.ups.edu.ppw.autoSpotBackend.util.consts.Errors;
@@ -25,6 +26,7 @@ public class ContractManagement {
     private AutomobileManagement automobileManagement;
     @Inject
     private RateManagement rateManagement;
+    private ContractService contractService;
 
     @Transactional
     public void createContract(ReqContractDTO reqContractDTO) throws CustomException {
@@ -94,12 +96,14 @@ public class ContractManagement {
         contract.setStatus("CL");
         contract.setFinalPrice(0);
         contract.setEndDate(new Date());
+        contract.setAutoRenewal(false);
         ParkingSpace parkingSpace = this.spaceManagement.getParkingSpace(
                 ""
                 ,contract.getParkingSpace().getIdParkingSpace()
         );
         parkingSpace.setStatus("FR");
         parkingSpace.setDealBase(null);
+
         this.spaceManagement.updateParkingSpace(parkingSpace);
         this.contractDAO.modifyContract(contract);
     }
