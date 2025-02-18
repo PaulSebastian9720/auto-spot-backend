@@ -6,8 +6,17 @@ public class ReqContractDTO {
     private Automobile automobile;
     private int idRate;
     private ParkingSpace parkingSpace;
+    private boolean autoRenewal;
 
     public ReqContractDTO() {
+    }
+
+    public boolean isAutoRenewal() {
+        return autoRenewal;
+    }
+
+    public void setAutoRenewal(boolean autoRenewal) {
+        this.autoRenewal = autoRenewal;
     }
 
     public Person getPerson() {

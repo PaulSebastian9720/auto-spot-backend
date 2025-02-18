@@ -28,14 +28,14 @@ public class ContractDAO {
 	}
 
 	public Contract getContractByLocation(String location) {
-		String jpql = "SELECT c FROM Contract c WHERE c.parkingSpace.location = :location";
+		String jpql = "SELECT c FROM Contract c WHERE c.parkingSpace.location = :location AND c.status = 'AC'";
 		Query q = em.createQuery(jpql, Contract.class);
 		q.setParameter("location", location);
 		List<Contract> contractList = q.getResultList();
 		return contractList.isEmpty() ? null : contractList.get(0);
 	}
 
-	public List<Contract> getContractsByIdPerson(int idPerson) throws  Exception {
+	public List<Contract> getContractsByIdPerson(int idPerson) {
 		String jpql = "SELECT c FROM Contract c WHERE c.person.idPerson = :idPerson";
 		Query q = em.createQuery(jpql, Contract.class);
 		q.setParameter("idPerson", idPerson);

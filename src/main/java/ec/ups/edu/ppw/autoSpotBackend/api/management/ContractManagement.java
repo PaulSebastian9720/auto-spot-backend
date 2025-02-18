@@ -26,13 +26,6 @@ public class ContractManagement {
     @Inject
     private RateManagement rateManagement;
 
-    public Contract getContract(int idContract) throws CustomException {
-        if(idContract <= 0) throw new CustomException(Errors.BAD_REQUEST,"The idContact is out of range");
-        Contract contract = this.contractDAO.readContract(idContract);
-        if(contract == null) throw new CustomException(Errors.NOT_FOUND ,"Not found contract with this id");
-        return contract;
-    }
-
     @Transactional
     public void createContract(ReqContractDTO reqContractDTO) throws CustomException {
         Person person = this.personManagement.getPerson(
@@ -67,6 +60,7 @@ public class ContractManagement {
         contract.setEndDate(endDate);
         contract.setStatus("AC");
         contract.setFinalPrice(rate.getPrize());
+        contract.setAutoRenewal(reqContractDTO.isAutoRenewal());
         this.contractDAO.insertContract(contract);
         Contract contractSearch = this.getContractByLocation(parkingSpace.getLocation());
         parkingSpace.setDealBase(contractSearch);
@@ -74,6 +68,48 @@ public class ContractManagement {
         this.spaceManagement.updateParkingSpace(parkingSpace);
     }
 
+    @Transactional
+    public void endContract(int idContract) throws CustomException {
+        Contract contract = this.getContract(idContract);
+        if(!contract.getStatus().equalsIgnoreCase("AC"))
+            throw new CustomException(Errors.BAD_REQUEST, "This contract no is available");
+        contract.setStatus("IN");
+        contract.setEndDate(new Date());
+        ParkingSpace parkingSpace = this.spaceManagement.getParkingSpace(
+                ""
+                ,contract.getParkingSpace().getIdParkingSpace()
+        );
+        parkingSpace.setStatus("FR");
+        parkingSpace.setDealBase(null);
+        this.spaceManagement.updateParkingSpace(parkingSpace);
+        this.contractDAO.modifyContract(contract);
+
+    }
+
+    @Transactional
+    public void cancelContract(int idContract){
+        Contract contract = this.getContract(idContract);
+        if(contract.getStatus().equalsIgnoreCase("AC") && contract.getStatus().equalsIgnoreCase("WT"))
+            throw  new CustomException(Errors.BAD_REQUEST, "This contract is not editable");
+        contract.setStatus("CL");
+        contract.setFinalPrice(0);
+        contract.setEndDate(new Date());
+        ParkingSpace parkingSpace = this.spaceManagement.getParkingSpace(
+                ""
+                ,contract.getParkingSpace().getIdParkingSpace()
+        );
+        parkingSpace.setStatus("FR");
+        parkingSpace.setDealBase(null);
+        this.spaceManagement.updateParkingSpace(parkingSpace);
+        this.contractDAO.modifyContract(contract);
+    }
+
+    public Contract getContract(int idContract) throws CustomException {
+        if(idContract <= 0) throw new CustomException(Errors.BAD_REQUEST,"The idContact is out of range");
+        Contract contract = this.contractDAO.readContract(idContract);
+        if(contract == null) throw new CustomException(Errors.NOT_FOUND ,"Not found contract with this id");
+        return contract;
+    }
 
     public Contract getContractByLocation(String location) throws  CustomException{
         if(location == null || location.isEmpty()) throw  new CustomException(Errors.BAD_REQUEST, "The location cannot null");
@@ -82,13 +118,13 @@ public class ContractManagement {
         return contract;
     }
 
-    public List<Contract> getAllContracts() throws  Exception {
+    public List<Contract> getAllContracts() {
         List<Contract> contracts = this.contractDAO.getContracts();
         return contracts;
     }
 
-    public List<Contract> getContractsByIdPerson(int idPerson) throws Exception {
-        if(idPerson <= 0) throw new Exception("ID DE PERSONA INVALIDO");
+    public List<Contract> getContractsByIdPerson(int idPerson) throws CustomException {
+        if(idPerson <= 0) throw new CustomException(Errors.BAD_REQUEST,"The idPerson is invalid");
         List<Contract> contracts = this.contractDAO.getContractsByIdPerson(idPerson);
         return contracts;
 

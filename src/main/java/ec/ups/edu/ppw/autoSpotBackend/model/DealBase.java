@@ -24,11 +24,11 @@ public abstract class DealBase {
     @Column(name = "deal_finalPrice")
     private double finalPrice;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "deal_aut_id")
     private Automobile automobile;
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "deal_par_id", nullable = false)
     @JsonManagedReference
     private ParkingSpace parkingSpace;
