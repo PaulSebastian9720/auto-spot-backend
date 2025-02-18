@@ -1,14 +1,13 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.dto.others;
 
-
-public class ReqContractDTO {
-    private Person person;
-    private Automobile automobile;
-    private int idRate;
-    private ParkingSpace parkingSpace;
+public class ReqTicketDTO {
+    private ReqDealBaseDTO.Person person;
+    private ReqDealBaseDTO.Automobile automobile;
+    private int [] listRates;
+    private ReqDealBaseDTO.ParkingSpace parkingSpace;
     private boolean autoRenewal;
 
-    public ReqContractDTO() {
+    public ReqTicketDTO() {
     }
 
     public boolean isAutoRenewal() {
@@ -19,35 +18,35 @@ public class ReqContractDTO {
         this.autoRenewal = autoRenewal;
     }
 
-    public Person getPerson() {
+    public ReqDealBaseDTO.Person getPerson() {
         return person;
     }
 
-    public void setPerson(Person person) {
+    public void setPerson(ReqDealBaseDTO.Person person) {
         this.person = person;
     }
 
-    public Automobile getAutomobile() {
+    public ReqDealBaseDTO.Automobile getAutomobile() {
         return automobile;
     }
 
-    public void setAutomobile(Automobile automobile) {
+    public void setAutomobile(ReqDealBaseDTO.Automobile automobile) {
         this.automobile = automobile;
     }
 
-    public int getIdRate() {
-        return idRate;
+    public int[] getListRates() {
+        return listRates;
     }
 
-    public void setIdRate(int idRate) {
-        this.idRate = idRate;
+    public void setListRates(int[] listRates) {
+        this.listRates = listRates;
     }
 
-    public ParkingSpace getParkingSpace() {
+    public ReqDealBaseDTO.ParkingSpace getParkingSpace() {
         return parkingSpace;
     }
 
-    public void setParkingSpace(ParkingSpace parkingSpace) {
+    public void setParkingSpace(ReqDealBaseDTO.ParkingSpace parkingSpace) {
         this.parkingSpace = parkingSpace;
     }
 

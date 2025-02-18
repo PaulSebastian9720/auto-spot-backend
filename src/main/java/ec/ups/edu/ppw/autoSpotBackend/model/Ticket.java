@@ -9,18 +9,9 @@ import java.util.List;
 @Table(name = "SPOT_TICKET")
 public class Ticket  extends DealBase {
 
-//    @Id
-//    @Column(name ="tic_id")
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private int idTicket;
-
-
-    @Column(name = "tic_accesCode", nullable = false)
-    @Size(min = 8, max = 8)
-    private String accesCode;
-
-    @Column(name = "tic_qrCodeBase")
-    private String qrCodeBase;
+    @Column(name = "accessTicket", nullable = false)
+    @Size(min = 9, max = 9)
+    private String accessTicket;
 
 
     @ManyToMany(fetch = FetchType.EAGER)
@@ -29,33 +20,25 @@ public class Ticket  extends DealBase {
             joinColumns = @JoinColumn(name = "cont_id"),
             inverseJoinColumns = @JoinColumn(name = "rat_id")
     )
-    private List<Rate> rates;
+    private List<Rate> listRates;
 
     public Ticket() {
         super();
     }
 
-    public @Size(min = 8, max = 8) String getAccesCode() {
-        return accesCode;
+    public @Size(min = 9, max = 9) String getAccessTicket() {
+        return accessTicket;
     }
 
-    public void setAccesCode(@Size(min = 8, max = 8) String accesCode) {
-        this.accesCode = accesCode;
+    public void setAccessTicket(@Size(min = 9, max = 9) String accessTicket) {
+        this.accessTicket = accessTicket;
     }
 
-    public String getQrCodeBase() {
-        return qrCodeBase;
+    public List<Rate> getListRates() {
+        return listRates;
     }
 
-    public void setQrCodeBase(String qrCodeBase) {
-        this.qrCodeBase = qrCodeBase;
-    }
-
-    public List<Rate> getRates() {
-        return rates;
-    }
-
-    public void setRates(List<Rate> rates) {
-        this.rates = rates;
+    public void setListRates(List<Rate> rates) {
+        this.listRates = rates;
     }
 }

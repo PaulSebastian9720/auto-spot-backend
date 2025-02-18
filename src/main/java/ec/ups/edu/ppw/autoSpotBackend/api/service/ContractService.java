@@ -1,6 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.service;
 
-import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqContractDTO;
+import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqDealBaseDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
 import ec.ups.edu.ppw.autoSpotBackend.api.management.ContractManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Contract;
@@ -38,7 +38,7 @@ public class ContractService {
 
     @POST
     @Path("/create")
-    public Response create(ReqContractDTO contractDTO) {
+    public Response create(ReqDealBaseDTO contractDTO) {
         this.contractManagement.createContract(contractDTO);
         return Response.ok(Map.of("message", "Successful contract register")).build();
 

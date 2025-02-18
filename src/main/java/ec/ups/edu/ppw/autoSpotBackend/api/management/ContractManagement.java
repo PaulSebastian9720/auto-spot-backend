@@ -1,8 +1,7 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.management;
 
-import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqContractDTO;
+import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqDealBaseDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
-import ec.ups.edu.ppw.autoSpotBackend.api.service.ContractService;
 import ec.ups.edu.ppw.autoSpotBackend.dao.ContractDAO;
 import ec.ups.edu.ppw.autoSpotBackend.model.*;
 import ec.ups.edu.ppw.autoSpotBackend.util.consts.Errors;
@@ -26,10 +25,9 @@ public class ContractManagement {
     private AutomobileManagement automobileManagement;
     @Inject
     private RateManagement rateManagement;
-    private ContractService contractService;
 
     @Transactional
-    public void createContract(ReqContractDTO reqContractDTO) throws CustomException {
+    public void createContract(ReqDealBaseDTO reqContractDTO) throws CustomException {
         Person person = this.personManagement.getPerson(
                 reqContractDTO.getPerson().getDocumentID()
                 ,reqContractDTO.getPerson().getIdPerson()

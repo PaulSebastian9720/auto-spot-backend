@@ -5,6 +5,7 @@ import ec.ups.edu.ppw.autoSpotBackend.util.consts.Errors;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
+import java.util.Random;
 
 public class Encryption {
 
@@ -20,6 +21,21 @@ public class Encryption {
 
     public static boolean verifyPassword(String inputPassword, String storedHash) {
         return hashPassword(inputPassword).equals(storedHash);
+    }
+
+    public static String generateTicket() {
+        String letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        Random random = new Random();
+
+        return "" +
+                letters.charAt(random.nextInt(letters.length())) +
+                letters.charAt(random.nextInt(letters.length())) +
+                random.nextInt(10) +
+                random.nextInt(10) + "-" +
+                letters.charAt(random.nextInt(letters.length())) +
+                letters.charAt(random.nextInt(letters.length())) +
+                random.nextInt(10) +
+                random.nextInt(10);
     }
 
 }
