@@ -335,23 +335,23 @@ public class Inicio {
 	}
 
 	private void initContracts(){
-		Contract contract = new Contract();
-		contract.setStatus("AC");
-		contract.setStartDate(new Date());
-		contract.setAutoRenewal(true);
-		contract.setFinalPrice(25.56);
-		ParkingSpace parkingSpace = new ParkingSpace();
-		parkingSpace.setIdParkingSpace(1);
-		contract.setParkingSpace(parkingSpace);
-		Person person = new Person();
-		person.setIdPerson(1);
-		contract.setPerson(person);
-		Automobile automobile = new Automobile();
-		Rate rate = new Rate();
-		rate.setIdRate(1);
-		contract.setRate(rate);
-		automobile.setIdAutomobile(1);
-		contract.setAutomobile(automobile);
-		contractDAO.insertContract(contract);
+//		Contract contract = new Contract();
+//		contract.setStatus("AC");
+//		contract.setStartDate(new Date());
+//		contract.setAutoRenewal(true);
+//		contract.setFinalPrice(25.56);
+//		ParkingSpace parkingSpace = new ParkingSpace();
+//		parkingSpace.setIdParkingSpace(1);
+//		contract.setParkingSpace(parkingSpace);
+//		Person person = new Person();
+//		person.setIdPerson(1);
+//		contract.setPerson(person);
+//		Automobile automobile = new Automobile();
+//		Rate rate = new Rate();
+//		rate.setIdRate(1);
+//		contract.setRate(rate);
+//		automobile.setIdAutomobile(1);
+//		contract.setAutomobile(automobile);
+//		contractDAO.insertContract(contract);
 	}
 }

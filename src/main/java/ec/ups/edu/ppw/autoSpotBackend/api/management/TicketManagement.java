@@ -78,7 +78,7 @@ public class TicketManagement {
             throw new CustomException(Errors.NOT_FOUND, "The access ticket not found");
         if(!ticket.getStatus().equalsIgnoreCase("AC"))
             throw new CustomException(Errors.BAD_REQUEST,"This ticket is not active");
-        ticket.setStatus("CA");
+        ticket.setStatus("CL");
         ParkingSpace parkingSpace = this.spaceManagement.getParkingSpace(
                 "",
                 ticket.getParkingSpace().getIdParkingSpace()
@@ -87,8 +87,17 @@ public class TicketManagement {
         ticket.setEndDate(new Date());
         parkingSpace.setStatus("FR");
         parkingSpace.setDealBase(null);
-        this.spaceManagement.updateParkingSpace(parkingSpace);
         this.ticketDAO.modifyTicket(ticket);
+        this.spaceManagement.updateParkingSpace(parkingSpace);
+    }
+
+    public Ticket getTicketByAccessTicket(String accessTicket) throws CustomException{
+        if(accessTicket == null || accessTicket.isEmpty())
+            throw new CustomException(Errors.BAD_REQUEST, "The access ticket is required");
+        Ticket ticket = this.ticketDAO.getTicketByAccessTicket(accessTicket);
+        if (ticket == null)
+            throw new CustomException(Errors.NOT_FOUND, "The access ticket not found");
+        return ticket;
     }
 
     public void endTicket(){

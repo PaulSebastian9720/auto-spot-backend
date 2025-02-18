@@ -20,9 +20,16 @@ public class TicketService {
     private TicketManagement ticketManagement;
 
     @GET
-    @Path("/{idTicket}/ticket")
+    @Path("/{idTicket}/ticketById")
     public Response getOneTicketById(@PathParam("idTicket") int idTicket ){
         Ticket ticket =this.ticketManagement.getTicketByID(idTicket);
+        return Response.ok(ticket).build();
+    }
+
+    @GET
+    @Path("/{accessTicket}/ticket")
+    public Response getTicketsByLocation(@PathParam("accessTicket") String accessTicket){
+        Ticket ticket = this.ticketManagement.getTicketByAccessTicket(accessTicket);
         return Response.ok(ticket).build();
     }
 
@@ -51,7 +58,7 @@ public class TicketService {
     @Path("/{accessTicket}/cancel-ticket")
     public Response cancelTicket(@PathParam("accessTicket") String accessTicket){
         this.ticketManagement.cancelTicket(accessTicket);
-        return Response.ok().build();
+        return Response.ok(Map.of("message", "Successful cancel ticket")).build();
     }
 
 

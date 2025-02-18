@@ -9,15 +9,15 @@ import java.util.List;
 @Table(name = "SPOT_TICKET")
 public class Ticket  extends DealBase {
 
-    @Column(name = "accessTicket", nullable = false)
+    @Column(name = "tick_accessTicket", nullable = false)
     @Size(min = 9, max = 9)
     private String accessTicket;
 
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
-            name = "SPOT_CONTRACT_RATE",
-            joinColumns = @JoinColumn(name = "cont_id"),
+            name = "SPOT_T  TICKET_RATE",
+            joinColumns = @JoinColumn(name = "tick_id"),
             inverseJoinColumns = @JoinColumn(name = "rat_id")
     )
     private List<Rate> listRates;
