@@ -26,7 +26,7 @@ public class TicketDAO {
     }
 
     public Ticket getTicketByLocation(String location){
-        String jplql = "SELECT t FROM Ticket t WHERE t.parkingSpace.location = :location";
+        String jplql = "SELECT t FROM Ticket t WHERE t.parkingSpace.location = :location AND t.status = 'AC'";
         Query q = em.createQuery(jplql, Ticket.class);
         q.setParameter("location", location);
         List<Ticket>  resultList = q.getResultList();
