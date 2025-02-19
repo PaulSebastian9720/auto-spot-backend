@@ -28,6 +28,17 @@ public class MessageMail {
     }
 
 
+    public static String generateParkingWelcomeEmail(String username) {
+        return "Hola " + username + ",\n\n" +
+                "¡Bienvenido a AutoSpot! 🎉\n\n" +
+                "Nos complace informarte que nuestro servicio de estacionamiento ya está disponible para ti.\n\n" +
+                "🚗 Tu espacio está listo y esperando en nuestras instalaciones. No dudes en acercarte y aprovechar todos los beneficios que tenemos para ofrecerte.\n\n" +
+                "📍 Recuerda que nuestras instalaciones están ubicadas frente a la UPS. ¡Te esperamos con los brazos abiertos! 🙌\n\n" +
+                "Gracias por elegir AutoSpot, ¡estamos aquí para ayudarte a estacionar sin preocupaciones!";
+    }
+
+
+
 
 
 }

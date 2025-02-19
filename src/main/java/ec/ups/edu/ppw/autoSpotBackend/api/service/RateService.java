@@ -8,6 +8,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 import java.util.List;
+import java.util.Map;
 
 @Path("/rates")
 @Produces("application/json")
@@ -32,7 +33,7 @@ public class RateService {
     @Produces("application/json")
     public Response update(Rate rate) {
         this.rateManagement.updateRate(rate);
-        return Response.ok("Successful rate update").build();
+        return Response.ok(Map.of("message", "Successful rate update")).build();
     }
 
     @GET

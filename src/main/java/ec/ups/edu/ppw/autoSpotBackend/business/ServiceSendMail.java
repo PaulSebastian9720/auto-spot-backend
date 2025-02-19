@@ -2,7 +2,6 @@ package ec.ups.edu.ppw.autoSpotBackend.business;
 
 
 import jakarta.annotation.Resource;
-import jakarta.ejb.Asynchronous;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
@@ -13,7 +12,7 @@ public class ServiceSendMail {
     @Resource(name = "java:jboss/mail/MyMailSession")
     private Session mailSession;
 
-    @Asynchronous
+
     public void sendEmail(String to, String subject, String body) {
         try {
             Message message = new MimeMessage(mailSession);

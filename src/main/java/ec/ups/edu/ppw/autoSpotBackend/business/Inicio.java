@@ -216,7 +216,7 @@ public class Inicio {
 		person9.setPassword("4567890123");
 
 		Mail mail10 = new Mail();
-		mail10.setMail("andres.villavicencio@example.com");
+		mail10.setMail("naspud972012@gmail.com");
 		Person person10 = new Person();
 		person10.setDocumentID("0954321098");
 		person10.setName("Andres Javier");
