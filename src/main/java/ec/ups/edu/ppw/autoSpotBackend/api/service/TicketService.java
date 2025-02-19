@@ -62,11 +62,11 @@ public class TicketService {
     }
 
     @GET
-    @Path("/price/{idTicket}")
-    public Response calculateTicketPrice(@PathParam("idTicket") int idTicket){
-        Ticket ticket = this.ticketManagement.getTicketByID(idTicket);
-        this.ticketManagement.endTicket(ticket);
-        return Response.ok().entity(ticket.getFinalPrice()).build();
+    @Path("/{accessTicket}/price")
+    public Response calculateTicketPrice(@PathParam("accessTicket") String accessTicket) {
+        Ticket ticket = this.ticketManagement.getTicketByAccessTicket(accessTicket);
+        double price = this.ticketManagement.endTicket(ticket);
+        return Response.ok(price).build();
     }
 
 

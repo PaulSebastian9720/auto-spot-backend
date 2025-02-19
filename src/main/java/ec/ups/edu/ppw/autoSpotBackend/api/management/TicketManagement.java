@@ -99,48 +99,64 @@ public class TicketManagement {
     }
 
     public double endTicket(Ticket ticket) throws CustomException {
-        if(ticket == null) {
+        if (ticket == null) {
             throw new CustomException(Errors.BAD_REQUEST, "The ticket is required");
         }
-        if (!ticket.getStatus().equalsIgnoreCase("AC")) {
-            throw new CustomException(Errors.BAD_REQUEST,"This ticket is not active");
+        if (!"AC".equalsIgnoreCase(ticket.getStatus())) {
+            throw new CustomException(Errors.BAD_REQUEST, "This ticket is not active");
         }
 
         List<Rate> rates = rateManagement.getAllRates();
+        rates.sort((r1, r2) -> Long.compare(convertTimeUnitToMinutes(r2.getTimeUnit()), convertTimeUnitToMinutes(r1.getTimeUnit())));
 
-        try {
-            Date startDate = ticket.getStartDate();
-            Date endDate = ticket.getEndDate();
+        Date startDate = ticket.getStartDate();
+        Date endDate = new Date();
 
-            if (startDate == null || endDate == null) {
-                throw new CustomException(Errors.BAD_REQUEST, "Start and End date must not be null");
-            }
+        if (startDate == null) {
+            throw new CustomException(Errors.BAD_REQUEST, "Start date must not be null");
+        }
 
-            long durationInMillis = endDate.getTime() - startDate.getTime();
-            long durationInMinutes = durationInMillis / 60000;
+        long durationInMillis = endDate.getTime() - startDate.getTime();
+        long durationInMinutes = durationInMillis / 60000;
 
-            double totalPrice = 0;
+        double totalPrice = 0;
 
-            for (Rate rate : rates) {
-                long unitTimeInMinutes = convertTimeUnitToMinutes(rate.getTimeUnit());
+        for (Rate rate : rates) {
+            long unitTimeInMinutes = convertTimeUnitToMinutes(rate.getTimeUnit());
+
+            if (durationInMinutes >= unitTimeInMinutes) {
                 long units = durationInMinutes / unitTimeInMinutes;
                 totalPrice += units * rate.getPrize();
-                durationInMinutes %= unitTimeInMinutes; // Restante que no se puede facturar
+                durationInMinutes %= unitTimeInMinutes;
+
+                System.out.println("Tarifa aplicada: " + rate.getName() + " | Unidades: " + units + " | Precio: " + (units * rate.getPrize()));
             }
+        }
 
-            if (totalPrice < 0) {
-                throw new CustomException(Errors.INTERNAL_SERVER_ERROR, "Calculated price is negative, check duration logic");
-            }
+        if (totalPrice == 0 && !rates.isEmpty()) {
+            totalPrice = rates.get(rates.size() - 1).getPrize();
+        }
 
-            return totalPrice;
+        if (totalPrice < 0) {
+            throw new CustomException(Errors.INTERNAL_SERVER_ERROR, "Calculated price is negative, check duration logic");
+        }
 
-        } catch (CustomException ce) {
-            throw ce;
-        } catch (Exception e) {
-            e.printStackTrace();
-            throw new CustomException(Errors.INTERNAL_SERVER_ERROR, "An error occurred while calculating the ticket price");
+        return totalPrice;
+    }
+
+    private long convertTimeUnitToMinutes(String timeUnit) {
+        switch (timeUnit) {
+            case "15_minutes": return 15;
+            case "30_minutes": return 30;
+            case "1_hour": return 60;
+            case "1_day": return 1440;
+            case "1_night": return 720;
+            case "1_month": return 43200;
+            default: throw new IllegalArgumentException("Unknown time unit: " + timeUnit);
         }
     }
+
+
 
     public List<Ticket> getAllTickets() {
         return this.ticketDAO.getTicketList();
@@ -169,22 +185,5 @@ public class TicketManagement {
         Ticket ticket = this.ticketDAO.getTicketByLocation(location);
         if(ticket == null) throw new CustomException(Errors.NOT_FOUND,"Not found Ticket whit this location");
         return ticket;
-    }
-
-    private long convertTimeUnitToMinutes(String timeUnit) {
-        switch (timeUnit) {
-            case "15_minutes":
-                return 15;
-            case "30_minutes":
-                return 30;
-            case "1_hour":
-                return 60;
-            case "1_day":
-                return 1440;
-            case "1_night":
-                return 720;
-            default:
-                throw new IllegalArgumentException("Unknown time unit: " + timeUnit);
-        }
     }
 }
