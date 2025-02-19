@@ -19,10 +19,10 @@ public class MessageMail {
             "body", "Hola {username},\n\nTe informamos que el estacionamiento **{parkingName}** cerrará en breve y tu vehículo **{vehiclePlate}** aún se encuentra dentro.\n\n⏳ Hora de cierre: {closingTime}\n\nPor favor, retira tu vehículo antes de la hora indicada para evitar inconvenientes.\n\n🚗 ¡Gracias por usar AutoSpot!"
     );
 
-    public static String generateContractEndingEmailBody(String username, String parkingName, String contractEndDate, String parkingLocation) {
+    public static String generateContractEndingEmailBody(String username, String parkingName,  String parkingLocation) {
         return "Hola " + username + ",\n\n" +
                 "Queremos recordarte que tu contrato de estacionamiento en **" + parkingName + "** finaliza hoy.\n\n" +
-                "📅 Fecha de vencimiento: " + contractEndDate + "\n" +
+                "📅 Fecha de vencimiento:  Maximo 10 minutos \n" +
                 "📍 Vehiculos: " + parkingLocation + ".\n\n" +
                 "Gracias por confiar en AutoSpot. 🚗";
     }

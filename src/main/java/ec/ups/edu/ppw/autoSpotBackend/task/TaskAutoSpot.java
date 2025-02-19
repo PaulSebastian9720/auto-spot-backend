@@ -94,7 +94,6 @@ public class TaskAutoSpot {
                     final String emailBody = MessageMail.generateContractEndingEmailBody(
                             ticket.getPerson().getName() + " " + ticket.getPerson().getLastName(),
                             ticket.getAutomobile().getLicensePlate(),
-                            getMonthDayHourMinute(ticket.getEndDate()),
                             ticket.getParkingSpace().getLocation()
                     );
                     final String emailSubject = "📅 Aviso: de Cierre de el Parkeadero";
