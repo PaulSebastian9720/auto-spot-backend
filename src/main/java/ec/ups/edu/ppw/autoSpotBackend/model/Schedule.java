@@ -16,7 +16,7 @@ public class Schedule {
 
     @Column(name ="day_status", nullable = false)
     @Pattern(regexp = "R|E|NW", message = "El status debe ser 'R', 'E' o 'NW'")
-    private String status;
+    private String status;  
 
     @Column(name = "day_dayName")
     private String dayName;
@@ -26,6 +26,9 @@ public class Schedule {
 
     @Column(name = "day_closingTime")
     private Date closingTime;
+
+    @Column(name = "day_exceptionDay")
+    private Date exceptionDay;
 
     public Schedule() {
     }
@@ -69,4 +72,8 @@ public class Schedule {
     public void setStatus(String status) {
         this.status = status;
     }
+
+    public Date getExceptionDay() {return exceptionDay;}
+
+    public void setExceptionDay(Date exceptionDay) {this.exceptionDay = exceptionDay;}
 }

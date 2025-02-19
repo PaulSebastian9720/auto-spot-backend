@@ -19,7 +19,7 @@ public class ScheduleManagement {
 
     public void addSchedule(Schedule shedule) throws CustomException {
         if(shedule == null) throw  new CustomException(Errors.BAD_REQUEST, "Schedule is null");
-        if(shedule.getStatus().toUpperCase().compareTo("R") == 0) throw  new CustomException(Errors.BAD_REQUEST, "Schedule is empty");
+        if(shedule.getStatus().toUpperCase().compareTo("R") == 0) throw  new CustomException(Errors.BAD_REQUEST, "Cannot create a new regular day");
         if(shedule.getStatus().toUpperCase().compareTo("E") != 0 && shedule.getStatus().toUpperCase().compareTo("NW") != 0)  throw  new CustomException(Errors.BAD_REQUEST, "Schedule is empty");
         this.validatorDate(shedule);
         shedule.setStatus(shedule.getStatus().toUpperCase());

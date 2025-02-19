@@ -3,16 +3,14 @@ package ec.ups.edu.ppw.autoSpotBackend.api.management;
 import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqDealBaseDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
 import ec.ups.edu.ppw.autoSpotBackend.dao.TicketDAO;
-import ec.ups.edu.ppw.autoSpotBackend.model.Automobile;
-import ec.ups.edu.ppw.autoSpotBackend.model.ParkingSpace;
-import ec.ups.edu.ppw.autoSpotBackend.model.Person;
-import ec.ups.edu.ppw.autoSpotBackend.model.Ticket;
+import ec.ups.edu.ppw.autoSpotBackend.model.*;
 import ec.ups.edu.ppw.autoSpotBackend.util.Encryption;
 import ec.ups.edu.ppw.autoSpotBackend.util.consts.Errors;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -100,8 +98,48 @@ public class TicketManagement {
         return ticket;
     }
 
-    public void endTicket(){
+    public double endTicket(Ticket ticket) throws CustomException {
+        if(ticket == null) {
+            throw new CustomException(Errors.BAD_REQUEST, "The ticket is required");
+        }
+        if (!ticket.getStatus().equalsIgnoreCase("AC")) {
+            throw new CustomException(Errors.BAD_REQUEST,"This ticket is not active");
+        }
 
+        List<Rate> rates = rateManagement.getAllRates();
+
+        try {
+            Date startDate = ticket.getStartDate();
+            Date endDate = ticket.getEndDate();
+
+            if (startDate == null || endDate == null) {
+                throw new CustomException(Errors.BAD_REQUEST, "Start and End date must not be null");
+            }
+
+            long durationInMillis = endDate.getTime() - startDate.getTime();
+            long durationInMinutes = durationInMillis / 60000;
+
+            double totalPrice = 0;
+
+            for (Rate rate : rates) {
+                long unitTimeInMinutes = convertTimeUnitToMinutes(rate.getTimeUnit());
+                long units = durationInMinutes / unitTimeInMinutes;
+                totalPrice += units * rate.getPrize();
+                durationInMinutes %= unitTimeInMinutes; // Restante que no se puede facturar
+            }
+
+            if (totalPrice < 0) {
+                throw new CustomException(Errors.INTERNAL_SERVER_ERROR, "Calculated price is negative, check duration logic");
+            }
+
+            return totalPrice;
+
+        } catch (CustomException ce) {
+            throw ce;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new CustomException(Errors.INTERNAL_SERVER_ERROR, "An error occurred while calculating the ticket price");
+        }
     }
 
     public List<Ticket> getAllTickets() {
@@ -133,4 +171,20 @@ public class TicketManagement {
         return ticket;
     }
 
+    private long convertTimeUnitToMinutes(String timeUnit) {
+        switch (timeUnit) {
+            case "15_minutes":
+                return 15;
+            case "30_minutes":
+                return 30;
+            case "1_hour":
+                return 60;
+            case "1_day":
+                return 1440;
+            case "1_night":
+                return 720;
+            default:
+                throw new IllegalArgumentException("Unknown time unit: " + timeUnit);
+        }
+    }
 }

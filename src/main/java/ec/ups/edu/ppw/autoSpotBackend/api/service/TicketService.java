@@ -61,5 +61,13 @@ public class TicketService {
         return Response.ok(Map.of("message", "Successful cancel ticket")).build();
     }
 
+    @GET
+    @Path("/price/{idTicket}")
+    public Response calculateTicketPrice(@PathParam("idTicket") int idTicket){
+        Ticket ticket = this.ticketManagement.getTicketByID(idTicket);
+        this.ticketManagement.endTicket(ticket);
+        return Response.ok().entity(ticket.getFinalPrice()).build();
+    }
+
 
 }
