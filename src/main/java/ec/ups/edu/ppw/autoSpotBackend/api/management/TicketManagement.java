@@ -115,8 +115,7 @@ public class TicketManagement {
         }
 
         long durationInMillis = endDate.getTime() - startDate.getTime();
-        long durationInMinutes = durationInMillis / 60000;
-        System.out.println("duracion en minutos Total"+durationInMinutes);
+        long durationInMinutes = Math.round(durationInMillis / 60000.0);
 
         double totalPrice = 0;
 
@@ -125,17 +124,13 @@ public class TicketManagement {
 
             if (durationInMinutes >= unitTimeInMinutes) {
                 long units = durationInMinutes / unitTimeInMinutes;
-                System.out.println("duracion en minutos antes de cambiar"+units);
                 totalPrice += units * rate.getPrize();
                 durationInMinutes %= unitTimeInMinutes;
-                System.out.println("duracion en minutos despues de cambiar"+durationInMinutes);
-
                 System.out.println("Tarifa aplicada: " + rate.getName() + " | Unidades: " + units + " | Precio: " + (units * rate.getPrize()));
             }
         }
-
-        if (totalPrice == 0 && !rates.isEmpty()) {
-            totalPrice = rates.get(rates.size() - 1).getPrize();
+        if(durationInMinutes < 15 && durationInMinutes > 0){
+            totalPrice += rates.get(rates.size() - 1).getPrize();
         }
 
         if (totalPrice < 0) {
