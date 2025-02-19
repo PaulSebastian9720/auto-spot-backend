@@ -38,16 +38,16 @@ public class Inicio {
 	@PostConstruct
 	public void init() {
 
-		this.InsertsPerson();
-		this.initMatrizSpace();
-		this.insertRates();
-		this.initContracts();
-		System.out.println("ENVIO DE CORROOOOOOO");
-		this.sendMail.sendEmail(
-				"paulinio962012@gmail.com",
-				"Bienvenido a AutoSpot",
-				"Estimado usuario, gracias por registrarse en AutoSpot. Disfrute de nuestras opciones de alquiler de autos."
-		);
+//		this.InsertsPerson();
+//		this.initMatrizSpace();
+//		this.insertRates();
+//		this.initContracts();
+//		System.out.println("ENVIO DE CORROOOOOOO");
+//		this.sendMail.sendEmail(
+//				"paulinio962012@gmail.com",
+//				"Bienvenido a AutoSpot",
+//				"Estimado usuario, gracias por registrarse en AutoSpot. Disfrute de nuestras opciones de alquiler de autos."
+//		);
 	}
 
 	private void insertRates() {

@@ -45,8 +45,8 @@ public class ContractManagement {
         if(!parkingSpace.getStatus().equalsIgnoreCase("FR"))
             throw new CustomException(Errors.BAD_REQUEST,"The parking space with this location is not available");
         Rate rate = this.rateManagement.getRateById(reqContractDTO.getIdRate());
-        if(!rate.getTimeUnit().equalsIgnoreCase("1_month"))
-            throw new CustomException(Errors.BAD_REQUEST, "The rate is not available in Contracts");
+//        if(!rate.getTimeUnit().equalsIgnoreCase("1_month"))
+//            throw new CustomException(Errors.BAD_REQUEST, "The rate is not available in Contracts");
 
         Contract contract = new Contract();
         contract.setRate(rate);
