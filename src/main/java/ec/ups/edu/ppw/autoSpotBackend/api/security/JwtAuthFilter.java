@@ -26,7 +26,6 @@ public class JwtAuthFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws CustomException {
-
 //        String path = requestContext.getUriInfo().getPath();
 //        if (EXCLUDED_PATHS.contains(path)) return;
 //        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);

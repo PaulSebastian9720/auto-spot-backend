@@ -326,16 +326,7 @@ public class Inicio {
 				String key = "RW" + letter + "-CL"+(j + 1);
 				ParkingSpace parkingSpace = new ParkingSpace();
 				parkingSpace.setLocation(key);
-				if(j   == 5) {
-					parkingSpace.setStatus("IN");
-				}else if ( j == 1) {
-					parkingSpace.setStatus("BC");
-				}else if ( j == 2) {
-					parkingSpace.setStatus("BT");
-				}else {
-					parkingSpace.setStatus("FR");
-
-				}
+				parkingSpace.setStatus("FR");
 				this.parkingSpaceDAO.insertParkingSpace(parkingSpace);
 
 			}

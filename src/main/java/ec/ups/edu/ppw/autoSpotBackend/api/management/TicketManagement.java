@@ -81,8 +81,6 @@ public class TicketManagement {
                 "",
                 ticket.getParkingSpace().getIdParkingSpace()
         );
-        ticket.setFinalPrice(0);
-        ticket.setEndDate(new Date());
         parkingSpace.setStatus("FR");
         parkingSpace.setDealBase(null);
         this.ticketDAO.modifyTicket(ticket);
