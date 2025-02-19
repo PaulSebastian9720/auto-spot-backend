@@ -1,5 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.management;
 
+
 import ec.ups.edu.ppw.autoSpotBackend.api.dto.auth.Auth;
 import ec.ups.edu.ppw.autoSpotBackend.api.dto.auth.UserDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.dto.request.LoginRequest;
@@ -8,11 +9,13 @@ import ec.ups.edu.ppw.autoSpotBackend.api.dto.response.AuthResponse;
 import ec.ups.edu.ppw.autoSpotBackend.api.dto.response.JwtResponse;
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
 import ec.ups.edu.ppw.autoSpotBackend.api.security.JwtTokenProvider;
+import ec.ups.edu.ppw.autoSpotBackend.business.ServiceSendMail;
 import ec.ups.edu.ppw.autoSpotBackend.dao.MailDAO;
 import ec.ups.edu.ppw.autoSpotBackend.model.Mail;
 import ec.ups.edu.ppw.autoSpotBackend.model.Person;
 import ec.ups.edu.ppw.autoSpotBackend.util.Encryption;
 import ec.ups.edu.ppw.autoSpotBackend.util.consts.Errors;
+import ec.ups.edu.ppw.autoSpotBackend.util.consts.MessageMail;
 import ec.ups.edu.ppw.autoSpotBackend.util.validator.ValidatorPattern;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
@@ -29,6 +32,9 @@ public class AuthManagement {
 
      @Inject
      private MailDAO mailDAO;
+
+     @Inject
+     private ServiceSendMail sendMail;
 
      @Transactional
      public AuthResponse registerNewAccount(RegisterRequest request) throws CustomException {
@@ -76,6 +82,13 @@ public class AuthManagement {
          AuthResponse authResponse = new AuthResponse();
          authResponse.setUser(UserDTO.fromPersonModel(personRegister));
          authResponse.setJwt(token);
+
+         final String emailBody = MessageMail.ACCOUNT_CREATION_EMAIL.get("body")
+                 .replace("{username}", personRegister.getName() + " " + personRegister.getLastName());
+         final String emailSubject = MessageMail.ACCOUNT_CREATION_EMAIL.get("subject");
+         final String toMail = personRegister.getMailUser().getMail();
+
+         sendMail.sendEmail(toMail, emailSubject, emailBody);
 
          return authResponse;
      }

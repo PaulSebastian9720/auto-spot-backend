@@ -17,8 +17,7 @@ import java.util.Date;
 @Startup
 public class Inicio {
 	@Inject
-	private SendMail sendMail;
-
+	private ServiceSendMail sendMail;
 
 	@Inject
 	private PersonDAO personDao;
@@ -110,7 +109,7 @@ public class Inicio {
 // Primera persona
 		Person person1 = new Person();
 		Mail mail1 = new Mail();
-		mail1.setMail("juan@gmail.com");
+		mail1.setMail("paulinio962012@gmail.com");
 		person1.setDocumentID("0912345678");
 		person1.setName("juan");
 		person1.setLastName("salto");
@@ -122,7 +121,7 @@ public class Inicio {
 
 // Segunda persona
 		Mail mail2 = new Mail();
-		mail2.setMail("carlos.perez@example.com");
+		mail2.setMail("karenquito2004@gmail.com");
 		Person person2 = new Person();
 		person2.setDocumentID("0918765411");
 		person2.setName("Carlos Andres");
@@ -145,7 +144,7 @@ public class Inicio {
 		person3.setPassword("1234567890");
 
 		Mail mail4 = new Mail();
-		mail4.setMail("juan.rodriguez@example.com");
+		mail4.setMail("paul972012@gmail.com");
 		Person person4 = new Person();
 		person4.setDocumentID("0956789012");
 		person4.setName("Juan Carlos");

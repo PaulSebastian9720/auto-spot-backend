@@ -2,21 +2,21 @@ package ec.ups.edu.ppw.autoSpotBackend.business;
 
 
 import jakarta.annotation.Resource;
+import jakarta.ejb.Asynchronous;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.mail.*;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 
 @RequestScoped
-public class SendMail {
+public class ServiceSendMail {
     @Resource(name = "java:jboss/mail/MyMailSession")
     private Session mailSession;
 
+    @Asynchronous
     public void sendEmail(String to, String subject, String body) {
         try {
-            System.out.println(mailSession);
             Message message = new MimeMessage(mailSession);
-            System.out.println(message);
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(to));
             message.setSubject(subject);
             message.setText(body);
