@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+   <link rel="stylesheet" type="text/css" href="styles.css"/>
+</h:head>
+
+<h:body>
+   <h:form styleClass="my-form">
+      <h:panelGrid columns="2">
+         <h:outputLabel value="Nombre:"/>
+         <h:inputText value="#{comentario.comment.name}" styleClass="my-input"/>
+
+         <h:outputLabel value="Correo:"/>
+         <h:inputText value="#{comentario.comment.mail}" styleClass="my-input"/>
+
+         <h:outputLabel value="Comentario:"/>
+         <h:inputTextarea value="#{comentario.comment.comment}" styleClass="my-textarea"/>
+
+         <h:commandButton action="#{comentario.guardarComentario()}" value="Guardar" styleClass="my-button"/>
+      </h:panelGrid>
+   </h:form>
+
+   <h:form>
+      <h:dataTable value="#{comentario.comentarios}" var="c" styleClass="comment-table">
+         <h:column>
+            <f:facet name="header">Nombre</f:facet>
+            #{c.name}
+         </h:column>
+         <h:column>
+            <f:facet name="header">Correo</f:facet>
+            #{c.mail}
+         </h:column>
+         <h:column>
+            <f:facet name="header">Comentario</f:facet>
+            #{c.comment}
+         </h:column>
+         <h:column>
+            <f:facet name="header">Acción</f:facet>
+            <h:commandButton value="Eliminar" action="#{comentario.eliminarComentario(c.idComment)}" styleClass="delete-button"/>
+         </h:column>
+      </h:dataTable>
+   </h:form>
+</h:body>
+</html>
