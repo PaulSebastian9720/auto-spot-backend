@@ -20,7 +20,7 @@ public class Person {
 	@Column(name = "per_id")
 	private int idPerson;
 
-    @Column(name = "per_documentID", unique = true, nullable = true)
+    @Column(name = "per_documentID")
     private String  documentID;
 
     @Column(name = "per_name", nullable = false)
