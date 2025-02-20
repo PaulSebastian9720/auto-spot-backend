@@ -3,6 +3,7 @@ package ec.ups.edu.ppw.autoSpotBackend.api.service;
 import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqDealBaseDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.management.TicketManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Ticket;
+import ec.ups.edu.ppw.autoSpotBackend.util.filter.AdminOnly;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -40,6 +41,7 @@ public class TicketService {
         return Response.ok(tickets).build();
     }
 
+    @AdminOnly
     @GET
     @Path("/getAll")
     public Response getAllContracts(){
@@ -64,9 +66,17 @@ public class TicketService {
     @GET
     @Path("/{accessTicket}/price")
     public Response calculateTicketPrice(@PathParam("accessTicket") String accessTicket) {
-        Ticket ticket = this.ticketManagement.getTicketByAccessTicket(accessTicket);
-        double price = this.ticketManagement.endTicket(ticket);
+        double price = this.ticketManagement.calculateFinalPrice(accessTicket);
         return Response.ok(price).build();
+    }
+
+    @AdminOnly
+    @Path("/{accessTicket}/end-ticket")  //PUT method to update the endTicket field in the ticket entity.
+    @PUT
+    public Response updateEndTicket(@PathParam("accessTicket") String accessTicket){
+        this.ticketManagement.endTicket(accessTicket);
+        return Response.ok(Map.of("message", "Successful end ticket")).build();
+
     }
 
 

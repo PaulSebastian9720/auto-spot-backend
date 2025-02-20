@@ -11,7 +11,6 @@ import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.ext.Provider;
 
 import java.util.List;
-import java.util.Optional;
 
 @Provider
 @Priority(Priorities.AUTHENTICATION)
@@ -21,18 +20,23 @@ public class JwtAuthFilter implements ContainerRequestFilter {
 
     private static  final List<String> EXCLUDED_PATHS = List.of(
             "/auth/sign-in",
-            "/auth/sign-up"
+            "/auth/sign-up",
+            "/comments/getAll",
+            "/comments/create",
+            "/schedules/getAll"
     );
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws CustomException {
-//        String path = requestContext.getUriInfo().getPath();
-//        if (EXCLUDED_PATHS.contains(path)) return;
-//        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-//        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) throw  new CustomException(Errors.UNAUTHORIZED, "Fail in Bearer");
-//        String token = authorizationHeader.substring(7);
-//        if (!jwtTokenProvider.validateToken(token)) throw  new CustomException(Errors.UNAUTHORIZED, "This token is not valid");
-//        String mail = jwtTokenProvider.getMailFromToken(token);
-//        requestContext.setProperty("mail", mail);
+        String path = requestContext.getUriInfo().getPath();
+        if (EXCLUDED_PATHS.contains(path)) return;
+        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+        System.out.println(authorizationHeader);
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) throw  new CustomException(Errors.UN_AUTHORIZED, "BAD FORMAT THE HEADER");
+        String token = authorizationHeader.substring(7);
+        if (!jwtTokenProvider.validateToken(token)) throw  new CustomException(Errors.UN_AUTHORIZED, "THIS TOKEN IS NO VALID");
+        if(jwtTokenProvider.isTokenExpired(token)) throw new CustomException(Errors.UN_AUTHORIZED, "THIS TOKEN IS EXPIRED");
+        String mail = jwtTokenProvider.getMailFromToken(token);
+        requestContext.setProperty("mail", mail);
     }
 }

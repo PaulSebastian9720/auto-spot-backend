@@ -1,5 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.service;
 
+import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ParkingSpaceDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqSpaceDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.management.SpaceManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.ParkingSpace;
@@ -51,8 +52,8 @@ public class ParkingSpaceService {
     @GET
     @Path("/getAll")
     public Response getAll() {
-            List<ParkingSpace> listSpaces = this.spaceManagement.getAllSpaces();
-            return Response.ok(listSpaces).build();
+        List<ParkingSpaceDTO> listSpaces = this.spaceManagement.getAllParkingSpace();
+        return Response.ok(listSpaces).build();
     }
 
 }

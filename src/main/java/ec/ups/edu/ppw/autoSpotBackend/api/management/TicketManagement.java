@@ -10,7 +10,6 @@ import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 import jakarta.transaction.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -96,7 +95,9 @@ public class TicketManagement {
         return ticket;
     }
 
-    public double endTicket(Ticket ticket) throws CustomException {
+    public double calculateFinalPrice(String accessTicket) throws CustomException {
+
+        Ticket ticket = this.ticketDAO.getTicketByAccessTicket(accessTicket);
         if (ticket == null) {
             throw new CustomException(Errors.BAD_REQUEST, "The ticket is required");
         }
@@ -138,6 +139,21 @@ public class TicketManagement {
         }
 
         return totalPrice;
+    }
+
+
+    @Transactional
+    public void endTicket(String ticket)throws CustomException{
+        double totalPrice = this.calculateFinalPrice(ticket);
+        Ticket ticketEnd = this.ticketDAO.getTicketByAccessTicket(ticket);
+        ticketEnd.setStatus("IN");
+        ticketEnd.setFinalPrice(totalPrice);
+        ticketEnd.setEndDate(new Date());
+        ParkingSpace parkingSpace = this.spaceManagement.getParkingSpaceByLocation(ticketEnd.getParkingSpace().getLocation());
+        parkingSpace.setStatus("FR");
+        parkingSpace.setDealBase(null);
+        this.ticketDAO.modifyTicket(ticketEnd);
+        this.spaceManagement.updateParkingSpace(parkingSpace);
     }
 
     private long convertTimeUnitToMinutes(String timeUnit) {

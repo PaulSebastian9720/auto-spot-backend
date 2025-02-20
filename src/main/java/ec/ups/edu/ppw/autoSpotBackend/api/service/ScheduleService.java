@@ -2,6 +2,7 @@ package ec.ups.edu.ppw.autoSpotBackend.api.service;
 
 import ec.ups.edu.ppw.autoSpotBackend.api.management.ScheduleManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Schedule;
+import ec.ups.edu.ppw.autoSpotBackend.util.filter.AdminOnly;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -15,6 +16,8 @@ import java.util.List;
 public class ScheduleService {
     @Inject
     private ScheduleManagement scheduleManagement;
+
+    @AdminOnly
     @POST
     @Path("/create")
     public Response createException(Schedule schedule) {
@@ -29,6 +32,8 @@ public class ScheduleService {
             return Response.ok(schedule).build();
     }
 
+    @AdminOnly
+
     @PUT
     @Path("/update")
     public Response update(Schedule schedule) {
@@ -42,6 +47,8 @@ public class ScheduleService {
             List<Schedule> shedules = scheduleManagement.getAllSchedules();
             return Response.ok(shedules).build();
     }
+
+    @AdminOnly
 
     @DELETE
     @Path("/remove")

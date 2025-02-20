@@ -21,11 +21,11 @@ public class JwtAdminFilter implements ContainerRequestFilter {
 
     @Override
     public void filter(ContainerRequestContext requestContext) throws CustomException {
-//        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-//        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) throw  new CustomException(Errors.UNAUTHORIZED, "Fail in Bearer");
-//        String token = authorizationHeader.substring(7);
-//        String role = this.jwtTokenProvider.getRoleFromToken(token);
-//        if (role == null || !role.equals("A")) throw new CustomException(Errors.UNAUTHORIZED, "You do not have the necessary permissions");
+        String authorizationHeader = requestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+        if (authorizationHeader == null || !authorizationHeader.startsWith("Bearer ")) throw  new CustomException(Errors.UN_AUTHORIZED, "FAIL IN THE FORMAT OF THE HEADER");
+        String token = authorizationHeader.substring(7);
+        String role = this.jwtTokenProvider.getRoleFromToken(token);
+        if (role == null || !role.equals("A")) throw new CustomException(Errors.FORBIDDEN_, "YOU DON'T HAVE THE PERMISSION TO ACCESS");
     }
 
 }

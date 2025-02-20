@@ -24,7 +24,6 @@ public class AutomobileService {
 
     @POST
     @Path("/create")
-//    @OwnerOrAdmin
     public Response create(Automobile automobile) {
         automobileManagement.addAutomobile(automobile);
         return Response.ok(Map.of("message", "Successful automobile registration")).build();
@@ -40,7 +39,6 @@ public class AutomobileService {
 
     @PUT
     @Path("/update")
-//    @OwnerOrAdmin
     public Response update(Automobile automobile) {
         this.automobileManagement.updateAutomobile(automobile);
         return Response.ok(Map.of("message", "Successful automobile update")).build();
@@ -56,7 +54,6 @@ public class AutomobileService {
     }
 
     @GET
-//    @OwnerOrAdmin
     @Path("/{person_id}/list-for-person")
     public Response getListByIDPerson(@PathParam("person_id") int person_id) {
         List<Automobile> autmovileList= automobileManagement.getListByIDPerson(person_id);

@@ -2,11 +2,15 @@ package ec.ups.edu.ppw.autoSpotBackend.api.management;
 
 import ec.ups.edu.ppw.autoSpotBackend.api.dto.auth.UserDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
+import ec.ups.edu.ppw.autoSpotBackend.dao.MailDAO;
 import ec.ups.edu.ppw.autoSpotBackend.dao.PersonDAO;
+import ec.ups.edu.ppw.autoSpotBackend.model.Mail;
 import ec.ups.edu.ppw.autoSpotBackend.model.Person;
 import ec.ups.edu.ppw.autoSpotBackend.util.consts.Errors;
+import ec.ups.edu.ppw.autoSpotBackend.util.validator.ValidatorPattern;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
+import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -15,6 +19,40 @@ import java.util.stream.Collectors;
 public class PersonManagement {
     @Inject
     PersonDAO personDAO;
+
+    @Inject
+    MailDAO mailDAO;
+
+    @Transactional
+    public void addPerson(UserDTO user) throws CustomException {
+        if(user == null) throw  new CustomException(Errors.BAD_REQUEST,"Person cannot be null");
+        if(user.getIdPerson() > 0) throw  new CustomException(Errors.BAD_REQUEST, "Person already have an id");
+        if(user.getName() == null || user.getLastName() == null || user.getMail() == null )
+            throw new CustomException(Errors.BAD_REQUEST, "The user needs to have a name last name and unique email");
+        Mail mail = this.mailDAO.getMailByEmail(user.getMail());
+        if( mail != null) throw new CustomException(Errors.BAD_REQUEST, "There are a account related with the user mail");
+
+        if(user.getMail() == null || !ValidatorPattern.isValidEmail(user.getMail()))
+            throw new CustomException(Errors.BAD_REQUEST, "The email must be valid format");
+        if(user.getName().isEmpty() || user.getName().length() < 3 )
+            throw new CustomException(Errors.BAD_REQUEST, "The name persona cannot be empty and the minimum character length must be 4");
+        if(user.getLastName().isEmpty() || user.getLastName().length() < 3 )
+            throw new CustomException(Errors.BAD_REQUEST, "The last name persona cannot be empty and the minimum character length must be 4");
+
+        Person insertPerson = Person.fromUserDTO(user);
+        mail = new Mail();
+        mail.setMail(user.getMail());
+        mail.setLinkedAccount(false);
+        insertPerson.setMailUser(mail);
+        insertPerson.setRole("C");
+        insertPerson.setStatus("A");
+        insertPerson.setDocumentID(null);
+        insertPerson.setPhone(null);
+        insertPerson.setMailS(null);
+        insertPerson.setBirthDay(null);
+        personDAO.insertPerson(insertPerson);
+    }
+
 
     public void addPerson(Person person) throws CustomException {
         if(person == null) throw  new CustomException(Errors.BAD_REQUEST,"Person cannot be null");

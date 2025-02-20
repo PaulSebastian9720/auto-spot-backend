@@ -4,6 +4,7 @@ import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqDealBaseDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
 import ec.ups.edu.ppw.autoSpotBackend.api.management.ContractManagement;
 import ec.ups.edu.ppw.autoSpotBackend.model.Contract;
+import ec.ups.edu.ppw.autoSpotBackend.util.filter.AdminOnly;
 import jakarta.inject.Inject;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
@@ -30,7 +31,6 @@ public class ContractService {
     @GET
     @Path("/{id_person}/list-for-person")
     public Response getContractsByIdPerson(@PathParam("id_person") int idPerson) {
-
         List<Contract> contracts = this.contractManagement.getContractsByIdPerson(idPerson);
         return Response.ok(contracts).build();
 
@@ -44,6 +44,7 @@ public class ContractService {
 
     }
 
+    @AdminOnly
     @PUT
     @Path("{idContract}/end-contract")
     public Response endContract(@PathParam("idContract") int idContract) {
@@ -52,6 +53,7 @@ public class ContractService {
 
     }
 
+    @AdminOnly
     @PUT
     @Path("{idContract}/cancel-contract")
     public Response cancelContract(@PathParam("idContract") int idContract) {
@@ -59,6 +61,7 @@ public class ContractService {
         return Response.ok(Map.of("message", "Successful cancellation of the contract")).build();
     }
 
+    @AdminOnly
     @GET
     @Path("/getAll")
     public Response getAll() {

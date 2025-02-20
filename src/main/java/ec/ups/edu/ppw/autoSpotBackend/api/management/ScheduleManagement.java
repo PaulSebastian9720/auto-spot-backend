@@ -68,7 +68,7 @@ public class ScheduleManagement {
         Date currentDate = currentCalendar.getTime();
 
 //        if(currentDate.before(openingTime)) throw  new Exception("NO SE PUEDE MODIFICAR FECHAS PASADAS");
-        if(closingTime.before(openingTime)) throw  new CustomException(Errors.UNAUTHORIZED, "Schedules has to be after opening time");
+        if(closingTime.before(openingTime)) throw  new CustomException(Errors.UN_AUTHORIZED, "Schedules has to be after opening time");
     }
 
 

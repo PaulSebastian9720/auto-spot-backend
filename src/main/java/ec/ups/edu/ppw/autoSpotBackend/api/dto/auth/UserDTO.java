@@ -8,7 +8,6 @@ import java.util.Date;
 
 public class UserDTO {
     private int idPerson;
-    @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String mail;
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private String role;

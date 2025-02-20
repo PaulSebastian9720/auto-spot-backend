@@ -112,7 +112,7 @@ public class AuthManagement {
 
      private void validatorsPattern(String mail, String password) throws CustomException{
          if(mail.isEmpty() && password.isEmpty())
-             throw  new CustomException(Errors.UNAUTHORIZED, "The email or password cannot be empty");
+             throw  new CustomException(Errors.UN_AUTHORIZED, "The email or password cannot be empty");
          if(!ValidatorPattern.isValidEmail(mail))
              throw new CustomException(Errors.BAD_REQUEST, "The email does not meet one's standards");
 

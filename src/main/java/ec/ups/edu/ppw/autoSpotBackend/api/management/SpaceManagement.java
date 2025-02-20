@@ -1,5 +1,6 @@
 package ec.ups.edu.ppw.autoSpotBackend.api.management;
 
+import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ParkingSpaceDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.dto.others.ReqSpaceDTO;
 import ec.ups.edu.ppw.autoSpotBackend.api.exception.CustomException;
 import ec.ups.edu.ppw.autoSpotBackend.dao.ParkingSpaceDAO;
@@ -87,6 +88,15 @@ public class SpaceManagement {
         return this.parkingSpaceDAO.getParkingSpaces();
     }
 
+    public List<ParkingSpaceDTO> getAllParkingSpace() {
+        List<ParkingSpaceDTO> listAll = this.parkingSpaceDAO.getParkingSpaces()
+                .stream()
+                .map(parkingSpace -> ParkingSpaceDTO.fromJsonParkingSpace(parkingSpace))
+                .toList();
+        return listAll;
+    }
+
+
     public List<ParkingSpace> getListPerStatus(String status) throws CustomException {
         if (!status.equalsIgnoreCase("FR") && !status.equalsIgnoreCase("IN")) {
             throw new CustomException(Errors.BAD_REQUEST, "Invalid status, only 'FR' or 'IN' are allowed");
@@ -100,7 +110,7 @@ public class SpaceManagement {
         if(parkingSpace == null) throw new CustomException(Errors.NOT_FOUND, "Parking Space Not Found");
         if(parkingSpace.getStatus().toUpperCase().compareTo("BM") == 0
                 || parkingSpace.getStatus().toUpperCase().compareTo("BT") == 0)
-            throw new CustomException(Errors.UNAUTHORIZED, "Cant Change State of Busy Parking Space");
+            throw new CustomException(Errors.UN_AUTHORIZED, "Cant Change State of Busy Parking Space");
         if(parkingSpace.getStatus().toUpperCase().compareTo("FR") == 0) {
             parkingSpace.setStatus("IN");
         } else  if( parkingSpace.getStatus().toUpperCase().compareTo("IN") == 0){

@@ -27,6 +27,15 @@ public class UserService {
         return Response.ok(userDTO).build();
     }
 
+    @AdminOnly
+    @POST
+    @Path("/insert")
+    public Response getAllUsers(UserDTO userDTO) {
+        this.personManagement.addPerson(userDTO);
+        return Response.ok(Map.of("message", "Successful insert person")).build();
+    }
+
+
     @PUT
     @Path("/update")
     public Response update( UserDTO user) {
@@ -35,6 +44,7 @@ public class UserService {
 
     }
 
+
     @GET
     @AdminOnly
     @Path("/getAll")
@@ -42,6 +52,7 @@ public class UserService {
         List<UserDTO> persons = personManagement.getAllPersons();
         return Response.ok(persons).build();
     }
+
 
     @PUT
     @AdminOnly
