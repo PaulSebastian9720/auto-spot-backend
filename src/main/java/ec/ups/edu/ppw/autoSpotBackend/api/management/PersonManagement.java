@@ -108,9 +108,13 @@ public class PersonManagement {
         if (user.getPhone() != null && !user.getPhone().isEmpty() && (user.getPhone().length() < 7 || user.getPhone().length() > 15)) {
             throw new CustomException(Errors.BAD_REQUEST, "The phone number must be between 7 and 15 digits");
         }
-        if (user.getDocumentID() != null && !user.getDocumentID().isEmpty() && (user.getDocumentID().length() < 10 || user.getDocumentID().length() > 13)) {
+
+        if(user.getDocumentID() == null){
+            user.setDocumentID("");
+        } else if(!user.getDocumentID().isEmpty() && (user.getDocumentID().length() < 10 || user.getDocumentID().length() > 13))
             throw new CustomException(Errors.BAD_REQUEST, "The document ID must be between 10 and 13 digits");
-        }
+
+
         Person personUpdate = this.personDAO.modifyPerson(personFind);
         if(personUpdate == null) throw new CustomException(Errors.INTERNAL_SERVER_ERROR,"Internal error");
     }

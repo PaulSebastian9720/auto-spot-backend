@@ -20,7 +20,7 @@ public class Person {
 	@Column(name = "per_id")
 	private int idPerson;
 
-    @Column(name = "per_documentID", unique = true)
+    @Column(name = "per_documentID", unique = true, nullable = true)
     private String  documentID;
 
     @Column(name = "per_name", nullable = false)
@@ -40,7 +40,7 @@ public class Person {
     @Column(name = "per_birthday")
     private Date birthDay;
 
-    @Column(name = "per_mailS", unique = true)
+    @Column(name = "per_mailS")
     private String mailS;
 
     @Column(name = "per_location")
